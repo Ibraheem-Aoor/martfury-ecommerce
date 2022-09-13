@@ -1,18 +1,21 @@
 @if ($product)
     <div class="ps-product__thumbnail">
         <a href="{{ $product->url }}">
-            <img src="{{ RvMedia::getImageUrl($product->image, 'small', false, RvMedia::getDefaultImage()) }}" alt="{{ $product->name }}">
+            <img src="{{ RvMedia::getImageUrl($product->image, 'small', false, RvMedia::getDefaultImage()) }}"
+                alt="{{ $product->name }}">
         </a>
         @if ($product->isOutOfStock())
             <span class="ps-product__badge out-stock">{{ __('Out Of Stock') }}</span>
         @else
             @if ($product->productLabels->count())
                 @foreach ($product->productLabels as $label)
-                    <span class="ps-product__badge" @if ($label->color) style="background-color: {{ $label->color }}" @endif>{{ $label->name }}</span>
+                    <span class="ps-product__badge"
+                        @if ($label->color) style="background-color: {{ $label->color }}" @endif>{{ $label->name }}</span>
                 @endforeach
             @else
                 @if ($product->front_sale_price !== $product->price)
-                    <div class="ps-product__badge">{{ get_sale_percentage($product->price, $product->front_sale_price) }}</div>
+                    <div class="ps-product__badge">{{ get_sale_percentage($product->price, $product->front_sale_price) }}
+                    </div>
                 @endif
             @endif
         @endif
@@ -40,15 +43,23 @@
         </div>
         <div class="ps-product__shopping">
             {!! apply_filters('ecommerce_before_product_price_in_listing', null, $product) !!}
-            <p class="ps-product__price @if ($product->front_sale_price !== $product->price) sale @endif">{{ format_price($product->front_sale_price_with_taxes) }} @if ($product->front_sale_price !== $product->price) <del>{{ format_price($product->price_with_taxes) }} </del> @endif</p>
+            <p class="ps-product__price @if ($product->front_sale_price !== $product->price) sale @endif">
+                {{ format_price($product->front_sale_price_with_taxes) }} @if ($product->front_sale_price !== $product->price)
+                    <del>{{ format_price($product->price_with_taxes) }} </del>
+                @endif
+            </p>
             {!! apply_filters('ecommerce_after_product_price_in_listing', null, $product) !!}
             @if (EcommerceHelper::isCartEnabled())
-                <a class="ps-btn add-to-cart-button" data-id="{{ $product->id }}" href="#" data-url="{{ route('public.cart.add-to-cart') }}">{{ __('Add to cart') }}</a>
+                <a class="ps-btn add-to-cart-button" data-id="{{ $product->id }}" href="#"
+                    data-url="{{ route('public.cart.add-to-cart') }}">{{ __('Add to cart') }}</a>
             @endif
             <ul class="ps-product__actions">
-                <li><a class="js-add-to-wishlist-button" href="#" data-url="{{ route('public.wishlist.add', $product->id) }}"><i class="icon-heart"></i> {{ __('Wishlist') }}</a></li>
-                <li><a class="js-add-to-compare-button" href="#" data-url="{{ route('public.compare.add', $product->id) }}"><i class="icon-chart-bars"></i>
-                    {{ __('Compare') }}</a></li>
+                <li><a class="js-add-to-wishlist-button" href="#"
+                        data-url="{{ route('public.wishlist.add', $product->id) }}"><i class="icon-heart"></i>
+                        {{ __('Wishlist') }}</a></li>
+                <li><a class="js-add-to-compare-button" href="#"
+                        data-url="{{ route('public.compare.add', $product->id) }}"><i class="icon-chart-bars"></i>
+                        {{ __('Compare') }}</a></li>
             </ul>
         </div>
     </div>
