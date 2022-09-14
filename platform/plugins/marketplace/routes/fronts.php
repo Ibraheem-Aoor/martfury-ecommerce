@@ -175,6 +175,7 @@ Route::group([
             Route::group(['prefix' => 'orders', 'as' => 'orders.'], function () {
                 Route::resource('', 'OrderController')->parameters(['' => 'order'])->except(['create', 'store']);
 
+
                 Route::delete('items/destroy', [
                     'as'   => 'deletes',
                     'uses' => 'OrderController@deletes',
@@ -198,6 +199,11 @@ Route::group([
                 Route::post('update-shipping-address/{id}', [
                     'as'   => 'update-shipping-address',
                     'uses' => 'OrderController@postUpdateShippingAddress',
+                ]);
+
+                Route::post('update-company-shipping-info', [
+                    'as'         => 'company_info.update',
+                    'uses'       => 'OrderController@updateCompanyShippingInfo',
                 ]);
 
                 Route::post('cancel-order/{id}', [

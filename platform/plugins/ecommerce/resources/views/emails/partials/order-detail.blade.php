@@ -4,7 +4,7 @@
     @endphp
     <a href="{{ route('public.orders.tracking', ['order_id' => str_replace('#', '', $orderId), 'email' => $order->user->email ?: $order->address->email]) }}"
         class="button button-blue">{{ trans('plugins/ecommerce::email.view_order') }}</a>
-        {!! trans('plugins/ecommerce::email.link_go_to_our_shop', ['link' => route('public.index')]) !!}
+    {!! trans('plugins/ecommerce::email.link_go_to_our_shop', ['link' => route('public.index')]) !!}
 
     <br />
 
@@ -32,22 +32,13 @@
         @foreach ($order->products as $orderProduct)
             @php
                 $product = get_products([
-                        'condition' => [
+                    'condition' => [
                         'ec_products.status' => \Botble\Base\Enums\BaseStatusEnum::PUBLISHED,
                         'ec_products.id' => $orderProduct->product_id,
                     ],
-                        'take' => 1,
-                        'select' => [
-                        'ec_products.id',
-                        'ec_products.name',
-                        'ec_products.price',
-                        'ec_products.sale_price',
-                        'ec_products.sale_type',
-                        'ec_products.start_date',
-                        'ec_products.end_date',
-                        'ec_products.sku',
-                    ],
-                ])
+                    'take' => 1,
+                    'select' => ['ec_products.id', 'ec_products.name', 'ec_products.price', 'ec_products.sale_price', 'ec_products.sale_type', 'ec_products.start_date', 'ec_products.end_date', 'ec_products.sku'],
+                ]);
             @endphp
             <tr>
                 <td>
@@ -57,9 +48,10 @@
                     @endif
 
                     @if (!empty($orderProduct->options) && is_array($orderProduct->options))
-                        @foreach($orderProduct->options as $option)
+                        @foreach ($orderProduct->options as $option)
                             @if (!empty($option['key']) && !empty($option['value']))
-                                <p class="mb-0"><small>{{ $option['key'] }}: <strong> {{ $option['value'] }}</strong></small></p>
+                                <p class="mb-0"><small>{{ $option['key'] }}: <strong>
+                                            {{ $option['value'] }}</strong></small></p>
                             @endif
                         @endforeach
                     @endif
@@ -131,6 +123,25 @@
                 {{ format_price($order->amount) }}
             </td>
         </tr>
+        @if ($order->shipping_company_name)
+            <tr>
+                <td>
+                <td>{{ __('Shipping Company Name') }}:</td>
+                <td>{{ $order->shipping_company_name }} </td>
+
+                <td>{{ __('Tracking ID') }}:</td>
+                <td>{{ $order->shipping_tracking_id }}
+                </td>
+
+                <td>{{ __('Tracking Link') }}:</td>
+                <td>{{ $order->shipping_tracking_link }}</td>
+
+                <td>{{ __('Estimate Date Shipped') }}:</td>
+                <td>{{ $order->estimate_arrival_date }} </td>
+                <td>{{ __('Note') }}:</td>
+                <td> {{ $order->note }} </td>
+                </td>
+            </tr>
+        @endif
     </table><br>
 </div>
-

@@ -10,6 +10,7 @@ use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\Ecommerce\Enums\OrderStatusEnum;
 use Botble\Ecommerce\Http\Requests\AddressRequest;
 use Botble\Ecommerce\Http\Requests\UpdateOrderRequest;
+use Botble\Ecommerce\Models\Order;
 use Botble\Ecommerce\Repositories\Interfaces\OrderAddressInterface;
 use Botble\Ecommerce\Repositories\Interfaces\OrderHistoryInterface;
 use Botble\Ecommerce\Repositories\Interfaces\OrderInterface;
@@ -354,5 +355,26 @@ class OrderController extends BaseController
         }
 
         return $response->setMessage(trans('plugins/ecommerce::order.customer.messages.cancel_success'));
+    }
+
+
+    /**
+     * Update Shipping Company Info
+     */
+    public function updateCompanyShippingInfo(Request $request)
+    {
+        // $request->validate(['s   hipping_company_name'  => 'required',
+        //                     'tracking_id' => 'required',
+        //                     'tracking_link' , 'required',
+        //                     'estimate_date_shipped' => 'required',
+        //                     'note' => 'nullable', ]);
+        $order = Order::findOrFail(decrypt($request->order_id));
+        $order->shipping_company_name = $request->shipping_company_name;
+        $order->shipping_tracking_id = $request->tracking_id;
+        $order->shipping_tracking_link = $request->tracking_link;
+        $order->estimate_arrival_date = $request->estimate_date_shipped;
+        $order->note = $request->note;
+        $order->save();
+        return response()->json(['status' => true , 'is_updated' => true]);
     }
 }

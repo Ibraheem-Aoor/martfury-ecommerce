@@ -64,6 +64,9 @@ class SaveVendorInformationListener
                 $store = $this->storeRepository->createOrUpdate([
                     'name'        => clean($this->request->input('shop_name')),
                     'phone'       => clean($this->request->input('shop_phone')),
+                    'registration_country'       => clean($this->request->input('registration_country')),
+                    'commerce_number'       => clean($this->request->input('commerce_number')),
+                    'tax_number'       => clean($this->request->input('tax_number')),
                     'customer_id' => $customer->getAuthIdentifier(),
                 ]);
             }

@@ -147,6 +147,9 @@ class RegisterController extends Controller
             $rules['shop_name'] = 'required|min:2';
             $rules['shop_phone'] = 'required|' . BaseHelper::getPhoneValidationRule();
             $rules['shop_url'] = 'required';
+            $rules[ 'registration_country'] = 'required';
+            $rules['commerce_number'] = 'required';
+            $rules['tax_number'] = 'required';
         }
 
         if (request()->has('agree_terms_and_policy')) {
@@ -162,6 +165,9 @@ class RegisterController extends Controller
             'shop_phone'             => __('Shop Phone'),
             'shop_url'               => __('Shop URL'),
             'agree_terms_and_policy' => __('Term and Policy'),
+            'registration_country' => __('Registration Country'),
+            'commerce_number' => __('Chamber of Commerce No'),
+            'tax_number' => __('Tax Number'),
         ];
 
         return Validator::make($data, $rules, [

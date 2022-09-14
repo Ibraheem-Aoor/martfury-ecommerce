@@ -24,6 +24,18 @@
                         <span>{{ trans('plugins/marketplace::store.store_phone') }}:</span>
                         <strong>{{ $vendor->store->phone ?: 'N/A' }}</strong>
                     </div>
+                    <div class="py-2">
+                        <span>{{ trans('plugins/marketplace::store.registration_country') }}:</span>
+                        <strong>{{ $vendor->store->registration_country ?: 'N/A' }}</strong>
+                    </div>
+                    <div class="py-2">
+                        <span>{{ trans('plugins/marketplace::store.commerce_number') }}:</span>
+                        <strong>{{ $vendor->store->commerce_number ?: 'N/A' }}</strong>
+                    </div>
+                    <div class="py-2">
+                        <span>{{ trans('plugins/marketplace::store.tax_number') }}:</span>
+                        <strong>{{ $vendor->store->tax_number ?: 'N/A' }}</strong>
+                    </div>
                 </div>
             </div>
         </div>

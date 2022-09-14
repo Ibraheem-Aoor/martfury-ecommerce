@@ -104,7 +104,7 @@
             <form id="ean_code_check" action="{{ route('products.ean_check') }}">
                 <div class="modal-body">
                     <form action="" class="form-group">
-                        <label for="">Enter Prodcut EAN Code: {{url()->current()}}</label>
+                        <label for="">Enter Prodcut EAN Code:</label>
                         <input type="text" class="form-control" name="ean_code_check">
                     </form>
                 </div>

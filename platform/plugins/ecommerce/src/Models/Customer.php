@@ -44,6 +44,7 @@ class Customer extends Authenticatable
         'phone',
         'dob',
         'status',
+
     ];
 
     /**

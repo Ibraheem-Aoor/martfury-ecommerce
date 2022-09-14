@@ -40,4 +40,7 @@ return [
     'vendor_information' => 'Vendor information',
     'vendor_name' => 'Name',
     'withdrawal_approval_notification' => 'This withdrawal request has been created by :vendor. Their current balance is :balance.',
+    'commerce_number' => 'Chamber of Commerce No',
+    'registration_country' => 'Registration Country',
+    'tax_number' => 'Tax Number',
 ];

@@ -42,6 +42,9 @@ class Store extends BaseModel
         'description',
         'content',
         'status',
+        'registration_country',
+        'commerce_number',
+        'tax_number',
     ];
 
     /**

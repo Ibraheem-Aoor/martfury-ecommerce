@@ -115,7 +115,7 @@ Route::group(['namespace' => 'Botble\Ecommerce\Http\Controllers', 'middleware' =
                 'permission' => 'orders.index',
             ]);
 
-            Route::post('update-company-shipping-infp', [
+            Route::post('update-company-shipping-info', [
                 'as'         => 'company_info.update',
                 'uses'       => 'OrderController@updateCompanyShippingInfo',
                 'permission' => 'orders.edit',
