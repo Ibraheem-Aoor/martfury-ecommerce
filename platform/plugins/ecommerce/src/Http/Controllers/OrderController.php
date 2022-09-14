@@ -18,6 +18,7 @@ use Botble\Ecommerce\Http\Requests\CreateOrderRequest;
 use Botble\Ecommerce\Http\Requests\CreateShipmentRequest;
 use Botble\Ecommerce\Http\Requests\RefundRequest;
 use Botble\Ecommerce\Http\Requests\UpdateOrderRequest;
+use Botble\Ecommerce\Models\Order;
 use Botble\Ecommerce\Repositories\Interfaces\AddressInterface;
 use Botble\Ecommerce\Repositories\Interfaces\CustomerInterface;
 use Botble\Ecommerce\Repositories\Interfaces\OrderAddressInterface;
@@ -1094,5 +1095,25 @@ class OrderController extends BaseController
                 ->setError()
                 ->setMessage(trans('plugins/ecommerce::order.error_when_sending_email'));
         }
+    }
+
+    /**
+     * Update Shipping Company Info
+     */
+    public function updateCompanyShippingInfo(Request $request)
+    {
+        // $request->validate(['shipping_company_name'  => 'required',
+        //                     'tracking_id' => 'required',
+        //                     'tracking_link' , 'required',
+        //                     'estimate_date_shipped' => 'required',
+        //                     'note' => 'nullable', ]);
+        $order = Order::findOrFail(decrypt($request->order_id));
+        $order->shipping_company_name = $request->shipping_company_name;
+        $order->shipping_tracking_id = $request->tracking_id;
+        $order->shipping_tracking_link = $request->tracking_link;
+        $order->estimate_arrival_date = $request->estimate_date_shipped;
+        $order->note = $request->note;
+        $order->save();
+        return response()->json(['status' => true , 'is_updated' => true]);
     }
 }

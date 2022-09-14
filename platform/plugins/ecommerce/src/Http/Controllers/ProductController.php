@@ -26,6 +26,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Illuminate\View\View;
 use Throwable;
 
@@ -81,7 +82,7 @@ class ProductController extends BaseController
     public function edit($id, Request $request, FormBuilder $formBuilder)
     {
         $product = $this->productRepository->findOrFail($id);
-
+        session()->flash('current_page'  , 'edit');
         if ($product->is_variation) {
             abort(404);
         }
@@ -271,6 +272,7 @@ class ProductController extends BaseController
 
     public function isProductEanCodeExists(Request $request)
     {
+        $request->validate(['ean_code_check' => 'required']);
         $ean_code = $request->ean_code_check;
         $product = Product::query()->where('ean_code' , $ean_code)->first();
         if($product){

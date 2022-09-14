@@ -27,6 +27,7 @@ class ProductRequest extends Request
             'length'     => 'numeric|nullable|min:0|max:100000000',
             'status'     => Rule::in(BaseStatusEnum::values()),
             'quantity'   => 'numeric|nullable|min:0|max:100000000',
+            'ean_code' => 'required',
         ];
     }
 

@@ -43,6 +43,11 @@ class Order extends BaseModel
         'discount_description',
         'is_finished',
         'token',
+        'shipping_company_name',
+        'shipping_tracking_id',
+        'shipping_tracking_link',
+        'estimate_arrival_date',
+        'note', 
     ];
 
     /**

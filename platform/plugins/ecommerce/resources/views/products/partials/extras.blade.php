@@ -104,7 +104,7 @@
             <form id="ean_code_check" action="{{ route('products.ean_check') }}">
                 <div class="modal-body">
                     <form action="" class="form-group">
-                        <label for="">Enter Prodcut EAN Code:</label>
+                        <label for="">Enter Prodcut EAN Code: {{url()->current()}}</label>
                         <input type="text" class="form-control" name="ean_code_check">
                     </form>
                 </div>
@@ -123,7 +123,7 @@
 
 
 
-
+{{-- Start Ean Code Script --}}
 <script>
     $('#exampleModal').modal('show');
     $('#exampleModal').modal({
@@ -134,12 +134,12 @@
     $('#ean_code_check').on('submit', function(e) {
         e.preventDefault();
         var form = $(this);
-        var is_vendor = "{{auth('customer')->check()}}";
+        var is_vendor = "{{ auth('customer')->check() }}";
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN': "{{ csrf_token() }}",
             },
-            url: is_vendor ? "product-ean-check-vendor" : "{{route('products.ean_check')}}",
+            url: is_vendor ? "product-ean-check-vendor" : "{{ route('products.ean_check') }}",
             type: 'POST',
             data: form.serialize(),
             success: function(response) {
@@ -154,11 +154,14 @@
                 }
             },
             error: function() {
+                toastr.error('EAN CODE Required');
                 form.reset();
             },
         });
     });
 </script>
+{{-- End Ean Code Script --}}
+
 
 <script id="selected_product_list_template" type="text/x-custom-template">
     <tr>

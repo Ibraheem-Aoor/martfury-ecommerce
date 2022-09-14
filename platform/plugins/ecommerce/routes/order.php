@@ -114,6 +114,12 @@ Route::group(['namespace' => 'Botble\Ecommerce\Http\Controllers', 'middleware' =
                 'uses'       => 'OrderController@postSendOrderRecoverEmail',
                 'permission' => 'orders.index',
             ]);
+
+            Route::post('update-company-shipping-infp', [
+                'as'         => 'company_info.update',
+                'uses'       => 'OrderController@updateCompanyShippingInfo',
+                'permission' => 'orders.edit',
+            ]);
         });
     });
 });
