@@ -1,5 +1,6 @@
 <?php
 
+use Botble\Ecommerce\Http\Controllers\BrandController;
 use Botble\Marketplace\Models\Store;
 
 Route::group([
@@ -7,7 +8,6 @@ Route::group([
     'middleware' => ['web', 'core'],
 ], function () {
     Route::group(apply_filters(BASE_FILTER_GROUP_PUBLIC_ROUTE, []), function () {
-
         Route::get(SlugHelper::getPrefix(Store::class, 'stores'), [
             'as'   => 'public.stores',
             'uses' => 'PublicStoreController@getStores',
@@ -94,6 +94,8 @@ Route::group([
                 Route::resource('', 'ProductController')
                     ->parameters(['' => 'product']);
             Route::post('product-ean-check-vendor' ,'ProductController@isProductEanCodeExists' )->name('ean_check_vendor');
+
+
 
 
                 Route::delete('items/destroy', [
@@ -262,6 +264,8 @@ Route::group([
         ]);
     });
 });
+
+    Route::post('brand', [BrandController::class , 'vendorCreateBrand'])->name('vendor.brand.create');
 
 Route::group([
     'namespace'  => 'Botble\Marketplace\Http\Controllers\Fronts',

@@ -6,7 +6,7 @@
 
 <link rel="stylesheet" href="{{ Theme::asset()->url('fonts/Linearicons/Linearicons/Font/demo-files/demo.css') }}?v={{ MarketplaceHelper::getAssetVersion() }}">
 <link rel="stylesheet" href="{{ Theme::asset()->url('css/marketplace.css') }}?v={{ MarketplaceHelper::getAssetVersion() }}">
-
+<meta name="csrf" content="{{csrf_token()}}">
 @if (BaseHelper::siteLanguageDirection() == 'rtl')
     <link rel="stylesheet" href="{{ asset('vendor/core/core/base/css/rtl.css') }}?v={{ get_cms_version() }}">
     <link rel="stylesheet" href="{{ Theme::asset()->url('css/marketplace-rtl.css') }}?v={{ MarketplaceHelper::getAssetVersion() }}">

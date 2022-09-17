@@ -79,4 +79,7 @@
             </a>
         </li>
     @endforeach
+    <li>
+        <a href="#" class="btn-sm btn-" onclick="event.preventDefault();$('#new_brand_modal').modal('show');"><i class="fa fa-registered"></i> {{__('Brands')}}</a>
+    </li>
 </ul>

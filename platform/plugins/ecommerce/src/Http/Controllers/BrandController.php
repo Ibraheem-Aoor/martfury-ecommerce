@@ -10,6 +10,7 @@ use Botble\Base\Http\Controllers\BaseController;
 use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\Ecommerce\Forms\BrandForm;
 use Botble\Ecommerce\Http\Requests\BrandRequest;
+use Botble\Ecommerce\Models\Brand;
 use Botble\Ecommerce\Repositories\Interfaces\BrandInterface;
 use Botble\Ecommerce\Tables\BrandTable;
 use Exception;
@@ -151,5 +152,13 @@ class BrandController extends BaseController
         }
 
         return $response->setMessage(trans('core/base::notices.delete_success_message'));
+    }
+
+
+    public function vendorCreateBrand(Request $request)
+    {
+        $request->validate(['name' => 'required']);
+        Brand::create($request->all());
+        return response()->json(['status' => true , 'is_added' => true , 'message' => __('Brand Created Successfully')] , 200);
     }
 }

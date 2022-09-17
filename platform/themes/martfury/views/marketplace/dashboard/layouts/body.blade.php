@@ -43,6 +43,7 @@
             <div class="ps-sidebar__content">
                 <div class="ps-sidebar__center">
                     @include(MarketplaceHelper::viewPath('dashboard.layouts.menu'))
+
                 </div>
                 <div class="ps-sidebar__footer">
                     <div class="ps-copyright">

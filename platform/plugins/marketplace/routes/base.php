@@ -81,6 +81,7 @@ Route::group(['namespace' => 'Botble\Marketplace\Http\Controllers', 'middleware'
                     'uses'       => 'ProductController@approveProduct',
                     'permission' => 'products.edit',
                 ]);
+                
             });
         });
 

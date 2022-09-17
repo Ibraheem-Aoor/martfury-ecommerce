@@ -113,7 +113,7 @@ interface RepositoryInterface
      * @return false|Model
      */
     public function createOrUpdate($data, array $condition = []);
-
+    
     /**
      * Delete model.
      *
