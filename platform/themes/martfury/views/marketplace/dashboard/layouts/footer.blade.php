@@ -2,13 +2,6 @@
     src="{{ asset('vendor/core/plugins/marketplace/js/marketplace.js') }}?v={{ MarketplaceHelper::getAssetVersion() }}">
 </script>
 <script src="{{ Theme::asset()->url('js/marketplace.js') }}?v={{ MarketplaceHelper::getAssetVersion() }}"></script>
-<script>
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf"]').attr('content'),
-        },
-    });
-</script>
 
 <!-- Brand Modal -->
 <div class="modal fade" id="new_brand_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -42,6 +35,9 @@
         e.preventDefault();
         var form = $('#add_new_brand');
         $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf"]').attr('content'),
+            },
             url: $(this).attr('action'),
             type: 'POST',
             data: $(this).serialize(),
