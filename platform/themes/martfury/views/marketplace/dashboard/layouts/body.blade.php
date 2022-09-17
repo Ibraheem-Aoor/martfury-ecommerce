@@ -10,7 +10,8 @@
             @endif
         </a>
     </div>
-    <div class="header__right"><a class="header__site-link" href="{{ route('customer.logout') }}"><i class="icon-exit-right"></i></a></div>
+    <div class="header__right"><a class="header__site-link" href="{{ route('customer.logout') }}"><i
+                class="icon-exit-right"></i></a></div>
 </header>
 <aside class="ps-drawer--mobile">
     <div class="ps-drawer__header">
@@ -28,13 +29,15 @@
             <div class="ps-sidebar__top">
                 <div class="ps-block--user-wellcome">
                     <div class="ps-block__left">
-                        <img src="{{ auth('customer')->user()->store->logo_url }}" alt="{{ auth('customer')->user()->store->name }}" width="80" />
+                        <img src="{{ auth('customer')->user()->store->logo_url }}"
+                            alt="{{ auth('customer')->user()->store->name }}" width="80" />
                     </div>
                     <div class="ps-block__right">
                         <p>{{ __('Hello') }}, {{ auth('customer')->user()->name }}</p>
                         <small>{{ __('Joined on :date', ['date' => auth('customer')->user()->created_at->format('M d, Y')]) }}</small>
                     </div>
-                    <div class="ps-block__action"><a href="{{ route('customer.logout') }}"><i class="icon-exit"></i></a></div>
+                    <div class="ps-block__action"><a href="{{ route('customer.logout') }}"><i class="icon-exit"></i></a>
+                    </div>
                 </div>
                 <div class="ps-block--earning-count"><small>{{ __('Earnings') }}</small>
                     <h3>{{ format_price(auth('customer')->user()->balance) }}</h3>
@@ -49,7 +52,7 @@
                     <div class="ps-copyright">
                         @php $logo = theme_option('logo_vendor_dashboard', theme_option('logo')); @endphp
                         @if ($logo)
-                            <img src="{{ RvMedia::getImageUrl($logo)}}" alt="{{ theme_option('site_title') }}">
+                            <img src="{{ RvMedia::getImageUrl($logo) }}" alt="{{ theme_option('site_title') }}">
                         @endif
                         <p>{{ theme_option('copyright') }}</p>
                     </div>
@@ -69,11 +72,43 @@
                             {!! Theme::partial('language-switcher') !!}
                         </div>
                     @endif
-                    <a class="header__site-link ms-2" href="{{ auth('customer')->user()->store->url }}" target="_blank"><span>{{ __('View your store') }}</span><i class="icon-exit-right"></i></a>
+                    <a class="header__site-link ms-2" href="{{ auth('customer')->user()->store->url }}"
+                        target="_blank"><span>{{ __('View your store') }}</span><i class="icon-exit-right"></i></a>
                 </div>
             @endif
         </header>
 
         @yield('content')
+
+
+        <!-- Start Brand Modal -->
+        <div class="modal fade" id="new_brand_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">ADD NEW BRAND</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="add_new_brand" action="{{ route('vendor.brand.create') }}">
+                        <div class="modal-body">
+                            <form action="" class="form-group">
+                                <label for="">{{ __('Name') }}</label>
+                                <input type="text" class="form-control" name="name">
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+                            <button type="button" onclick="$('#add_new_brand').submit();"
+                                class="btn btn-primary">ADD</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        {{-- End Brand Modal --}}
     </div>
 </main>
