@@ -12,7 +12,7 @@
 
 <script>
     $('#add_new_brand').on('submit', function(e) {
-        e.stop();
+        e.preventDefault();
         var form = $('#add_new_brand');
         $.ajax({
             url: $(this).attr('action'),
