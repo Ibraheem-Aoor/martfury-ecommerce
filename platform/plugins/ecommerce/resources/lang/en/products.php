@@ -84,7 +84,7 @@ return [
     'quantity'                                       => 'Quantity',
     'type'                                           => 'Type',
     'image'                                          => 'Thumbnail',
-    'sku'                                            => 'SKU',
+    'sku'                                            => 'Borvat Code',
     'ean_code'                                       => 'EAN Code',
     'brand'                                          => 'Brand',
     'cannot_delete'                                  => 'Product could not be deleted',

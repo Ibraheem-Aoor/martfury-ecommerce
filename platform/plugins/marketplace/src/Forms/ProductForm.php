@@ -102,6 +102,15 @@ class ProductForm extends BaseProductForm
                     'rows' => 4,
                 ],
             ])
+            ->add('deliverables', 'editor', [
+                'label'      => trans('plugins/ecommerce::products.form.deliverables'),
+                'label_attr' => ['class' => 'text-title-field'],
+                'attr'       => [
+                    'rows'            => 4,
+                    'with-short-code' => true,
+                    'required' => 'required',
+                ],
+            ])
             ->add('images', 'customImages', [
                 'label'      => trans('plugins/ecommerce::products.form.image'),
                 'label_attr' => ['class' => 'control-label'],
@@ -126,13 +135,13 @@ class ProductForm extends BaseProductForm
                 'label'      => trans('plugins/ecommerce::products.form.brand'),
                 'label_attr' => ['class' => 'control-label'],
                 'choices'    => $brands,
-            ])
-            ->add('product_collections[]', 'multiCheckList', [
-                'label'      => trans('plugins/ecommerce::products.form.collections'),
-                'label_attr' => ['class' => 'control-label'],
-                'choices'    => $productCollections,
-                'value'      => old('product_collections', $selectedProductCollections),
             ]);
+            // ->add('product_collections[]', 'multiCheckList', [
+            //     'label'      => trans('plugins/ecommerce::products.form.collections'),
+            //     'label_attr' => ['class' => 'control-label'],
+            //     'choices'    => $productCollections,
+            //     'value'      => old('product_collections', $selectedProductCollections),
+            // ]);
 
         if (EcommerceHelper::isTaxEnabled()) {
             $taxes = app(TaxInterface::class)->pluck('title', 'id');

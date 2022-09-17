@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use BaseHelper;
 use Botble\ACL\Traits\RegistersUsers;
 use Botble\Base\Http\Responses\BaseHttpResponse;
+use Botble\Base\Supports\Helper as SupportsHelper;
 use Botble\Ecommerce\Models\Customer;
 use Botble\Ecommerce\Repositories\Interfaces\CustomerInterface;
 use Botble\Marketplace\Models\Store;
@@ -19,6 +20,7 @@ use Illuminate\View\View;
 use Response;
 use SeoHelper;
 use SlugHelper;
+use Symfony\Component\Console\Helper\Helper;
 use Theme;
 use URL;
 
@@ -76,8 +78,8 @@ class RegisterController extends Controller
                 session(['url.intended' => url()->previous()]);
             }
         }
-
-        return Theme::scope('ecommerce.customers.register', [], 'plugins/ecommerce::themes.customers.register')
+        $data['countries'] = SupportsHelper::countries();
+        return Theme::scope('ecommerce.customers.register', $data , 'plugins/ecommerce::themes.customers.register')
             ->render();
     }
 

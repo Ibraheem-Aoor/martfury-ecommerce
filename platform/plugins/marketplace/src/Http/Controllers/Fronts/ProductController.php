@@ -108,7 +108,8 @@ class ProductController extends BaseController
             'store_id' => auth('customer')->user()->store->id,
             'images'   => json_decode($request->input('images')),
         ]);
-
+        $product->ean_code = $request->input('ean_code');
+        $product->sku = $this->generateBorvatCode();
         $product->status = MarketplaceHelper::getSetting('enable_product_approval',
             1) ? BaseStatusEnum::PENDING : BaseStatusEnum::PUBLISHED;
 
@@ -432,6 +433,7 @@ class ProductController extends BaseController
 
     public function isProductEanCodeExists(Request $request)
     {
+        $request->validate(['ean_code_check' => 'required|digits:13'] , ['ean_code_check.required' => 'EAN CODE REQUIRED' , 'ean_code_check.digits' => 'EAN CODE NOT VALID']);
         $ean_code = $request->ean_code_check;
         $product = Product::query()->where('ean_code' , $ean_code)->first();
         if($product){

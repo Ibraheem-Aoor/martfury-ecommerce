@@ -93,9 +93,11 @@ class ProductForm extends FormAbstract
                 'label'      => trans('core/base::forms.description'),
                 'label_attr' => ['class' => 'control-label'],
                 'attr'       => [
-                    'rows'         => 2,
+                    'rows'         => 4,
                     'placeholder'  => trans('core/base::forms.description_placeholder'),
                     'data-counter' => 1000,
+                    'required' => 'required',
+
                 ],
             ])
             ->add('content', 'editor', [
@@ -104,6 +106,17 @@ class ProductForm extends FormAbstract
                 'attr'       => [
                     'rows'            => 4,
                     'with-short-code' => true,
+                    'required' => 'required',
+
+                ],
+            ])
+            ->add('deliverables', 'editor', [
+                'label'      => trans('plugins/ecommerce::products.form.deliverables'),
+                'label_attr' => ['class' => 'text-title-field'],
+                'attr'       => [
+                    'rows'            => 4,
+                    'with-short-code' => true,
+                    'required' => 'required',
                 ],
             ])
             ->add('images[]', 'mediaImages', [

@@ -63,8 +63,8 @@ class LoginController extends Controller
                 session(['url.intended' => url()->previous()]);
             }
         }
-
-        return Theme::scope('ecommerce.customers.login', [], 'plugins/ecommerce::themes.customers.login')->render();
+        
+        return Theme::scope('ecommerce.customers.login', $data, 'plugins/ecommerce::themes.customers.login')->render();
     }
 
     /**

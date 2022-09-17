@@ -64,9 +64,14 @@
                         </div>
                         <div class="form-group">
                             <label for="registration_country" class="required">{{ __('Registration Country') }}</label>
-                            <input class="form-control" name="registration_country" id="registration_country"
-                                type="text" value="{{ old('registration_country') }}"
-                                placeholder="{{ __('Chamber of Commerce No') }}">
+                            <select class="form-control" name="registration_country" id="registration_country">
+                                <option value="">--SELECT ONE--</option>
+                                @foreach ($countries as $country)
+                                    <option value="{{ $country }}"
+                                        @if (old('commerce_number') == $country) selected @endif>{{ $country }}</option>
+                                @endforeach
+                                <option value=""></option>
+                            </select>
                             @if ($errors->has('registration_country'))
                                 <span class="text-danger">{{ $errors->first('registration_country') }}</span>
                             @endif

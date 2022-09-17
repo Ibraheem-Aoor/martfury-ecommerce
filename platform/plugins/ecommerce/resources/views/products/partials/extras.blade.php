@@ -153,8 +153,10 @@
                     location.href = response.route;
                 }
             },
-            error: function() {
-                toastr.error('EAN CODE Required');
+            error: function(response) {
+                $.each(response.responseJSON.errors , function(item , key){
+                    toastr.error(key);
+                });
                 form.reset();
             },
         });

@@ -2,7 +2,7 @@
     <input type="hidden" value="{{ old('sale_type', $product ? $product->sale_type : 0) }}" class="detect-schedule hidden"
         name="sale_type">
 
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="form-group mb-3 @if ($errors->has('ean_code')) has-error @endif">
             <label class="text-title-field">{{ trans('plugins/ecommerce::products.ean_code') }}</label>
             {!! Form::text('ean_code', old('ean_code', $product ? $product->ean_code : null), [
@@ -22,13 +22,14 @@
         @endif
     </div>
 
-    <div class="col-md-3">
+    {{-- <div class="col-md-4">
         <div class="form-group mb-3 @if ($errors->has('sku')) has-error @endif">
             <label class="text-title-field">{{ trans('plugins/ecommerce::products.sku') }}</label>
             {!! Form::text('sku', old('sku', $product ? $product->sku : null), [
                 'class' => 'next-input',
                 'id' => 'sku',
                 'data-counter' => 30,
+                'value' => $borvat_code
             ]) !!}
         </div>
         @if (($isVariation && !$product) || ($product && $product->is_variation && !$product->sku))
@@ -40,9 +41,9 @@
                 </label>
             </div>
         @endif
-    </div>
+    </div> --}}
 
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="form-group mb-3">
             <label class="text-title-field">{{ trans('plugins/ecommerce::products.form.price') }}</label>
             <div class="next-input--stylized">
@@ -55,7 +56,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="form-group mb-3">
             <label class="text-title-field">
                 <span>{{ trans('plugins/ecommerce::products.form.price_sale') }}</span>
@@ -92,7 +93,7 @@
 </div>
 
 <hr />
-
+{{--
 <div class="form-group mb-3">
     <div class="storehouse-management">
         <div class="mt5">
@@ -104,17 +105,15 @@
                 {{ trans('plugins/ecommerce::products.form.storehouse.storehouse') }}</label>
         </div>
     </div>
-</div>
-<div class="storehouse-info @if (old(
-    'with_storehouse_management',
-    $product ? $product->with_storehouse_management : $originalProduct->with_storehouse_management ?? 0) == 0) hidden @endif">
+</div> --}}
+<div class="storehouse-info">
     <div class="form-group mb-3">
         <label class="text-title-field">{{ trans('plugins/ecommerce::products.form.storehouse.quantity') }}</label>
-        <input type="text" class="next-input input-mask-number input-medium"
-            value="{{ old('quantity', $product ? $product->quantity : $originalProduct->quantity ?? 0) }}"
-            name="quantity">
+        <input type="number" class="next-input input-mask-number input-medium"
+            value="{{ old('quantity', $product ? $product->quantity : $originalProduct->quantity ?? 1) }}"
+            name="quantity" min="1" step="1" >
     </div>
-    <div class="form-group mb-3">
+    {{-- <div class="form-group mb-3">
         <label class="text-title-field">
             <input type="hidden" name="allow_checkout_when_out_of_stock" value="0">
             <input type="checkbox" name="allow_checkout_when_out_of_stock" value="1"
@@ -123,7 +122,7 @@
                     $product ? $product->allow_checkout_when_out_of_stock : $originalProduct->allow_checkout_when_out_of_stock ?? 0) == 1) checked @endif>
             &nbsp;{{ trans('plugins/ecommerce::products.form.stock.allow_order_when_out') }}
         </label>
-    </div>
+    </div> --}}
 </div>
 
 <div class="form-group stock-status-wrapper @if (old(

@@ -100,7 +100,7 @@
                         </form>
                         <div class="product-meta">
                             @if ($product->sku)
-                                <span>{{ __('SKU') }} : <span id="product-sku" class="sku"
+                                <span>{{ __('BORVAT CODE') }} : <span id="product-sku" class="sku"
                                                   itemprop="sku">{{ $product->sku }}</span></span>
                             @endif
                             <span>

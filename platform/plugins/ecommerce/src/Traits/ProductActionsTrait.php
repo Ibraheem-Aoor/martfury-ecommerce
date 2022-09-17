@@ -456,7 +456,6 @@ trait ProductActionsTrait
         }
 
         $originalProduct = $product;
-
         return $response
             ->setData(
                 view('plugins/ecommerce::products.partials.product-variation-form', compact(
@@ -633,10 +632,10 @@ trait ProductActionsTrait
         }
 
         $dataUrl = route('products.get-list-product-for-search', ['product_id' => $product ? $product->id : 0]);
-
         return $response->setData(view('plugins/ecommerce::products.partials.extras',
             compact('product', 'dataUrl'))->render());
     }
+
 
     /**
      * @param Request $request
@@ -762,5 +761,16 @@ trait ProductActionsTrait
         $this->productRepository->createOrUpdate($product);
 
         return $response->setMessage(trans('core/base::notices.update_success_message'));
+    }
+
+
+    public function generateBorvatCode()
+    {
+        $borvat_code = 'BORVAT-'.rand(1000 , 9000);
+        if(Product::query()->where('sku' , $borvat_code)->exists())
+        {
+            return $this->generateBorvateCode();
+        }
+        return $borvat_code;
     }
 }
