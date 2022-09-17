@@ -24,7 +24,7 @@ __MACOSX
 /.phpintel
 /.php_cs.cache
 
-public/vendor/core
+# public/vendor/core
 
 _ide_helper.php
 package-lock.json
