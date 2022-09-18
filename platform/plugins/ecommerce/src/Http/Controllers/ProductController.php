@@ -2,6 +2,7 @@
 
 namespace Botble\Ecommerce\Http\Controllers;
 
+use App\Models\User;
 use Assets;
 use Botble\Base\Events\BeforeEditContentEvent;
 use Botble\Base\Forms\FormBuilder;
@@ -280,9 +281,11 @@ class ProductController extends BaseController
             $new_product = $product->replicate();
             $new_product->created_at = Carbon::now();
             $new_product->created_by_id = Auth::id();
+            $new_product->created_by_type = User::class;
             $new_product->save();
-            return response()->json(['status' => true , 'is_unique' => false  , 'route' => route('products.index')] , 200);
+            return response()->json(['status' => true , 'is_unique' => false  , 'route' => route('products.edit' , $new_product->id)] , 200);
         }
-        return response()->json(['status' => true , 'is_unique' => true , 'ean_code' => $ean_code] , 200);
+        session()->put('ean_code' , $ean_code);
+        return response()->json(['status' => true , 'is_unique' => true  ,'route' => (route('products.create') ) ] , 200);
     }
 }

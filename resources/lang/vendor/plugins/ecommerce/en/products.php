@@ -142,4 +142,5 @@ return [
     'delete_selected_variations' => 'Delete selected variations',
     'delete_variations' => 'Delete variations',
     'category' => 'Category',
+    'ean_check' => 'EAN CODE CHECK',
 ];

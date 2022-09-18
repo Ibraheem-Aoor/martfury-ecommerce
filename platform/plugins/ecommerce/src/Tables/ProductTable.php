@@ -196,7 +196,7 @@ class ProductTable extends TableAbstract
      */
     public function buttons()
     {
-        $buttons = $this->addCreateButton(route('products.create'), 'products.create');
+        $buttons = $this->addCreateButton(route('products.ean.show_form'));
 
         if (Auth::user()->hasPermission('ecommerce.bulk-import.index')) {
             $buttons['import'] = [

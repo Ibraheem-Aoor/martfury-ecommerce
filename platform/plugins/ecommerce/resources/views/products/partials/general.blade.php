@@ -9,6 +9,7 @@
                 'class' => 'next-input',
                 'id' => 'ean_code',
                 'required' => 'required',
+                'readonly' => 'readonly',
             ]) !!}
         </div>
         @if (($isVariation && !$product) || ($product && $product->is_variation && !$product->sku))
@@ -50,8 +51,7 @@
                 <span
                     class="next-input-add-on next-input__add-on--before">{{ get_application_currency()->symbol }}</span>
                 <input name="price" class="next-input input-mask-number regular-price next-input--invisible"
-                    step="any"
-                    value="{{ old('price', $product ? $product->price : $originalProduct->price ?? 0) }}"
+                    step="any" value="{{ old('price', $product ? $product->price : $originalProduct->price ?? 0) }}"
                     type="text">
             </div>
         </div>
@@ -93,15 +93,12 @@
 </div>
 
 <hr />
-{{--
-<div class="form-group mb-3">
+{{-- <div class="form-group mb-3">
     <div class="storehouse-management">
         <div class="mt5">
             <input type="hidden" name="with_storehouse_management" value="0">
             <label><input type="checkbox" class="storehouse-management-status" value="1"
-                    name="with_storehouse_management" @if (old(
-                        'with_storehouse_management',
-                        $product ? $product->with_storehouse_management : $originalProduct->with_storehouse_management ?? 0) == 1) checked @endif>
+                    name="with_storehouse_management" @if (old('with_storehouse_management', $product ? $product->with_storehouse_management : $originalProduct->with_storehouse_management ?? 0) == 1) checked @endif>
                 {{ trans('plugins/ecommerce::products.form.storehouse.storehouse') }}</label>
         </div>
     </div>
@@ -111,15 +108,13 @@
         <label class="text-title-field">{{ trans('plugins/ecommerce::products.form.storehouse.quantity') }}</label>
         <input type="number" class="next-input input-mask-number input-medium"
             value="{{ old('quantity', $product ? $product->quantity : $originalProduct->quantity ?? 1) }}"
-            name="quantity" min="1" step="1" >
+            name="quantity" min="1" step="1">
     </div>
     {{-- <div class="form-group mb-3">
         <label class="text-title-field">
             <input type="hidden" name="allow_checkout_when_out_of_stock" value="0">
             <input type="checkbox" name="allow_checkout_when_out_of_stock" value="1"
-                @if (old(
-                    'allow_checkout_when_out_of_stock',
-                    $product ? $product->allow_checkout_when_out_of_stock : $originalProduct->allow_checkout_when_out_of_stock ?? 0) == 1) checked @endif>
+                @if (old('allow_checkout_when_out_of_stock', $product ? $product->allow_checkout_when_out_of_stock : $originalProduct->allow_checkout_when_out_of_stock ?? 0) == 1) checked @endif>
             &nbsp;{{ trans('plugins/ecommerce::products.form.stock.allow_order_when_out') }}
         </label>
     </div> --}}
@@ -190,3 +185,12 @@
         </div>
     </div>
 </div>
+
+
+
+
+@if (session()->has('ean_code'))
+    <script>
+        $('input[name="ean_code"]').val("{{ session()->get('ean_code') }}");
+    </script>
+@endif

@@ -116,15 +116,6 @@ class ProductForm extends BaseProductForm
                 'label_attr' => ['class' => 'control-label'],
                 'values'     => $productId ? $this->getModel()->images : [],
             ])
-            ->addMetaBoxes([
-                'with_related' => [
-                    'title'    => null,
-                    'content'  => '<div class="wrap-relation-product" data-target="' . route('marketplace.vendor.products.get-relations-boxes',
-                            $productId ?: 0) . '"></div>',
-                    'wrap'     => false,
-                    'priority' => 9999,
-                ],
-            ])
             ->add('categories[]', 'categoryMulti', [
                 'label'      => trans('plugins/ecommerce::products.form.categories'),
                 'label_attr' => ['class' => 'control-label'],
@@ -142,18 +133,6 @@ class ProductForm extends BaseProductForm
             //     'choices'    => $productCollections,
             //     'value'      => old('product_collections', $selectedProductCollections),
             // ]);
-
-        if (EcommerceHelper::isTaxEnabled()) {
-            $taxes = app(TaxInterface::class)->pluck('title', 'id');
-
-            $taxes = [0 => trans('plugins/ecommerce::tax.select_tax')] + $taxes;
-
-            $this->add('tax_id', 'customSelect', [
-                'label'      => trans('plugins/ecommerce::products.form.tax'),
-                'label_attr' => ['class' => 'control-label'],
-                'choices'    => $taxes,
-            ]);
-        }
 
         $this
             ->add('tag', 'tags', [

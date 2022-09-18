@@ -91,78 +91,8 @@
 
 
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">EAN CODE CHECK</h5>
-                {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button> --}}
-            </div>
-            <form id="ean_code_check" action="{{ route('products.ean_check') }}">
-                <div class="modal-body">
-                    <form action="" class="form-group">
-                        <label for="">Enter Prodcut EAN Code:</label>
-                        <input type="text" class="form-control" name="ean_code_check">
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-                    <button type="button" onclick="$('#ean_code_check').submit();"
-                        class="btn btn-primary">Continue</button>
-                </div>
-            </form>
-
-        </div>
-    </div>
-</div>
 
 
-
-
-
-{{-- Start Ean Code Script --}}
-<script>
-    $('#exampleModal').modal('show');
-    $('#exampleModal').modal({
-        backdrop: 'static',
-        keyboard: false,
-        mouse: false
-    });
-    $('#ean_code_check').on('submit', function(e) {
-        e.preventDefault();
-        var form = $(this);
-        var is_vendor = "{{ auth('customer')->check() }}";
-        $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': "{{ csrf_token() }}",
-            },
-            url: is_vendor ? "product-ean-check-vendor" : "{{ route('products.ean_check') }}",
-            type: 'POST',
-            data: form.serialize(),
-            success: function(response) {
-                if (response.status && response.is_unique) {
-                    $('input[name="ean_code"]').val(response.ean_code);
-                    $('input[name="ean_code"]').attr('readonly', 'readonly');
-                    $('#exampleModal').modal('hide');
-                } else {
-                    toastr.success('Created Successfully');
-                    console.log(response);
-                    location.href = response.route;
-                }
-            },
-            error: function(response) {
-                $.each(response.responseJSON.errors , function(item , key){
-                    toastr.error(key);
-                });
-                form.reset();
-            },
-        });
-    });
-</script>
-{{-- End Ean Code Script --}}
 
 
 <script id="selected_product_list_template" type="text/x-custom-template">

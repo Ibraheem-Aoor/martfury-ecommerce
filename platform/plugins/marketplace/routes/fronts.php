@@ -93,6 +93,7 @@ Route::group([
             Route::group(['prefix' => 'products', 'as' => 'products.'], function () {
                 Route::resource('', 'ProductController')
                     ->parameters(['' => 'product']);
+            Route::get('product-ean' ,  'ProductController@eanForm')->name('ean.show_form');
             Route::post('product-ean-check-vendor' ,'ProductController@isProductEanCodeExists' )->name('ean_check_vendor');
 
 

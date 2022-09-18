@@ -180,7 +180,7 @@ class ProductTable extends TableAbstract
      */
     public function buttons()
     {
-        return $this->addCreateButton(route('marketplace.vendor.products.create'));
+        return $this->addCreateButton(route('marketplace.vendor.products.ean.show_form'));
     }
 
     /**

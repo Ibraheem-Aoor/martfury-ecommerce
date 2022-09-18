@@ -5,14 +5,18 @@
 $value = isset($value) ? (array) $value : [];
 ?>
 @if ($categories)
-    <select name="categories"  class="form-control">
+    <select name="categories" class="form-control">
+        @php
+            if (auth('customer')->check() && auth('customer')->user()->is_vendor == 1) {
+                $categories = array_slice($categories, 1);
+            }
+        @endphp
         @foreach ($categories as $category)
-            <option value="{{$category->id}}">{{$category->name}}</option>
+            <option value="{{ $category->id }}">{{ $category->name }}</option>
         @endforeach
     </select>
 
-{{--
-    <ul>
+    {{-- <ul>
         @foreach ($categories as $category)
             @if ($category->id != $currentId)
                 <li value="{{ $category->id ?? '' }}" {{ $category->id == $value ? 'selected' : '' }}>

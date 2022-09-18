@@ -28,9 +28,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use RvMedia;
 use Throwable;
+use MarketplaceHelper;
+use EcommerceHelper;
+
 
 trait ProductActionsTrait
 {
@@ -764,6 +768,9 @@ trait ProductActionsTrait
     }
 
 
+    /**
+     * Generate Uique Borvat Code for each product
+     */
     public function generateBorvatCode()
     {
         $borvat_code = 'BORVAT-'.rand(1000 , 9000);
@@ -772,5 +779,16 @@ trait ProductActionsTrait
             return $this->generateBorvateCode();
         }
         return $borvat_code;
+    }
+
+    public function eanForm()
+    {
+        page_title()->setTitle(trans('plugins/ecommerce::products.ean_check'));
+        if(auth('customer')->check()){
+            return   MarketplaceHelper::view('dashboard.products.ean-code-form');
+        }elseif(Auth::check()){
+            return  view('plugins/ecommerce::products.ean-code-form');
+        }
+        return abort(404);
     }
 }

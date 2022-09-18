@@ -64,6 +64,10 @@ class Product extends BaseModel
         'views',
         'stock_status',
         'deliverables',
+        'created_by_id',
+        'created_by_type',
+        'store_id',
+        'status',
     ];
 
     /**

@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="csrf" content="{{ csrf_token() }}">
     @if (theme_option('favicon'))
         <link rel="shortcut icon" href="{{ RvMedia::getImageUrl(theme_option('favicon')) }}">
     @endif
@@ -42,25 +44,44 @@
 
     @stack('pre-footer')
 
-    @if (session()->has('status') || session()->has('success_msg') || session()->has('error_msg') || (isset($errors) && $errors->count() > 0) || isset($error_msg))
+    @if (session()->has('status') ||
+        session()->has('success_msg') ||
+        session()->has('error_msg') ||
+        (isset($errors) && $errors->count() > 0) ||
+        isset($error_msg))
         <script type="text/javascript">
             'use strict';
             window.noticeMessages = [];
             @if (session()->has('success_msg'))
-                noticeMessages.push({'type': 'success', 'message': "{!! addslashes(session('success_msg')) !!}"});
+                noticeMessages.push({
+                    'type': 'success',
+                    'message': "{!! addslashes(session('success_msg')) !!}"
+                });
             @endif
             @if (session()->has('status'))
-                noticeMessages.push({'type': 'success', 'message': "{!! addslashes(session('status')) !!}"});
+                noticeMessages.push({
+                    'type': 'success',
+                    'message': "{!! addslashes(session('status')) !!}"
+                });
             @endif
             @if (session()->has('error_msg'))
-                noticeMessages.push({'type': 'error', 'message': "{!! addslashes(session('error_msg')) !!}"});
+                noticeMessages.push({
+                    'type': 'error',
+                    'message': "{!! addslashes(session('error_msg')) !!}"
+                });
             @endif
             @if (isset($error_msg))
-                noticeMessages.push({'type': 'error', 'message': "{!! addslashes($error_msg) !!}"});
+                noticeMessages.push({
+                    'type': 'error',
+                    'message': "{!! addslashes($error_msg) !!}"
+                });
             @endif
             @if (isset($errors))
                 @foreach ($errors->all() as $error)
-                    noticeMessages.push({'type': 'error', 'message': "{!! addslashes($error) !!}"});
+                    noticeMessages.push({
+                        'type': 'error',
+                        'message': "{!! addslashes($error) !!}"
+                    });
                 @endforeach
             @endif
         </script>
@@ -68,8 +89,15 @@
 
     {!! Assets::renderFooter() !!}
     @yield('footer', view(MarketplaceHelper::viewPath('dashboard.layouts.footer')))
-
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf"]').attr('content'),
+            }
+        });
+    </script>
     @stack('scripts')
     @stack('footer')
 </body>
+
 </html>

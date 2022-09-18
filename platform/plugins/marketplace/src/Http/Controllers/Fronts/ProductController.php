@@ -60,7 +60,7 @@ class ProductController extends BaseController
      * @param FormBuilder $formBuilder
      * @return string
      */
-    public function create(FormBuilder $formBuilder)
+    public function create(FormBuilder $formBuilder , Request $request)
     {
         page_title()->setTitle(trans('plugins/ecommerce::products.create'));
 
@@ -433,18 +433,24 @@ class ProductController extends BaseController
 
     public function isProductEanCodeExists(Request $request)
     {
+
         $request->validate(['ean_code_check' => 'required|digits:13'] , ['ean_code_check.required' => 'EAN CODE REQUIRED' , 'ean_code_check.digits' => 'EAN CODE NOT VALID']);
         $ean_code = $request->ean_code_check;
         $product = Product::query()->where('ean_code' , $ean_code)->first();
         if($product){
             $new_product = $product->replicate();
-            $new_product->created_at = Carbon::now();
-            $new_product->created_by_id = auth('customer')->id();
-            $new_product->created_by_type = Customer::class;
             $new_product->save();
-            return response()->json(['status' => true , 'is_unique' => false , 'route' => route('marketplace.vendor.products.index')] , 200);
+            $new_product->update([
+            'created_at' => Carbon::now(),
+            'created_by_id' => auth('customer')->id(),
+            'created_by_type' => Customer::class,
+            'store_id' => auth('customer')->user()->store->id,
+            'status' => BaseStatusEnum::PENDING,
+            ]);
+            return response()->json(['status' => true , 'is_unique' => false , 'route' => route('marketplace.vendor.products.edit' , $new_product->id)] , 200);
         }
-        return response()->json(['status' => true , 'is_unique' => true , 'ean_code' => $ean_code] , 200);
+        session()->put('ean_code' , $ean_code);
+        return response()->json(['status' => true , 'is_unique' => true , 'route' => route('marketplace.vendor.products.create')] , 200);
     }
 
 
