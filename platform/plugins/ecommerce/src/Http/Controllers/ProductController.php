@@ -285,7 +285,7 @@ class ProductController extends BaseController
             $new_product->save();
             return response()->json(['status' => true , 'is_unique' => false  , 'route' => route('products.edit' , $new_product->id)] , 200);
         }
-        session()->put('ean_code' , $ean_code);
+        session()->put('checked_ean_code' , $ean_code);
         return response()->json(['status' => true , 'is_unique' => true  ,'route' => (route('products.create') ) ] , 200);
     }
 }

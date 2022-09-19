@@ -31,6 +31,8 @@ class ProductRequest extends Request
             'description' => 'required',
             'content' => 'required',
             'deliverables' => 'required',
+            'images' => 'required',
+            'added_attributes.*' => 'required',
         ];
     }
 

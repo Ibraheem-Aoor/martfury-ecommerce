@@ -1,13 +1,12 @@
 <div class="row price-group">
     <input type="hidden" value="{{ old('sale_type', $product ? $product->sale_type : 0) }}" class="detect-schedule hidden"
         name="sale_type">
-
     <div class="col-md-4">
         <div class="form-group mb-3 @if ($errors->has('ean_code')) has-error @endif">
             <label class="text-title-field">{{ trans('plugins/ecommerce::products.ean_code') }}</label>
             {!! Form::text('ean_code', old('ean_code', $product ? $product->ean_code : null), [
                 'class' => 'next-input',
-                'id' => 'ean_code',
+                'id' => 'ean_code_input',
                 'required' => 'required',
                 'readonly' => 'readonly',
             ]) !!}
@@ -191,6 +190,9 @@
 
 @if (session()->has('ean_code'))
     <script>
-        $('input[name="ean_code"]').val("{{ session()->get('ean_code') }}");
+        $(document).ready(function() {
+            var ean_code = "{{ session()->get('checked_ean_code') }}";
+            $('input[name="ean_code"]').val(ean_code);
+        });
     </script>
 @endif

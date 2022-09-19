@@ -115,6 +115,7 @@ class ProductForm extends BaseProductForm
                 'label'      => trans('plugins/ecommerce::products.form.image'),
                 'label_attr' => ['class' => 'control-label'],
                 'values'     => $productId ? $this->getModel()->images : [],
+                'required' => 'required',
             ])
             ->add('categories[]', 'categoryMulti', [
                 'label'      => trans('plugins/ecommerce::products.form.categories'),
@@ -169,6 +170,7 @@ class ProductForm extends BaseProductForm
                             'productAttributes'    => $this->getProductAttributes($attributeSetId),
                             'product'              => $productId,
                             'attributeSetId'       => $attributeSetId,
+                            'required' => 'required',
                         ])->render(),
                         'after_wrapper' => '</div>',
                         'priority'      => 3,
