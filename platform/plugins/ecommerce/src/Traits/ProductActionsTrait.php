@@ -101,7 +101,6 @@ trait ProductActionsTrait
         $isUpdateProduct = true
     ) {
         $product = $this->productRepository->findOrFail($id);
-
         foreach ($versionInRequest as $variationId => $version) {
 
             $variation = $productVariation->findById($variationId);
@@ -118,6 +117,7 @@ trait ProductActionsTrait
                 $productRelatedToVariation->fill($version);
 
                 $productRelatedToVariation->name = $product->name;
+                $productRelatedToVariation->deliverables = $product->deliverables;
                 $productRelatedToVariation->status = $product->status;
                 $productRelatedToVariation->brand_id = $product->brand_id;
                 $productRelatedToVariation->is_variation = 1;
@@ -207,6 +207,7 @@ trait ProductActionsTrait
         BaseHttpResponse $response,
         StoreAttributesOfProductService $storeAttributesOfProductService
     ) {
+        // dd($request);
         $product = $this->productRepository->findOrFail($id);
 
         $addedAttributes = $request->input('added_attributes', []);

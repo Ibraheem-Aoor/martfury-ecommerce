@@ -188,7 +188,7 @@
 
 
 
-@if (session()->has('ean_code'))
+@if (session()->has('checked_ean_code'))
     <script>
         $(document).ready(function() {
             var ean_code = "{{ session()->get('checked_ean_code') }}";

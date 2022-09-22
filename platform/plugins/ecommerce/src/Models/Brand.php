@@ -29,6 +29,7 @@ class Brand extends BaseModel
         'order',
         'is_featured',
         'status',
+        'created_by_id',
     ];
 
     /**

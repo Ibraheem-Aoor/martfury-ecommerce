@@ -90,6 +90,18 @@ Route::group([
                     ->only(['index']);
             }
 
+
+            Route::group(['prefix' => 'brands', 'as' => 'brands.'], function () {
+                Route::resource('', 'BrandController')
+                    ->parameters(['' => 'brand']);
+
+                Route::delete('items/destroy', [
+                    'as'         => 'deletes',
+                    'uses'       => 'BrandController@deletes',
+                    'permission' => 'brands.destroy',
+                ]);
+            });
+
             Route::group(['prefix' => 'products', 'as' => 'products.'], function () {
                 Route::resource('', 'ProductController')
                     ->parameters(['' => 'product']);

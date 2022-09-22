@@ -1,6 +1,6 @@
 <?php
 
-namespace Botble\Ecommerce\Http\Controllers;
+namespace Botble\Marketplace\Http\Controllers\Fronts;
 
 use Botble\Base\Events\CreatedContentEvent;
 use Botble\Base\Events\DeletedContentEvent;
@@ -8,16 +8,19 @@ use Botble\Base\Events\UpdatedContentEvent;
 use Botble\Base\Forms\FormBuilder;
 use Botble\Base\Http\Controllers\BaseController;
 use Botble\Base\Http\Responses\BaseHttpResponse;
-use Botble\Ecommerce\Forms\BrandForm;
 use Botble\Ecommerce\Http\Requests\BrandRequest;
 use Botble\Ecommerce\Models\Brand;
 use Botble\Ecommerce\Repositories\Interfaces\BrandInterface;
-use Botble\Ecommerce\Tables\BrandTable;
+use Botble\Marketplace\Tables\BrandTable;
 use Exception;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Throwable;
+use MarketplaceHelper;
+use Botble\Marketplace\Forms\BrandForm;
+use Assets;
+use Illuminate\Support\Facades\Route;
 
 class BrandController extends BaseController
 {
@@ -44,7 +47,8 @@ class BrandController extends BaseController
     {
         page_title()->setTitle(trans('plugins/ecommerce::brands.menu'));
 
-        return $dataTable->renderTable();
+        return $dataTable->render(MarketplaceHelper::viewPath('dashboard.table.base'));
+
     }
 
     /**
@@ -54,6 +58,18 @@ class BrandController extends BaseController
     public function create(FormBuilder $formBuilder)
     {
         page_title()->setTitle(trans('plugins/ecommerce::brands.create'));
+        Assets::addStyles(['datetimepicker'])
+        ->addScripts([
+            'moment',
+            'datetimepicker',
+            'jquery-ui',
+            'input-mask',
+            'blockui',
+        ])
+        ->addStylesDirectly(['vendor/core/plugins/ecommerce/css/ecommerce.css'])
+        ->addScriptsDirectly([
+            'vendor/core/plugins/ecommerce/js/edit-product.js',
+        ]);
 
         return $formBuilder->create(BrandForm::class)->renderForm();
     }
@@ -65,13 +81,13 @@ class BrandController extends BaseController
      */
     public function store(BrandRequest $request, BaseHttpResponse $response)
     {
+        $request['created_by_id'] = auth('customer')->id();
         $brand = $this->brandRepository->createOrUpdate($request->input());
-
         event(new CreatedContentEvent(BRAND_MODULE_SCREEN_NAME, $request, $brand));
 
         return $response
-            ->setPreviousUrl(route('brands.index'))
-            ->setNextUrl(route('brands.edit', $brand->id))
+            ->setPreviousUrl(route('marketplace.vendor.brands.index'))
+            ->setNextUrl(route('marketplace.vendor.brands.edit', $brand->id))
             ->setMessage(trans('core/base::notices.create_success_message'));
     }
 
@@ -96,7 +112,6 @@ class BrandController extends BaseController
      */
     public function update($id, BrandRequest $request, BaseHttpResponse $response)
     {
-        dd('gg from admin');
         $brand = $this->brandRepository->findOrFail($id);
         $brand->fill($request->input());
 
@@ -105,7 +120,7 @@ class BrandController extends BaseController
         event(new UpdatedContentEvent(BRAND_MODULE_SCREEN_NAME, $request, $brand));
 
         return $response
-            ->setPreviousUrl(route('brands.index'))
+            ->setPreviousUrl(route('marketplace.vendor.brands.index'))
             ->setMessage(trans('core/base::notices.update_success_message'));
     }
 

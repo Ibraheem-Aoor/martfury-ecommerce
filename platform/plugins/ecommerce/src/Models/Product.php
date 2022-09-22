@@ -39,7 +39,6 @@ class Product extends BaseModel
         'name',
         'description',
         'content',
-        'deliverables',
         'image', // Featured image
         'images',
         'sku',
