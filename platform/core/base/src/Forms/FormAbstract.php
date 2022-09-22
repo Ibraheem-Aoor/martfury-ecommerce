@@ -79,6 +79,7 @@ abstract class FormAbstract extends Form
         $this->setMethod('POST');
         $this->setFormOption('template', $this->template);
         $this->setFormOption('id', strtolower(Str::slug(Str::snake(get_class($this)))));
+        dd($this->formOptions);
     }
 
     /**

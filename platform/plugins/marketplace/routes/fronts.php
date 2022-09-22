@@ -102,6 +102,12 @@ Route::group([
                 ]);
             });
 
+
+        Route::group(['prefix' => 'product-attribute-sets', 'as' => 'product-attribute-sets.'], function () {
+            Route::resource('', 'ProductAttributeSetsController')
+                ->parameters(['' => 'product_attribute_set']);
+        });
+
             Route::group(['prefix' => 'products', 'as' => 'products.'], function () {
                 Route::resource('', 'ProductController')
                     ->parameters(['' => 'product']);

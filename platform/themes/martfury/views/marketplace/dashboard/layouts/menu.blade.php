@@ -17,6 +17,16 @@
             'order' => 2,
         ],
         [
+            'key'    => 'marketplace.vendor.product-attribute-sets.index',
+            'icon'   => 'fas fa-glass-martini',
+            'name'   => __('Product Attributes'),
+            'routes' => [
+                'marketplace.vendor.product-attribute-sets.create',
+                'marketplace.vendor.product-attribute-sets.edit',
+            ],
+            'order' => 3,
+        ],
+        [
             'key'    => 'marketplace.vendor.brands.index',
             'icon'   => 'fa fa-registered',
             'name'   => __('Brands'),
@@ -24,7 +34,7 @@
                 'marketplace.vendor.brands.create',
                 'marketplace.vendor.brands.edit',
             ],
-            'order' => 2,
+            'order' => 4,
         ],
         [
             'key'    => 'marketplace.vendor.orders.index',
@@ -33,7 +43,7 @@
             'routes' => [
                 'marketplace.vendor.orders.edit',
             ],
-            'order' => 3,
+            'order' => 5,
         ],
         [
             'key'    => 'marketplace.vendor.discounts.index',
@@ -43,7 +53,7 @@
                 'marketplace.vendor.discounts.create',
                 'marketplace.vendor.discounts.edit',
             ],
-            'order' => 4,
+            'order' => 6,
         ],
         [
             'key'    => 'marketplace.vendor.withdrawals.index',
@@ -53,19 +63,19 @@
                 'marketplace.vendor.withdrawals.create',
                 'marketplace.vendor.withdrawals.edit',
             ],
-            'order' => 5,
+            'order' => 7,
         ],
         [
             'key'   => 'marketplace.vendor.settings',
             'icon'  => 'icon-cog',
             'name'  => __('Settings'),
-            'order' => 6,
+            'order' => 8,
         ],
         [
             'key'   => 'customer.overview',
             'icon'  => 'icon-user',
             'name'  => __('Customer dashboard'),
-            'order' => 7,
+            'order' => 9,
         ],
     ]);
 
