@@ -2,7 +2,6 @@
 namespace Botble\Marketplace\Http\Controllers\Fronts;
 
 
-use Assets;
 use Botble\Base\Forms\FormBuilder;
 use Botble\Base\Http\Controllers\BaseController;
 use Botble\Base\Http\Responses\BaseHttpResponse;
@@ -18,6 +17,7 @@ use Throwable;
 use Botble\Marketplace\Tables\ProductAttributeSetsTable;
 use Botble\Marketplace\Forms\ProductAttributeSetForm;
 use MarketplaceHelper;
+use Assets;
 
 class ProductAttributeSetsController extends BaseController
 {
@@ -42,6 +42,8 @@ class ProductAttributeSetsController extends BaseController
     ) {
         $this->productAttributeSetRepository = $productAttributeSetRepository;
         $this->productCategoryRepository = $productCategoryRepository;
+        // Assets::setConfig(config('plugins.marketplace.assets', []));
+
     }
 
     /**
@@ -63,14 +65,16 @@ class ProductAttributeSetsController extends BaseController
     public function create(FormBuilder $formBuilder)
     {
         page_title()->setTitle(trans('plugins/ecommerce::product-attributes.create'));
-        // Assets::addScripts(['spectrum', 'jquery-ui'])
-        //     ->addStyles(['spectrum'])
-        //     ->addStylesDirectly([
-        //         asset('vendor/core/plugins/ecommerce/css/ecommerce-product-attributes.css'),
-        //     ])
-        //     ->addScriptsDirectly([
-        //         asset('vendor/core/plugins/ecommerce/js/ecommerce-product-attributes.js'),
-        //     ]);
+
+        Assets::addScripts(['spectrum', 'jquery-ui'])
+        ->addStyles(['spectrum'])
+        ->addStylesDirectly([
+            asset('vendor/core/plugins/ecommerce/css/ecommerce-product-attributes.css'),
+        ])
+        ->addScriptsDirectly([
+            asset('vendor/core/plugins/ecommerce/js/ecommerce-product-attributes.js'),
+        ]);
+
         return $formBuilder->create(ProductAttributeSetForm::class)->renderForm();
     }
 
@@ -88,10 +92,12 @@ class ProductAttributeSetsController extends BaseController
         $productAttributeSet = $this->productAttributeSetRepository->getModel();
 
         $productAttributeSet = $service->execute($request, $productAttributeSet);
+        $productAttributeSet->created_by_id = auth('customer')->id();
+        $productAttributeSet->save();
 
         return $response
-            ->setPreviousUrl(route('product-attribute-sets.index'))
-            ->setNextUrl(route('product-attribute-sets.edit', $productAttributeSet->id))
+            ->setPreviousUrl(route('marketplace.vendor.product-attribute-sets.index'))
+            ->setNextUrl(route('marketplace.vendor.product-attribute-sets.edit', $productAttributeSet->id))
             ->setMessage(trans('core/base::notices.create_success_message'));
     }
 
@@ -138,7 +144,7 @@ class ProductAttributeSetsController extends BaseController
         $service->execute($request, $productAttributeSet);
 
         return $response
-            ->setPreviousUrl(route('product-attribute-sets.index'))
+            ->setPreviousUrl(route('marketplace.vendor.product-attribute-sets.index'))
             ->setMessage(trans('core/base::notices.update_success_message'));
     }
 

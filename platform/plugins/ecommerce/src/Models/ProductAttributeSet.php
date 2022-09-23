@@ -30,6 +30,7 @@ class ProductAttributeSet extends BaseModel
         'is_searchable',
         'is_comparable',
         'is_use_in_product_listing',
+        'created_by_id',
     ];
 
     /**

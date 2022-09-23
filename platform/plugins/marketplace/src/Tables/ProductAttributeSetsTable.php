@@ -74,7 +74,7 @@ class ProductAttributeSetsTable extends TableAbstract
      */
     public function query()
     {
-        $query = $this->repository->getModel()->select([
+        $query = $this->repository->getModel()->where('created_by_id' , auth('customer')->id())->select([
             'id',
             'created_at',
             'title',

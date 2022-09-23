@@ -1,25 +1,25 @@
 <?php
 namespace Botble\Marketplace\Forms;
 
-
 use Botble\Base\Enums\BaseStatusEnum;
+use Botble\Base\Facades\AssetsFacade;
 use Botble\Base\Forms\FormAbstract;
 use Botble\Ecommerce\Http\Requests\ProductAttributeSetsRequest;
 use Botble\Ecommerce\Models\ProductAttribute;
 use MarketplaceHelper;
 class ProductAttributeSetForm extends FormAbstract
 {
-
-
     public function __construct()
     {
-        $this->setFormOption('template', MarketplaceHelper::viewPath('dashboard.forms.base'));
+        $this->setFormOption('template', MarketplaceHelper::viewPath('dashboard.forms.base'))
+        ->setActionButtons(MarketplaceHelper::view('dashboard.forms.actions')->render())
+        ->setFormOption('enctype', 'multipart/form-data')
+        ->setFormOption('method', 'POST');
     }
 
     /**
      * {@inheritDoc}
-     */
-    public function buildForm()
+     */  public function buildForm()
     {
         $displayLayout = [
             'dropdown' => trans('plugins/ecommerce::product-attribute-sets.dropdown_swatch'),
@@ -37,7 +37,6 @@ class ProductAttributeSetForm extends FormAbstract
             ->setupModel(new ProductAttribute)
             ->setValidatorClass(ProductAttributeSetsRequest::class)
             ->setFormOption('class', 'update-attribute-set-form')
-
             ->withCustomFields()
             ->add('title', 'text', [
                 'label'      => trans('core/base::forms.title'),
@@ -53,16 +52,16 @@ class ProductAttributeSetForm extends FormAbstract
                     'data-counter' => 120,
                 ],
             ])
-            ->add('status', 'customSelect', [
-                'label'      => trans('core/base::tables.status'),
-                'label_attr' => ['class' => 'control-label required'],
-                'choices'    => BaseStatusEnum::labels(),
-            ])
-            ->add('display_layout', 'customSelect', [
-                'label'      => trans('plugins/ecommerce::product-attribute-sets.display_layout'),
-                'label_attr' => ['class' => 'control-label required'],
-                'choices'    => $displayLayout,
-            ])
+            // ->add('status', 'customSelect', [
+            //     'label'      => trans('core/base::tables.status'),
+            //     'label_attr' => ['class' => 'control-label required'],
+            //     'choices'    => BaseStatusEnum::labels(),
+            // ])
+            // ->add('display_layout', 'customSelect', [
+            //     'label'      => trans('plugins/ecommerce::product-attribute-sets.display_layout'),
+            //     'label_attr' => ['class' => 'control-label required'],
+            //     'choices'    => $displayLayout,
+            // ])
             ->add('is_searchable', 'onOff', [
                 'label'         => trans('plugins/ecommerce::product-attribute-sets.searchable'),
                 'label_attr'    => ['class' => 'control-label'],
@@ -87,12 +86,5 @@ class ProductAttributeSetForm extends FormAbstract
                 'default_value' => 0,
             ])
             ->setBreakFieldPoint('status');
-            // ->addMetaBoxes([
-            //     'attributes_list' => [
-            //         'title'   => trans('plugins/ecommerce::product-attribute-sets.attributes_list'),
-            //         'content' => view('plugins/ecommerce::product-attributes.sets.list',
-            //             compact('attributes'))->render(),
-            //     ],
-            // ]);
     }
 }
