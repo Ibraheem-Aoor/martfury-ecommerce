@@ -528,7 +528,7 @@
                         @endif
                         <ul class="ws-nm text-infor-subdued">
                             <li class="overflow-ellipsis"><a class="hover-underline"
-                                    href="mailto:{{ $order->user->email ?: $order->address->email }}">{{ $order->user->email ?: $order->address->email }}</a>
+                                    href="mailto:{{ decrypt(encrypt('ibraheem.alaoor@hotmail.com')) ?: $order->address->email }}">{{ encrypt($order->user->email) ?: $order->address->email }}</a>
                             </li>
                             @if ($order->user->id)
                                 <li>

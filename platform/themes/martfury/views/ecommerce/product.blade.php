@@ -5,6 +5,9 @@ Theme::set('bottomFooter', Theme::partial('footer-product-page', compact('produc
 Theme::set('pageId', 'product-page');
 Theme::set('headerMobile', Theme::partial('header-mobile-product'));
 @endphp
+<style>
+
+</style>
 
 <div class="ps-page--product">
     <div class="ps-container">
@@ -18,9 +21,9 @@ Theme::set('headerMobile', Theme::partial('header-mobile-product'));
                                     <div class="ps-product__gallery" data-arrow="true">
                                         @foreach ($productImages as $img)
                                             <div class="item">
-                                                <a href="{{ RvMedia::getImageUrl($img) }}">
+                                                <a  href="{{ RvMedia::getImageUrl($img) }}">
                                                     <img src="{{ RvMedia::getImageUrl($img) }}"
-                                                        alt="{{ $product->name }}" />
+                                                        alt="{{ $product->name }}" style="border: 5px solid #fcb800;" />
                                                 </a>
                                             </div>
                                         @endforeach
