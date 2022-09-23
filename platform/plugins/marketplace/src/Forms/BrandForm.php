@@ -71,10 +71,10 @@ class BrandForm extends FormAbstract
                 'label_attr' => ['class' => 'control-label required'],
                 'choices'    => BaseStatusEnum::labels(),
             ])
-            ->add('logo', 'mediaImage', [
-                'label'      => trans('plugins/ecommerce::brands.logo'),
-                'label_attr' => ['class' => 'control-label'],
-            ])
+            // ->add('logo', 'mediaImage', [
+            //     'label'      => trans('plugins/ecommerce::brands.logo'),
+            //     'label_attr' => ['class' => 'control-label'],
+            // ])
             ->add('is_featured', 'onOff', [
                 'label'         => trans('plugins/ecommerce::brands.form.is_featured'),
                 'label_attr'    => ['class' => 'control-label'],
