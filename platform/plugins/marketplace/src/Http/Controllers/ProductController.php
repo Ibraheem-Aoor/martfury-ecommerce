@@ -20,8 +20,7 @@ class ProductController extends BaseController
     public function approveProduct($id, ProductInterface $productRepository, BaseHttpResponse $response)
     {
         $product = $productRepository->findOrFail($id);
-
-        $product->status = BaseStatusEnum::PUBLISHED;
+        $product->status = $product->price == 0 ? BaseStatusEnum::PENDING :  BaseStatusEnum::PUBLISHED;
         $product->approved_by = auth()->id();
 
         $product->save();
@@ -36,6 +35,7 @@ class ProductController extends BaseController
                 ->sendUsingTemplate('product-approved', $store->email);
         }
 
-        return $response->setMessage(trans('plugins/marketplace::store.approve_product_success'));
+        $responsse_message = $product->status == 'pending' ?   trans('plugins/marketplace::store.approve_product_success_empty_price') :   trans('plugins/marketplace::store.approve_product_success');
+        return $response->setMessage($responsse_message);
     }
 }

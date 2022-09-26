@@ -55,7 +55,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4">
+    {{-- <div class="col-md-4">
         <div class="form-group mb-3">
             <label class="text-title-field">
                 <span>{{ trans('plugins/ecommerce::products.form.price_sale') }}</span>
@@ -89,6 +89,26 @@
                 type="text">
         </div>
     </div>
+    --}}
+
+
+    <div class="col-md-4">
+        <div class="form-group mb-3">
+            <label class="text-title-field">{{ trans('plugins/ecommerce::products.form.storehouse.quantity') }}</label>
+            <input type="number" class="next-input input-mask-number input-medium"
+                value="{{ old('quantity', $product ? $product->quantity : $originalProduct->quantity ?? 1) }}"
+                name="quantity" min="1" step="1">
+        </div>
+        {{-- <div class="form-group mb-3">
+            <label class="text-title-field">
+                <input type="hidden" name="allow_checkout_when_out_of_stock" value="0">
+                <input type="checkbox" name="allow_checkout_when_out_of_stock" value="1"
+                    @if (old('allow_checkout_when_out_of_stock', $product ? $product->allow_checkout_when_out_of_stock : $originalProduct->allow_checkout_when_out_of_stock ?? 0) == 1) checked @endif>
+                &nbsp;{{ trans('plugins/ecommerce::products.form.stock.allow_order_when_out') }}
+            </label>
+        </div> --}}
+    </div>
+
 </div>
 
 <hr />
@@ -102,24 +122,9 @@
         </div>
     </div>
 </div> --}}
-<div class="storehouse-info">
-    <div class="form-group mb-3">
-        <label class="text-title-field">{{ trans('plugins/ecommerce::products.form.storehouse.quantity') }}</label>
-        <input type="number" class="next-input input-mask-number input-medium"
-            value="{{ old('quantity', $product ? $product->quantity : $originalProduct->quantity ?? 1) }}"
-            name="quantity" min="1" step="1">
-    </div>
-    {{-- <div class="form-group mb-3">
-        <label class="text-title-field">
-            <input type="hidden" name="allow_checkout_when_out_of_stock" value="0">
-            <input type="checkbox" name="allow_checkout_when_out_of_stock" value="1"
-                @if (old('allow_checkout_when_out_of_stock', $product ? $product->allow_checkout_when_out_of_stock : $originalProduct->allow_checkout_when_out_of_stock ?? 0) == 1) checked @endif>
-            &nbsp;{{ trans('plugins/ecommerce::products.form.stock.allow_order_when_out') }}
-        </label>
-    </div> --}}
-</div>
 
-<div class="form-group stock-status-wrapper @if (old(
+
+{{-- <div class="form-group stock-status-wrapper @if (old(
     'with_storehouse_management',
     $product ? $product->with_storehouse_management : $originalProduct->with_storehouse_management ?? 0) == 1) hidden @endif">
     <label class="text-title-field">{{ trans('plugins/ecommerce::products.form.stock_status') }}</label>
@@ -128,7 +133,7 @@
         \Botble\Ecommerce\Enums\StockStatusEnum::labels(),
         $product ? $product->stock_status : null,
     ) !!}
-</div>
+</div> --}}
 
 <hr />
 

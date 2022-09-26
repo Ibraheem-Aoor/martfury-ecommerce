@@ -2,6 +2,7 @@
 
 namespace Botble\Ecommerce\Services\Products;
 
+use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Base\Events\CreatedContentEvent;
 use Botble\Base\Events\UpdatedContentEvent;
 use Botble\Ecommerce\Models\Product;
@@ -83,6 +84,8 @@ class StoreProductService
         /**
          * @var Product $product
          */
+        
+        $product->status = $request->input('price') == 0 ? BaseStatusEnum::PENDING :  $request->input('status');
         $product = $this->productRepository->createOrUpdate($product);
 
         if (!$exists) {

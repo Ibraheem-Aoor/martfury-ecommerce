@@ -4,6 +4,7 @@ namespace Botble\Ecommerce\Http\Controllers;
 
 use App\Models\User;
 use Assets;
+use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Base\Events\BeforeEditContentEvent;
 use Botble\Base\Forms\FormBuilder;
 use Botble\Base\Http\Controllers\BaseController;
@@ -133,12 +134,9 @@ class ProductController extends BaseController
         StoreProductTagService $storeProductTagService
     ) {
         $product = $this->productRepository->getModel();
-
-        $product->status = $request->input('status');
         $product->ean_code = $request->input('ean_code');
         $product->sku = $this->generateBorvatCode();
         $product = $service->execute($request, $product);
-
         $storeProductTagService->execute($request, $product);
 
         $addedAttributes = $request->input('added_attributes', []);
@@ -205,10 +203,8 @@ class ProductController extends BaseController
         ProductVariationItemInterface $productVariationItemRepository,
         StoreProductTagService $storeProductTagService
     ) {
+
         $product = $this->productRepository->findOrFail($id);
-
-        $product->status = $request->input('status');
-
         $product = $service->execute($request, $product);
         $storeProductTagService->execute($request, $product);
 

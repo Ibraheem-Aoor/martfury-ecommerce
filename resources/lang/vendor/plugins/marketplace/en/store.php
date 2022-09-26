@@ -35,6 +35,7 @@ return [
     'approve_product_confirmation_description' => 'Are you sure you really want to approve this product from :vendor?',
     'approve' => 'Approve',
     'approve_product_success' => 'Approved product successfully',
+    'approve_product_success_empty_price' => 'Approved product successfully (Product Price Is: 0)',
     'product_approved_notification' => 'This product was created by :vendor. Approved by :user.',
     'information' => 'Store information',
     'vendor_information' => 'Vendor information',

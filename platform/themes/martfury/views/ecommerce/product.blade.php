@@ -21,7 +21,7 @@ Theme::set('headerMobile', Theme::partial('header-mobile-product'));
                                     <div class="ps-product__gallery" data-arrow="true">
                                         @foreach ($productImages as $img)
                                             <div class="item">
-                                                <a  href="{{ RvMedia::getImageUrl($img) }}">
+                                                <a href="{{ RvMedia::getImageUrl($img) }}">
                                                     <img src="{{ RvMedia::getImageUrl($img) }}"
                                                         alt="{{ $product->name }}" style="border: 5px solid #fcb800;" />
                                                 </a>
@@ -191,8 +191,20 @@ Theme::set('headerMobile', Theme::partial('header-mobile-product'));
                             <div class="ps-product__specification">
 
                                 <p @if (!$product->sku) style="display: none" @endif>
-                                    <strong>{{ __('BORVAT CODE') }}:</strong> <span
-                                        id="product-sku">{{ $product->sku }}</span>
+                                <div class="container">
+                                    <div class="row">
+                                            <strong>{{ __('BORVAT CODE') }}:</strong> <span
+                                                id="product-sku">{{ $product->sku }}</span>
+                                        <div class="col-sm-2"></div>
+                                        <div class="col-sm-6" style="padding:0;">
+                                            <strong>{{ __('EAN CODE') }}:</strong> <span
+                                                id="product-sku">123456789777557</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
                                 </p>
                                 @if ($product->categories->count())
                                     <p class="categories"><strong> {{ __('Categories') }}:</strong>

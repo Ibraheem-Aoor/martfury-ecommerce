@@ -18,7 +18,7 @@ class ProductRequest extends Request
     {
         return [
             'name'       => 'required|max:120',
-            'price'      => 'numeric|required|min:1|max:100000000',
+            // 'price'      => 'numeric|required|min:1|max:100000000',
             'start_date' => 'date|nullable|required_if:sale_type,1',
             'end_date'   => 'date|nullable|after:' . ($this->input('start_date') ?? now()->toDateTimeString()),
             'wide'       => 'numeric|required|min:0|max:100000000',
@@ -28,7 +28,7 @@ class ProductRequest extends Request
             'status'     => Rule::in(BaseStatusEnum::values()),
             'quantity'   => 'numeric|required|min:1|max:100000000',
             'ean_code' => 'required|digits:13',
-            'description' => 'required',
+            'description' => 'nullable',
             'content' => 'required',
             'deliverables' => 'required',
             'images' => 'required',

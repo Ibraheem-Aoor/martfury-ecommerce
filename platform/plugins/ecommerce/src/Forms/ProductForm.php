@@ -89,17 +89,17 @@ class ProductForm extends FormAbstract
                     'data-counter' => 120,
                 ],
             ])
-            ->add('description', 'editor', [
-                'label'      => trans('core/base::forms.description'),
-                'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'rows'         => 4,
-                    'placeholder'  => trans('core/base::forms.description_placeholder'),
-                    'data-counter' => 1000,
-                    'required' => 'required',
+            // ->add('description', 'editor', [
+            //     'label'      => trans('core/base::forms.description'),
+            //     'label_attr' => ['class' => 'control-label'],
+            //     'attr'       => [
+            //         'rows'         => 4,
+            //         'placeholder'  => trans('core/base::forms.description_placeholder'),
+            //         'data-counter' => 1000,
+            //         'required' => 'required',
 
-                ],
-            ])
+            //     ],
+            // ])
             ->add('content', 'editor', [
                 'label'      => trans('plugins/ecommerce::products.form.content'),
                 'label_attr' => ['class' => 'text-title-field'],

@@ -2,6 +2,7 @@
 
 namespace Botble\Marketplace\Forms;
 
+
 use Botble\Base\Forms\Fields\MultiCheckListField;
 use Botble\Base\Forms\Fields\TagField;
 use Botble\Ecommerce\Forms\Fields\CategoryMultiField;
@@ -86,15 +87,15 @@ class ProductForm extends BaseProductForm
                     'data-counter' => 120,
                 ],
             ])
-            ->add('description', 'customEditor', [
-                'label'      => trans('core/base::forms.description'),
-                'label_attr' => ['class' => 'control-label'],
-                'attr'       => [
-                    'rows'         => 2,
-                    'placeholder'  => trans('core/base::forms.description_placeholder'),
-                    'data-counter' => 1000,
-                ],
-            ])
+            // ->add('description', 'customEditor', [
+            //     'label'      => trans('core/base::forms.description'),
+            //     'label_attr' => ['class' => 'control-label'],
+            //     'attr'       => [
+            //         'rows'         => 2,
+            //         'placeholder'  => trans('core/base::forms.description_placeholder'),
+            //         'data-counter' => 1000,
+            //     ],
+            // ])
             ->add('content', 'customEditor', [
                 'label'      => trans('core/base::forms.content'),
                 'label_attr' => ['class' => 'control-label'],
