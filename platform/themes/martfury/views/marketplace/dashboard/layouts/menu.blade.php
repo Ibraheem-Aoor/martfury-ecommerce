@@ -16,16 +16,16 @@
             ],
             'order' => 2,
         ],
-        [
-            'key'    => 'marketplace.vendor.product-attribute-sets.index',
-            'icon'   => 'fas fa-glass-martini',
-            'name'   => __('Product Attributes'),
-            'routes' => [
-                'marketplace.vendor.product-attribute-sets.create',
-                'marketplace.vendor.product-attribute-sets.edit',
-            ],
-            'order' => 3,
-        ],
+        // [
+        //     'key'    => 'marketplace.vendor.product-attribute-sets.index',
+        //     'icon'   => 'fas fa-glass-martini',
+        //     'name'   => __('Product Attributes'),
+        //     'routes' => [
+        //         'marketplace.vendor.product-attribute-sets.create',
+        //         'marketplace.vendor.product-attribute-sets.edit',
+        //     ],
+        //     'order' => 3,
+        // ],
         [
             'key'    => 'marketplace.vendor.brands.index',
             'icon'   => 'fa fa-registered',
