@@ -10,6 +10,7 @@ use Botble\Ecommerce\Repositories\Eloquent\ProductRepository;
 use Botble\Ecommerce\Repositories\Interfaces\ProductInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StoreProductService
 {
@@ -84,8 +85,10 @@ class StoreProductService
         /**
          * @var Product $product
          */
-        
-        $product->status = $request->input('price') == 0 ? BaseStatusEnum::PENDING :  $request->input('status');
+        if(Auth::check())
+        {
+            $product->status = $request->input('price') == 0 ? BaseStatusEnum::PENDING :  $request->input('status');
+        }
         $product = $this->productRepository->createOrUpdate($product);
 
         if (!$exists) {
