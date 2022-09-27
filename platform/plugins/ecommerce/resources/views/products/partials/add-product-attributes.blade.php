@@ -1,7 +1,7 @@
 @if ($productAttributeSets->count() > 0)
     <div class="add-new-product-attribute-wrap">
         <input type="hidden" name="is_added_attributes" id="is_added_attributes" value="0">
-        <a href="#" class="btn-trigger-add-attribute" data-bs-toggle-text="{{ trans('plugins/ecommerce::products.form.cancel') }}">{{ trans('plugins/ecommerce::products.form.add_new_attributes') }}</a>
+        <a href="#" class="btn-trigger-add-attribute" id="show_attributes_button" data-bs-toggle-text="{{ trans('plugins/ecommerce::products.form.cancel') }}">{{ trans('plugins/ecommerce::products.form.add_new_attributes') }}</a>
         <p>{{ trans('plugins/ecommerce::products.form.add_new_attributes_description') }}</p>
         <div class="list-product-attribute-values-wrap hidden">
             <div class="product-select-attribute-item-template">
@@ -10,7 +10,7 @@
                         <div class="col-md-4 col-sm-6">
                             <div class="form-group mb-3">
                                 <label class="text-title-field">{{ trans('plugins/ecommerce::products.form.attribute_name') }}</label>
-                                <select class="next-input product-select-attribute-item">
+                                <select required class="next-input product-select-attribute-item">
                                     @foreach ($productAttributeSets as $item)
                                         <option value="{{ $item->id }}">
                                             {{ $item->title }}
@@ -52,7 +52,7 @@
                 </div>
             @endforeach
         </div>
-        <div class="list-product-attribute-wrap hidden">
+        <div class="list-product-attribute-wrap">
             <div class="list-product-attribute-wrap-detail">
                 <div class="product-attribute-set-item">
                     <div class="row">

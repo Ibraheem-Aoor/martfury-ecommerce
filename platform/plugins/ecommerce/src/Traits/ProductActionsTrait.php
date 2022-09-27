@@ -118,6 +118,22 @@ trait ProductActionsTrait
 
                 $productRelatedToVariation->name = $product->name;
                 $productRelatedToVariation->deliverables = $product->deliverables;
+                $productRelatedToVariation->is_refunded = $product->is_refunded;
+                $productRelatedToVariation->refund_details = $product->refund_details;
+                $productRelatedToVariation->attr_weight = $product->attr_weight;
+                $productRelatedToVariation->attr_height = $product->attr_height;
+                $productRelatedToVariation->attr_width = $product->attr_width;
+                $productRelatedToVariation->attr_length = $product->attr_length;
+                $productRelatedToVariation->product_country = $product->product_country;
+                $productRelatedToVariation->packaging_language = $product->packaging_language;
+                $productRelatedToVariation->product_meterial = $product->product_meterial;
+                $productRelatedToVariation->peice_count = $product->peice_count;
+                $productRelatedToVariation->package_content = $product->package_content;
+                $productRelatedToVariation->is_guaranteed = $product->is_guaranteed;
+                $productRelatedToVariation->guarantee = $product->guarantee;
+                $productRelatedToVariation->is_guaranteed = $product->is_guaranteed;
+                $productRelatedToVariation->max_delivery_from = $product->max_delivery_from;
+                $productRelatedToVariation->max_delivery_to = $product->max_delivery_to;
                 $productRelatedToVariation->status = $product->status;
                 $productRelatedToVariation->brand_id = $product->brand_id;
                 $productRelatedToVariation->is_variation = 1;
