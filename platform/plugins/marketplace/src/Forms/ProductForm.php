@@ -5,6 +5,7 @@ namespace Botble\Marketplace\Forms;
 
 use Botble\Base\Forms\Fields\MultiCheckListField;
 use Botble\Base\Forms\Fields\TagField;
+use Botble\Base\Supports\Helper;
 use Botble\Ecommerce\Forms\Fields\CategoryMultiField;
 use Botble\Ecommerce\Forms\ProductForm as BaseProductForm;
 use Botble\Ecommerce\Models\Product;
@@ -31,6 +32,7 @@ class ProductForm extends BaseProductForm
      */
     public function buildForm()
     {
+        $countries = Helper::countries();
         $selectedCategories = [];
         if ($this->getModel()) {
             $selectedCategories = $this->getModel()->categories()->pluck('category_id')->all();
@@ -43,9 +45,11 @@ class ProductForm extends BaseProductForm
         $productCollections = app(ProductCollectionInterface::class)->pluck('name', 'id');
 
         $selectedProductCollections = [];
+        $product = null;
         if ($this->getModel()) {
             $selectedProductCollections = $this->getModel()->productCollections()->pluck('product_collection_id')
                 ->all();
+            $product = $this->getModel();
         }
 
         $productId = $this->getModel() ? $this->getModel()->id : null;
@@ -114,10 +118,14 @@ class ProductForm extends BaseProductForm
             ])
             ->add('images', 'customImages', [
                 'label'      => trans('plugins/ecommerce::products.form.image'),
-                'label_attr' => ['class' => 'control-label'],
+                'label_attr' => ['class' => 'control-label required'],
                 'values'     => $productId ? $this->getModel()->images : [],
                 'required' => 'required',
             ])
+            ->addMetaBoxes(['Refund Policy' => [
+                'title' => trans('plugins/ecommerce::products.form.Refund Policy'),
+                'content' => view('plugins/ecommerce::products.partials.product-return-option' , compact('product')),
+            ]])
             ->add('categories[]', 'categoryMulti', [
                 'label'      => trans('plugins/ecommerce::products.form.categories'),
                 'label_attr' => ['class' => 'control-label'],
@@ -176,7 +184,12 @@ class ProductForm extends BaseProductForm
                         'after_wrapper' => '</div>',
                         'priority'      => 3,
                     ],
-                ]);
+                ])
+                ->addMetaBoxes(['Basic Product Attributes' => [
+                    'title' => trans('plugins/ecommerce::products.form.Basic Product Attributes'),
+                    'content' => view('plugins/ecommerce::products.partials.basic-product-attributes' , compact('countries' ,'product')),
+                ]])
+                ;
         } elseif ($productId) {
             $productVariationsInfo = [];
             $productsRelatedToVariation = [];

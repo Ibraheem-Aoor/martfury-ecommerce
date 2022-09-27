@@ -8,10 +8,10 @@ Route::group([
     'middleware' => ['web', 'core'],
 ], function () {
     Route::group(apply_filters(BASE_FILTER_GROUP_PUBLIC_ROUTE, []), function () {
-        Route::get(SlugHelper::getPrefix(Store::class, 'stores'), [
-            'as'   => 'public.stores',
-            'uses' => 'PublicStoreController@getStores',
-        ]);
+        // Route::get(SlugHelper::getPrefix(Store::class, 'stores'), [
+        //     'as'   => 'public.stores',
+        //     'uses' => 'PublicStoreController@getStores',
+        // ]);
 
         Route::get(SlugHelper::getPrefix(Store::class, 'stores') . '/{slug}', [
             'uses' => 'PublicStoreController@getStore',

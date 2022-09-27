@@ -16,7 +16,7 @@ class ProductRequest extends Request
      */
     public function rules()
     {
-        return [
+        $basic_rules = [
             'name'       => 'required|max:120',
             // 'price'      => 'numeric|required|min:1|max:100000000',
             'start_date' => 'date|nullable|required_if:sale_type,1',
@@ -34,6 +34,24 @@ class ProductRequest extends Request
             'images' => 'required',
             'added_attributes.*' => 'required',
         ];
+        $vendor_rules = [
+            'is_refunded' => 'required' ,
+            'refund_details' => 'sometimes' ,
+            'is_guaranteed' => 'required' ,
+            'guarantee' => 'sometimes' ,
+            'attr_weight' => 'required|numeric',
+            'attr_height' => 'required|numeric',
+            'attr_width' => 'required|numeric',
+            'attr_length' => 'required|numeric',
+            'product_country' => 'required',
+            'packaging_language' => 'required',
+            'product_meterial' => 'required',
+            'peice_count' => 'required',
+            'package_content' => 'required',
+            'max_delivery_from' => 'required' ,
+            'max_delivery_to' => 'required' ,
+        ];
+        return auth('customer')->check() ?  array_merge($basic_rules , $vendor_rules) : $basic_rules;
     }
 
     /**
@@ -48,6 +66,8 @@ class ProductRequest extends Request
             'end_date.after'         => trans('plugins/ecommerce::products.product_create_validate_end_date_after'),
             'start_date.required_if' => trans('plugins/ecommerce::products.product_create_validate_start_date_required_if'),
             'sale_price'             => trans('plugins/ecommerce::products.product_create_validate_sale_price'),
+            'is_refunded.required' => trans('plugins/ecommerce::products.is_refunded'),
+
         ];
     }
 }

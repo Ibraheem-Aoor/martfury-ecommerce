@@ -15,7 +15,7 @@ class CheckStoreUrlRequest extends Request
     public function rules()
     {
         return [
-            'url' => 'required|max:200',
+            'commerce_number' => 'required|',
         ];
     }
 }

@@ -110,7 +110,6 @@ class PublicStoreController
             'reference_type' => Store::class,
             'prefix'         => SlugHelper::getPrefix(Store::class),
         ]);
-
         if (!$slug) {
             abort(404);
         }
@@ -148,7 +147,7 @@ class PublicStoreController
 
         Theme::breadcrumb()
             ->add(__('Home'), route('public.index'))
-            ->add(__('Stores'), route('public.stores'))
+            // ->add(__('Stores'), route('public.stores'))
             ->add($store->name, $store->url);
 
         $with = [
@@ -201,6 +200,7 @@ class PublicStoreController
         if (!$request->ajax()) {
             abort(404);
         }
+        dd($request);
 
         $existing = SlugHelper::getSlug($request->input('url'), SlugHelper::getPrefix(Store::class), Store::class);
 

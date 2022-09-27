@@ -67,6 +67,22 @@ class Product extends BaseModel
         'created_by_type',
         'store_id',
         'status',
+        'is_refunded',
+        'refund_details',
+        'attr_weight',
+        'attr_height',
+        'attr_width',
+        'attr_length',
+        'product_country',
+        'packaging_language',
+        'product_meterial',
+        'peice_count',
+        'package_content',
+        'is_guaranteed',
+        'guarantee',
+        'max_delivery_from',
+        'max_delivery_to',
+
     ];
 
     /**

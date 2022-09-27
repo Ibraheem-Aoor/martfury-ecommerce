@@ -48,12 +48,7 @@ class SettingController
     {
         $store = auth('customer')->user()->store;
 
-        $existing = SlugHelper::getSlug($request->input('slug'), SlugHelper::getPrefix(Store::class), Store::class);
-
-        if ($existing && $existing->reference_id != $store->id) {
-            return $response->setError()->setMessage(__('Shop URL is existing. Please choose another one!'));
-        }
-
+        
         if ($request->hasFile('logo_input')) {
             $result = RvMedia::handleUpload($request->file('logo_input'), 0, 'stores');
             if ($result['error'] == false) {

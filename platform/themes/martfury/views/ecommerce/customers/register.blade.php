@@ -68,7 +68,7 @@
                                 <option value="">--SELECT ONE--</option>
                                 @foreach ($countries as $country)
                                     <option value="{{ $country }}"
-                                        @if (old('commerce_number') == $country) selected @endif>{{ $country }}</option>
+                                        @if (old('country') == $country) selected @endif>{{ $country }}</option>
                                 @endforeach
                                 <option value=""></option>
                             </select>

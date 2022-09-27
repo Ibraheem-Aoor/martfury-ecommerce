@@ -17,12 +17,12 @@
                     <div class="ps-block__user-content">
                         <h3 class="text-white">{{ $store->name }}</h3>
                         <p><i class="icon-map-marker"></i> {{ $store->address }}, {{ $store->city }}, {{ $store->state }}, {{ $store->country_name }}</p>
-                        @if ($store->phone)
+                        {{-- @if ($store->phone)
                             <p><i class="icon-telephone"></i> {{ $store->phone }}</p>
                         @endif
                         @if ($store->email)
                             <p><i class="icon-envelope"></i> <a href="mailto:{{ $store->email }}">{{ $store->email }}</a></p>
-                        @endif
+                        @endif --}}
                     </div>
                 </div>
             </aside>
