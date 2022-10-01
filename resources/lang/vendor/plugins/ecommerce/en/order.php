@@ -7,6 +7,7 @@ return [
         'completed' => 'Completed',
         'canceled' => 'Canceled',
     ],
+    'code' => 'Code',
     'menu' => 'Orders',
     'create' => 'Create an order',
     'cancel_error' => 'The order is delivering or completed',

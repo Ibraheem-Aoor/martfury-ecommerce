@@ -36,8 +36,6 @@ class ProductRequest extends Request
             'added_attributes.*' => 'required',
         ];
         $vendor_rules = [
-            'is_refunded' => 'required' ,
-            'refund_details' => 'sometimes' ,
             'is_guaranteed' => 'required' ,
             'guarantee' => 'sometimes' ,
             'attr_weight' => 'required|numeric',
@@ -48,10 +46,8 @@ class ProductRequest extends Request
             'packaging_language' => 'required',
             'product_meterial' => 'required',
             'peice_count' => 'required',
-            'package_content' => 'required',
-            'max_delivery_from' => 'required' ,
-            'max_delivery_to' => 'required' ,
-            // 'is_added_attributes' => Rule::in([1]),
+            'delivery_time' => 'required' ,
+            'added_attributes' => 'required',
         ];
         return auth('customer')->check() ?  array_merge($basic_rules , $vendor_rules) : $basic_rules;
     }
@@ -69,8 +65,7 @@ class ProductRequest extends Request
             'start_date.required_if' => trans('plugins/ecommerce::products.product_create_validate_start_date_required_if'),
             'sale_price'             => trans('plugins/ecommerce::products.product_create_validate_sale_price'),
             'is_refunded.required' => trans('plugins/ecommerce::products.is_refunded'),
-            // 'is_added_attributes.*'=> trans('plugins/ecommerce::products.form.no_attributes_selected'),
-
+            'added_attributes.*'=> trans('plugins/ecommerce::products.form.no_attributes_selected'),
         ];
     }
 }

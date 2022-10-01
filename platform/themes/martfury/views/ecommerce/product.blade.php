@@ -77,9 +77,32 @@ Theme::set('headerMobile', Theme::partial('header-mobile-product'));
                                 @endif
 
                                 <div class="ps-list--dot">
-                                    {!! apply_filters('ecommerce_before_product_description', null, $product) !!}
-                                    {!! clean($product->description) !!}
-                                    {!! apply_filters('ecommerce_after_product_description', null, $product) !!}
+                                    <ul>
+                                        <li>
+                                            {{ trans('plugins/ecommerce::products.form.shipping.weight') . ': ' . $product->attr_weight . ' ' . ecommerce_width_height_unit() }}
+                                        </li>
+                                        <li>
+                                            {{ trans('plugins/ecommerce::products.form.shipping.height') . ': ' . $product->attr_height . ' ' . ecommerce_width_height_unit() }}
+                                        </li>
+                                        <li>
+                                            {{ trans('plugins/ecommerce::products.form.shipping.wide') . ': ' . $product->attr_width . ' ' . ecommerce_width_height_unit() }}
+                                        </li>
+                                        <li>
+                                            {{ trans('plugins/ecommerce::products.form.shipping.length') . ': ' . $product->attr_length . ' ' . ecommerce_width_height_unit() }}
+                                        </li>
+                                        <li>
+                                            {{ trans('plugins/ecommerce::products.form.Product Country') . ': ' . $product->product_country }}
+                                        </li>
+                                        <li>
+                                            {{ trans('plugins/ecommerce::products.form.Product Language') . ': ' . $product->packaging_language }}
+                                        </li>
+                                        <li>
+                                            {{ trans('plugins/ecommerce::products.form.Number of pieces') . ': ' . $product->peice_count }}
+                                        </li>
+                                        <li>
+                                            {{ trans('plugins/ecommerce::products.form.Delivery time') . ': ' . $product->delivery_time }}
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                             @php $flashSale = $product->latestFlashSales()->first(); @endphp
@@ -193,8 +216,8 @@ Theme::set('headerMobile', Theme::partial('header-mobile-product'));
                                 <p @if (!$product->sku) style="display: none" @endif>
                                 <div class="container">
                                     <div class="row">
-                                            <strong>{{ __('BORVAT CODE') }}:</strong> <span
-                                                id="product-sku">{{ $product->sku }}</span>
+                                        <strong>{{ __('BORVAT CODE') }}:</strong> <span
+                                            id="product-sku">{{ $product->sku }}</span>
                                         <div class="col-sm-2"></div>
                                         <div class="col-sm-6" style="padding:0;">
                                             <strong>{{ __('EAN CODE') }}:</strong> <span

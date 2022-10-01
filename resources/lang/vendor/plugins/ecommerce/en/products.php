@@ -5,6 +5,11 @@ return [
     'create' => 'New product',
     'edit' => 'Edit product - :name',
     'form' => [
+        '24 Hour' => '24 Hour',
+        '2 Days' => '2 Days',
+        '5 Days' => '5 Days',
+        '1 Week' => '1 Week',
+        '2 Weeks' => '2 Weeks',
         'name' => 'Name',
         'name_placeholder' => 'Product\'s name (Maximum 120 characters)',
         'description' => 'Description',

@@ -103,9 +103,8 @@ class ProductController extends BaseController
         StoreAttributesOfProductService $storeAttributesOfProductService,
         StoreProductTagService $storeProductTagService
     ) {
-        // dd($request);
-        $product = $this->productRepository->getModel();
 
+        $product = $this->productRepository->getModel();
         $request->merge([
             'store_id' => auth('customer')->user()->store->id,
             'images'   => json_decode($request->input('images')),

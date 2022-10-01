@@ -35,7 +35,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-6">
             <div class="form-group">
                 <label
                     class="text-title-field required">{{ trans('plugins/ecommerce::products.form.Product Country') }}
@@ -43,13 +43,13 @@
                 <select name="product_country" class="form-control">
                     <option value="">--SELECT ONE--</option>
                     @foreach ($countries as $country)
-                        <option value="{{ $country }}" @if (old('product_country' , isset($product) ? $product->product_country : null)) selected @endif>
+                        <option value="{{ $country }}" @if (old('product_country', isset($product) ? $product->product_country : null)) selected @endif>
                             {{ $country }}</option>
                     @endforeach
                 </select>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-6">
             <div class="form-group">
                 <label
                     class="text-title-field required">{{ trans('plugins/ecommerce::products.form.Product Language') }}</label>
@@ -57,7 +57,9 @@
                     value="{{ old('packaging_language', isset($product) ? $product->packaging_language : null) }}">
             </div>
         </div>
-        <div class="col-md-3">
+    </div>
+    <div class="row">
+        <div class="col-md-6">
             <div class="form-group">
                 <label
                     class="text-title-field required">{{ trans('plugins/ecommerce::products.form.Product Material') }}</label>
@@ -65,7 +67,7 @@
                     value="{{ old('product_meterial', isset($product) ? $product->product_meterial : null) }}">
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-6">
             <div class="form-group">
                 <label
                     class="text-title-field required">{{ trans('plugins/ecommerce::products.form.Number of pieces') }}</label>
@@ -75,34 +77,19 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label
-                    class="text-title-field required">{{ trans('plugins/ecommerce::products.form.Product Content') }}</label>
-                <input type="text" name="package_content" class="form-control"
-                    value="{{ old('package_content', isset($product) ? $product->package_content : null) }}">
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12 mb-2 text-center">
-            <label
-                class="text-title-field required">{{ trans('plugins/ecommerce::products.form.Delivery time') }}</label>
-        </div>
         <div class="col-sm-6">
             <div class="form-group">
                 <label
-                    class="text-title-field required text-center">{{ trans('plugins/ecommerce::products.form.From') }}</label>
-                <input type="number" name="max_delivery_from" class="form-control"
-                    value="{{ old('max_delivery_from', isset($product) ? $product->max_delivery_from : null) }}">
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="form-group">
-                <label
-                    class="text-title-field required text-center">{{ trans('plugins/ecommerce::products.form.To') }}</label>
-                <input type="number" name="max_delivery_to" class="form-control"
-                    value="{{ old('max_delivery_to', isset($product) ? $product->max_delivery_to : null) }}">
+                    class="text-title-field required text-center">{{ trans('plugins/ecommerce::products.form.Delivery time') }}</label>
+                <select type="number" name="delivery_time" class="form-control text-center"
+                    value="{{ old('delivery_time', isset($product) ? $product->delivery_time : null) }}">
+                    <option value="">--SELECT--</option>
+                    <option value="24 Hour" @if(old('delivery_time') == '24 Hour' || isset($product) && $product->delivery_time == '24 Hour') selected @endif>{{trans('plugins/ecommerce::products.form.24 Hour')}}</option>
+                    <option value="2 Days"  @if(old('delivery_time') == '2 Days' || isset($product) && $product->delivery_time == '2 Days') selected @endif>{{trans('plugins/ecommerce::products.form.2 Days')}}</option>
+                    <option value="5 Days"  @if(old('delivery_time') == '5 Days' || isset($product) && $product->delivery_time == '5 Days') selected @endif>{{trans('plugins/ecommerce::products.form.5 Days')}}</option>
+                    <option value="1 Week"  @if(old('delivery_time') == '1 Week' || isset($product) && $product->delivery_time == '1 Week') selected @endif>{{trans('plugins/ecommerce::products.form.1 Week')}}</option>
+                    <option value="2 Weeks"  @if(old('delivery_time') == '2 Weeks' || isset($product) && $product->delivery_time == '2 Weeks') selected @endif>{{trans('plugins/ecommerce::products.form.2 Weeks')}}</option>
+                </select>
             </div>
         </div>
     </div>
@@ -122,7 +109,7 @@
                 <label
                     class="text-title-field required">{{ trans('plugins/ecommerce::products.form.Guarantee Details') }}</label>
                 <textarea class="form-control editor-ckeditor" rows="2" name="guarantee" id="guarntee-details"
-                    with-short-code="true" aria-required="true">{{isset($product) ? $product->guarantee : old('guarantee' , null)}}</textarea>
+                    with-short-code="true" aria-required="true">{{ isset($product) ? $product->guarantee : old('guarantee', null) }}</textarea>
             </div>
         </div>
 
@@ -145,6 +132,5 @@
     --}}
 
 <script>
-        var is_guaranteed = "{{($product?->is_guaranteed == 1 || old('is_guaranteed') == 1) ? true : false}}";
-        var is_refunded = "{{($product?->is_refunded == 1 || old('is_refunded') == 1) ? true : false}}";
+    var is_guaranteed = "{{ $product?->is_guaranteed == 1 || old('is_guaranteed') == 1 ? true : false }}";
 </script>

@@ -67,8 +67,6 @@ class Product extends BaseModel
         'created_by_type',
         'store_id',
         'status',
-        'is_refunded',
-        'refund_details',
         'attr_weight',
         'attr_height',
         'attr_width',
@@ -80,8 +78,7 @@ class Product extends BaseModel
         'package_content',
         'is_guaranteed',
         'guarantee',
-        'max_delivery_from',
-        'max_delivery_to',
+        'delivery_time',
 
     ];
 

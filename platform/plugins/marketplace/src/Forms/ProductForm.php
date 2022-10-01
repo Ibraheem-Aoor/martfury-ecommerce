@@ -122,10 +122,6 @@ class ProductForm extends BaseProductForm
                 'values'     => $productId ? $this->getModel()->images : [],
                 'required' => 'required',
             ])
-            ->addMetaBoxes(['Refund Policy' => [
-                'title' => trans('plugins/ecommerce::products.form.Refund Policy'),
-                'content' => view('plugins/ecommerce::products.partials.product-return-option' , compact('product')),
-            ]])
             ->add('categories[]', 'categoryMulti', [
                 'label'      => trans('plugins/ecommerce::products.form.categories'),
                 'label_attr' => ['class' => 'control-label'],

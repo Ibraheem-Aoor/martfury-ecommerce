@@ -14,8 +14,6 @@ class AddRefundColumnsIntoEcProductsTable extends Migration
     public function up()
     {
         Schema::table('ec_products', function (Blueprint $table) {
-            $table->boolean('is_refunded')->nullable();
-            $table->text('refund_details')->nullable();
             $table->string('attr_weight');
             $table->string('attr_height');
             $table->string('attr_width');
@@ -24,11 +22,9 @@ class AddRefundColumnsIntoEcProductsTable extends Migration
             $table->string('packaging_language');
             $table->string('product_meterial');
             $table->string('peice_count');
-            $table->string('package_content');
             $table->boolean('is_guaranteed');
             $table->text('guarantee')->nullable();
-            $table->bigInteger('max_delivery_from');
-            $table->bigInteger('max_delivery_to');
+            $table->string('delivery_time');
         });
     }
 
@@ -40,7 +36,7 @@ class AddRefundColumnsIntoEcProductsTable extends Migration
     public function down()
     {
         Schema::table('ec_products', function (Blueprint $table) {
-            $table->dropColumn(['is_refunded' , 'refund_details' , 'attr_weight' , 'attr_height' , 'attr_width' , 'attr_length' ,
+            $table->dropColumn(['attr_weight' , 'attr_height' , 'attr_width' , 'attr_length' ,
             'product_country' , 'packaging_language' , 'product_meterial' , 'peice_count' , 'package_content' , 'is_guaranteed' ,
             'guarantee' , 'max_delivery_from' , 'max_delivery_to']);
         });

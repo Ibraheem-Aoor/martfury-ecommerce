@@ -45,10 +45,3 @@ $(document).on('click', '#is_guaranteed_false', function () {
  * Vendor Product Edit
  */
 is_guaranteed ? $('#is_guaranteed_true').click() : $('#is_guaranteed_false').click();
-is_refunded ? $('#is_refunded_true').click() : $('#is_refunded_false').click();
-
-
-
-
-
-

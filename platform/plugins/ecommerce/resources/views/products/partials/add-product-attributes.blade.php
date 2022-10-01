@@ -1,7 +1,7 @@
 @if ($productAttributeSets->count() > 0)
     <div class="add-new-product-attribute-wrap">
         <input type="hidden" name="is_added_attributes" id="is_added_attributes" value="0">
-        <a href="#" class="btn-trigger-add-attribute" id="show_attributes_button" data-bs-toggle-text="{{ trans('plugins/ecommerce::products.form.cancel') }}">{{ trans('plugins/ecommerce::products.form.add_new_attributes') }}</a>
+        <a href="#" class="btn-trigger-add-attribute" data-bs-toggle-text="{{ trans('plugins/ecommerce::products.form.cancel') }}">{{ trans('plugins/ecommerce::products.form.add_new_attributes') }}</a>
         <p>{{ trans('plugins/ecommerce::products.form.add_new_attributes_description') }}</p>
         <div class="list-product-attribute-values-wrap hidden">
             <div class="product-select-attribute-item-template">
