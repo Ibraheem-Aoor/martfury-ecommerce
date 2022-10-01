@@ -63,21 +63,21 @@ class OrderTable extends TableAbstract
             ->editColumn('amount', function ($item) {
                 return format_price($item->amount);
             })
-            ->editColumn('shipping_amount', function ($item) {
-                return format_price($item->shipping_amount);
+            ->editColumn('quantity', function ($item) {
+                return $item->products->sum('qty');
             })
             ->editColumn('user_id', function ($item) {
-                return clean($item->user->name ?: $item->address->name);
+                return get_order_code($item->id);
             })
             ->editColumn('created_at', function ($item) {
                 return BaseHelper::formatDate($item->created_at);
             });
 
-        if (EcommerceHelper::isTaxEnabled()) {
-            $data = $data->editColumn('tax_amount', function ($item) {
-                return format_price($item->tax_amount);
-            });
-        }
+        // if (EcommerceHelper::isTaxEnabled()) {
+        //     $data = $data->editColumn('tax_amount', function ($item) {
+        //         return format_price($item->tax_amount);
+        //     });
+        // }
 
         $data = $data
             ->addColumn('operations', function ($item) {
@@ -126,37 +126,27 @@ class OrderTable extends TableAbstract
                 'class' => 'text-start',
             ],
             'user_id' => [
-                'title' => trans('plugins/ecommerce::order.customer_label'),
+                'title' => trans('plugins/ecommerce::order.code'),
                 'class' => 'text-start',
             ],
             'amount'  => [
                 'title' => trans('plugins/ecommerce::order.amount'),
                 'class' => 'text-center',
             ],
+            'quantity'  => [
+                'title' => trans('plugins/ecommerce::order.quantity'),
+                'class' => 'text-center',
+            ],
         ];
 
-        if (EcommerceHelper::isTaxEnabled()) {
-            $columns['tax_amount'] = [
-                'title' => trans('plugins/ecommerce::order.tax_amount'),
-                'class' => 'text-center',
-            ];
-        }
+        // if (EcommerceHelper::isTaxEnabled()) {
+        //     $columns['tax_amount'] = [
+        //         'title' => trans('plugins/ecommerce::order.tax_amount'),
+        //         'class' => 'text-center',
+        //     ];
+        // }
 
         $columns += [
-            'shipping_amount' => [
-                'title' => trans('plugins/ecommerce::order.shipping_amount'),
-                'class' => 'text-center',
-            ],
-            'payment_method'  => [
-                'name'  => 'payment_id',
-                'title' => trans('plugins/ecommerce::order.payment_method'),
-                'class' => 'text-center',
-            ],
-            'payment_status'  => [
-                'name'  => 'payment_id',
-                'title' => trans('plugins/ecommerce::order.payment_status_label'),
-                'class' => 'text-center',
-            ],
             'status'          => [
                 'title' => trans('core/base::tables.status'),
                 'class' => 'text-center',

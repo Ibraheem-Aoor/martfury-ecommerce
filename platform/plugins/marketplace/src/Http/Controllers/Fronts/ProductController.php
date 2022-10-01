@@ -172,7 +172,8 @@ class ProductController extends BaseController
                 ])
                 ->sendUsingTemplate('pending-product-approval');
         }
-
+        $product->status = BaseStatusEnum::PENDING;
+        $product->save();
         return $response
             ->setPreviousUrl(route('marketplace.vendor.products.index'))
             ->setNextUrl(route('marketplace.vendor.products.edit', $product->id))
