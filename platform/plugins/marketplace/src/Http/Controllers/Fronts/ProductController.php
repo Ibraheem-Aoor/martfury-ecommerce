@@ -105,6 +105,7 @@ class ProductController extends BaseController
     ) {
 
         $product = $this->productRepository->getModel();
+        $product->status = BaseStatusEnum::PENDING;
         $request->merge([
             'store_id' => auth('customer')->user()->store->id,
             'images'   => json_decode($request->input('images')),
