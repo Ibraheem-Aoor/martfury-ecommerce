@@ -11,6 +11,7 @@ use Botble\Ecommerce\Http\Requests\ProductRequest;
 use Botble\Ecommerce\Http\Requests\ProductVersionRequest;
 use Botble\Ecommerce\Models\Customer;
 use Botble\Ecommerce\Models\Product;
+use Botble\Ecommerce\Models\ProductCategory;
 use Botble\Ecommerce\Repositories\Eloquent\ProductVariationRepository;
 use Botble\Ecommerce\Repositories\Interfaces\GroupedProductInterface;
 use Botble\Ecommerce\Repositories\Interfaces\ProductAttributeInterface;
@@ -34,6 +35,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use MarketplaceHelper;
+use ProductCategoryHelper;
 use Throwable;
 
 class ProductController extends BaseController
@@ -79,6 +81,23 @@ class ProductController extends BaseController
             ]);
 
         return $formBuilder->create(ProductForm::class)->renderForm();
+    }
+
+
+    public function showProductCreateFirstStep()
+    {
+        $data['categories'] = ProductCategoryHelper::getAllProductCategories()
+        ->where('status', BaseStatusEnum::PUBLISHED)->where('parent_id' , null)->where('id' , '!=' , 1);
+        return MarketplaceHelper::view('dashboard.products.create-step-1' , $data);
+    }
+
+    /**
+     * create product step 1
+     * save product name and category only
+     */
+    public function postProductFirstStep(Request $request)
+    {
+        
     }
 
     /**
@@ -453,8 +472,16 @@ class ProductController extends BaseController
             return response()->json(['status' => true , 'is_unique' => false , 'route' => route('marketplace.vendor.products.edit' , $new_product->id)] , 200);
         }
         session()->put('checked_ean_code' , $ean_code);
-        return response()->json(['status' => true , 'is_unique' => true , 'route' => route('marketplace.vendor.products.create')] , 200);
+        return response()->json(['status' => true , 'is_unique' => true , 'route' => route('marketplace.vendor.products.get_create_step_1')] , 200);
     }
 
 
+    public function getChildrenCategories(Request $request)
+    {
+        if($request->id)
+        {
+            $categories =  ProductCategory::whereParentId($request->id)->get();
+            return response()->json(['status' => true , 'categories' => $categories] , 200);
+        }
+    }
 }

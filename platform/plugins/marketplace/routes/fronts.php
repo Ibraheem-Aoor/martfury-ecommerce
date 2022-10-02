@@ -111,9 +111,13 @@ Route::group([
             Route::group(['prefix' => 'products', 'as' => 'products.'], function () {
                 Route::resource('', 'ProductController')
                     ->parameters(['' => 'product']);
+            // Vendor Ean Code
             Route::get('product-ean' ,  'ProductController@eanForm')->name('ean.show_form');
             Route::post('product-ean-check-vendor' ,'ProductController@isProductEanCodeExists' )->name('ean_check_vendor');
-
+            // create product step_1
+            Route::get('create-step-1' ,  'ProductController@showProductCreateFirstStep')->name('get_create_step_1');
+            Route::get('get-child-categories' , 'ProductController@getChildrenCategories')->name('get_children_categories');
+            Route::post('create-step-1-next' ,  'ProductController@postProductCreateFirstStep')->name('post_create_step_1');
 
 
 

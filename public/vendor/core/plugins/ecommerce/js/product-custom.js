@@ -39,9 +39,13 @@ $(document).on('click', '#is_guaranteed_false', function () {
 });
 
 
-
-
 /**
  * Vendor Product Edit
  */
-is_guaranteed ? $('#is_guaranteed_true').click() : $('#is_guaranteed_false').click();
+if(is_guaranteed)
+    $('#is_guaranteed_true').click();
+else
+    $('#is_guaranteed_false').click();
+
+console.log('adasdasdasdasd');
+

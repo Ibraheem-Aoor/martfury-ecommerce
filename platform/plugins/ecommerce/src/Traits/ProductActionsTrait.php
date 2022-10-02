@@ -802,7 +802,7 @@ trait ProductActionsTrait
     {
         page_title()->setTitle(trans('plugins/ecommerce::products.ean_check'));
         if(auth('customer')->check()){
-            return   MarketplaceHelper::view('dashboard.products.ean-code-form');
+            return  MarketplaceHelper::view('dashboard.products.ean-code-form');
         }elseif(Auth::check()){
             return  view('plugins/ecommerce::products.ean-code-form');
         }
