@@ -15,34 +15,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="">Choose Product Category</label>
-                        <select class="form-control" required name="parent_id" id="parent_id"
-                            data-route="{{ route('marketplace.vendor.products.get_children_categories') }}">
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="">&nbsp;</label>
-                        <select class="form-control" name="sub_1_id" id="sub_1_id">
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label for="">&nbsp;</label>
-                        <select class="form-control" name="sub_2_id" id="sub_2_id">
-                        </select>
-                    </div>
-                </div>
-
-            </div>
+        
             <div class="col-sm-12">
                 <div class="form-group text-center">
                     <button type="button" onclick="$('#step_1_form').submit();"

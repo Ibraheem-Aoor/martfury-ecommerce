@@ -34,6 +34,8 @@
             }
         };
     </script>
+
+    @stack('css')
 </head>
 
 <body @if (BaseHelper::siteLanguageDirection() == 'rtl') dir="rtl" @endif>

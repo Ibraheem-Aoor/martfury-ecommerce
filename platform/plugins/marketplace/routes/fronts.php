@@ -117,7 +117,12 @@ Route::group([
             // create product step_1
             Route::get('create-step-1' ,  'ProductController@showProductCreateFirstStep')->name('get_create_step_1');
             Route::get('get-child-categories' , 'ProductController@getChildrenCategories')->name('get_children_categories');
-            Route::post('create-step-1-next' ,  'ProductController@postProductCreateFirstStep')->name('post_create_step_1');
+            Route::post('create-step-1-next' ,  'ProductController@postProductFirstStep')->name('post_create_step_1');
+            // create product step_2
+            Route::get('create-step-2' , 'ProductController@showProductCreateSecondStep')->name('get_create_step_2');
+            Route::post('create-step-2-next' , 'ProductController@postProductSecondStep')->name('post_create_step_2');
+            // create product step_3
+            Route::get('create-step-3' , 'ProductController@showProductCreateThirdStep')->name('get_create_step_3');
 
 
 

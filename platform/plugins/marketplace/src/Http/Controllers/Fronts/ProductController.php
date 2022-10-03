@@ -9,6 +9,10 @@ use Botble\Base\Http\Controllers\BaseController;
 use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\Ecommerce\Http\Requests\ProductRequest;
 use Botble\Ecommerce\Http\Requests\ProductVersionRequest;
+use Botble\Ecommerce\Http\Requests\Vendor\Product\ProductFirstStepRequest;
+use Botble\Ecommerce\Http\Requests\Vendor\Product\ProductSeondRequest;
+use Botble\Ecommerce\Http\Requests\Vendor\Product\ProductStep_1;
+use Botble\Ecommerce\Http\Requests\Vendor\Product\ProductStep_1Request;
 use Botble\Ecommerce\Models\Customer;
 use Botble\Ecommerce\Models\Product;
 use Botble\Ecommerce\Models\ProductCategory;
@@ -95,13 +99,58 @@ class ProductController extends BaseController
      * create product step 1
      * save product name and category only
      */
-    public function postProductFirstStep(Request $request)
+    public function postProductFirstStep(ProductFirstStepRequest $request)
     {
-        
+        $data['name'] = $request->name;
+        $data['categories'] = [$request->parent_id , $request->sub_1_id , $request->sub_2_id];
+        $request->session()->put('product_data' , $data);
+        return response(['status' => true  , 'route' => route('marketplace.vendor.products.get_create_step_2')] , 200);
     }
 
-    /**
-     * @param ProductRequest $request
+
+    public function showProductCreateSecondStep(Request $request)
+    {
+        Assets::addStyles(['datetimepicker'])
+        ->addScripts([
+            'moment',
+            'datetimepicker',
+            'jquery-ui',
+            'input-mask',
+            'blockui',
+            ])
+            ->addStylesDirectly(['vendor/core/plugins/ecommerce/css/ecommerce.css'])
+            ->addScriptsDirectly([
+                'vendor/core/plugins/ecommerce/js/edit-product.js',
+            ]);
+            Assets::addScriptsDirectly(config('core.base.general.editor.ckeditor.js'));
+            Assets::addScriptsDirectly('vendor/core/core/base/js/editor.js');
+            return MarketplaceHelper::view('dashboard.products.create-step-2');
+        }
+
+        /**
+         * create product step 2
+         *
+         */
+        public function postProductSecondStep(ProductSeondRequest $request)
+        {
+            $data['description'] = $request->description;
+            $data['images'] = $request->images;
+            $data['price'] = $request->price;
+            $data['quantity'] = $request->quantity;
+            $data['delivery_time'] = $request->delivery_time;
+            $request->session()->put('product_data' ,  array_merge($request->session()->get('product_data') , $data));
+            return redirect()->route('marketplace.vendor.products.get_create_step_3');
+        }
+
+
+        public function showProductCreateThirdStep(Request $request)
+        {
+            return MarketplaceHelper::view('dashboard.products.create-step-3');
+        }
+
+
+        /**
+         * @param ProductRequest $request
      * @param StoreProductService $service
      * @param BaseHttpResponse $response
      * @param ProductVariationInterface $variationRepository
