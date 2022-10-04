@@ -11,6 +11,7 @@ use Botble\Ecommerce\Repositories\Interfaces\ProductInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Throwable;
 
 class StoreProductService
 {
@@ -100,11 +101,20 @@ class StoreProductService
 
         if ($product) {
             $categories = $request->input('categories');
-            if(@$categories[1] == null)
+            try
+            {
+
+            if(isset($categories[1]) && @$categories[1] == null)
                 unset($categories[1]);
-            if(@$categories[2] == null)
+            if(isset($categories[1]) && @$categories[2] == null)
                 unset($categories[2]);
             $product->categories()->sync($categories);
+
+            }catch(Throwable $e)
+            {
+                
+            }
+
 
             $product->productCollections()->sync($request->input('product_collections', []));
 
