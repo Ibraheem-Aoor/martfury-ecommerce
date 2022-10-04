@@ -100,9 +100,9 @@ class StoreProductService
 
         if ($product) {
             $categories = $request->input('categories');
-            if($categories[1] == null)
+            if(@$categories[1] == null)
                 unset($categories[1]);
-            if($categories[2] == null)
+            if(@$categories[2] == null)
                 unset($categories[2]);
             $product->categories()->sync($categories);
 
