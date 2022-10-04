@@ -101,6 +101,7 @@ class ProductController extends BaseController
     {
         $data['categories'] = ProductCategoryHelper::getAllProductCategories()
         ->where('status', BaseStatusEnum::PUBLISHED)->where('parent_id' , null)->where('id' , '!=' , 1);
+        dd($data);
         return MarketplaceHelper::view('dashboard.products.create-step-1' , $data);
     }
 
