@@ -100,8 +100,7 @@ class ProductController extends BaseController
     public function showProductCreateFirstStep()
     {
         $data['categories'] = ProductCategoryHelper::getAllProductCategories()
-        ->where('status', BaseStatusEnum::PUBLISHED)->where('parent_id' , null)->where('id' , '!=' , 1);
-        dd($data);
+        ->where('status', BaseStatusEnum::PUBLISHED)->where('parent_id' , 0)->where('id' , '!=' , 1);
         return MarketplaceHelper::view('dashboard.products.create-step-1' , $data);
     }
 
