@@ -80,7 +80,7 @@ $(document).on('submit', '#step_1_form', function (e) {
                 location.href = response.route;
             }
         }, error: function (response) {
-            if (responses.status == 422) {
+            if (response.status == 422) {
                 $.each(response.responseJSON.errors, function (key, item) {
                     toastr.error(item.message);
                 });

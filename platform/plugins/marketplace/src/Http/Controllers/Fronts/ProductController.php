@@ -7,16 +7,22 @@ use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Base\Forms\FormBuilder;
 use Botble\Base\Http\Controllers\BaseController;
 use Botble\Base\Http\Responses\BaseHttpResponse;
+use Botble\Base\Supports\Helper;
+use Botble\Base\Supports\Language as SupportsLanguage;
 use Botble\Ecommerce\Http\Requests\ProductRequest;
 use Botble\Ecommerce\Http\Requests\ProductVersionRequest;
+use Botble\Ecommerce\Http\Requests\Vendor\Product\ProductFiffthRequest;
 use Botble\Ecommerce\Http\Requests\Vendor\Product\ProductFirstStepRequest;
+use Botble\Ecommerce\Http\Requests\Vendor\Product\ProductFourthRequest;
 use Botble\Ecommerce\Http\Requests\Vendor\Product\ProductSeondRequest;
 use Botble\Ecommerce\Http\Requests\Vendor\Product\ProductStep_1;
 use Botble\Ecommerce\Http\Requests\Vendor\Product\ProductStep_1Request;
+use Botble\Ecommerce\Http\Requests\Vendor\Product\ProductThirdRequest;
 use Botble\Ecommerce\Models\Customer;
 use Botble\Ecommerce\Models\Product;
 use Botble\Ecommerce\Models\ProductCategory;
 use Botble\Ecommerce\Repositories\Eloquent\ProductVariationRepository;
+use Botble\Ecommerce\Repositories\Interfaces\BrandInterface;
 use Botble\Ecommerce\Repositories\Interfaces\GroupedProductInterface;
 use Botble\Ecommerce\Repositories\Interfaces\ProductAttributeInterface;
 use Botble\Ecommerce\Repositories\Interfaces\ProductAttributeSetInterface;
@@ -27,6 +33,8 @@ use Botble\Ecommerce\Services\Products\StoreProductService;
 use Botble\Ecommerce\Services\StoreProductTagService;
 use Botble\Ecommerce\Traits\ProductActionsTrait;
 use Botble\Marketplace\Forms\ProductForm;
+use Botble\Marketplace\Forms\ProductForm2;
+use Botble\Marketplace\Forms\ProductForm_2;
 use Botble\Marketplace\Tables\ProductTable;
 use Carbon\Carbon;
 use EmailHandler;
@@ -38,6 +46,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use JetBrains\PhpStorm\Language;
 use MarketplaceHelper;
 use ProductCategoryHelper;
 use Throwable;
@@ -102,9 +111,25 @@ class ProductController extends BaseController
     public function postProductFirstStep(ProductFirstStepRequest $request)
     {
         $data['name'] = $request->name;
+        $splited_name = explode(' ' , strtolower($request->name));
+        if(count($splited_name) > 0)
+        {
+
+            $data['slug'] = $this->getProductSlug($splited_name);
+        }
+
         $data['categories'] = [$request->parent_id , $request->sub_1_id , $request->sub_2_id];
         $request->session()->put('product_data' , $data);
         return response(['status' => true  , 'route' => route('marketplace.vendor.products.get_create_step_2')] , 200);
+    }
+
+
+    public function getProductSlug($splited_name)
+    {
+        $slug = '';
+        foreach ($splited_name as $part)
+            $slug .= $part.'-';
+        return $slug;
     }
 
 
@@ -124,29 +149,72 @@ class ProductController extends BaseController
             ]);
             Assets::addScriptsDirectly(config('core.base.general.editor.ckeditor.js'));
             Assets::addScriptsDirectly('vendor/core/core/base/js/editor.js');
-            return MarketplaceHelper::view('dashboard.products.create-step-2');
-        }
+            $data['brands'] = app(BrandInterface::class)->pluck('name', 'id');
+            return MarketplaceHelper::view('dashboard.products.create-step-2' , $data);
+    }
 
-        /**
+
+
+     /**
          * create product step 2
          *
          */
         public function postProductSecondStep(ProductSeondRequest $request)
         {
-            $data['description'] = $request->description;
-            $data['images'] = $request->images;
-            $data['price'] = $request->price;
-            $data['quantity'] = $request->quantity;
-            $data['delivery_time'] = $request->delivery_time;
-            $request->session()->put('product_data' ,  array_merge($request->session()->get('product_data') , $data));
-            return redirect()->route('marketplace.vendor.products.get_create_step_3');
+            $request->session()->put('product_data' ,  array_merge($request->session()->get('product_data') , $request->all()));
+            return response()->json(['status' => true , 'route' => route('marketplace.vendor.products.get_create_step_3')]);
         }
+
+
 
 
         public function showProductCreateThirdStep(Request $request)
         {
-            return MarketplaceHelper::view('dashboard.products.create-step-3');
+            $data['countries']   = Helper::countries();
+            $data['languages'] = SupportsLanguage::getListLanguages();
+            return MarketplaceHelper::view('dashboard.products.create-step-3' , $data);
         }
+
+        public function postProductCreateThirdStep(ProductThirdRequest $request)
+        {
+            $request->session()->put('product_data' ,  array_merge($request->session()->get('product_data') , $request->toArray()));
+            return response(['status' => true  , 'route' => route('marketplace.vendor.products.get_create_step_4')] , 200);
+        }
+
+        public function showProductCreateFourthStep(Request $request)
+        {
+            $data = [];
+            return MarketplaceHelper::view('dashboard.products.create-step-4' , $data);
+        }
+
+        public function postProductCreateFourthStep(ProductFourthRequest $request)
+        {
+            $request->session()->put('product_data' ,  array_merge($request->session()->get('product_data') , $request->toArray()));
+            return response(['status' => true  , 'route' => route('marketplace.vendor.products.get_create_step_5')] , 200);
+        }
+        public function showProductCreateFifthStep(Request $request , FormBuilder $formBuilder)
+        {
+            page_title()->setTitle(trans('plugins/ecommerce::products.create'));
+
+            Assets::addStyles(['datetimepicker'])
+                ->addScripts([
+                    'moment',
+                    'datetimepicker',
+                    'jquery-ui',
+                    'input-mask',
+                    'blockui',
+                ])
+                ->addStylesDirectly(['vendor/core/plugins/ecommerce/css/ecommerce.css'])
+                ->addScriptsDirectly([
+                    'vendor/core/plugins/ecommerce/js/edit-product.js',
+                    'vendor/core/plugins/ecommerce/js/product-custom.js',
+                ]);
+
+            return $formBuilder->create(ProductForm2::class)->renderForm();
+
+        }
+
+
 
 
         /**
@@ -162,7 +230,7 @@ class ProductController extends BaseController
      * @throws Exception
      */
     public function store(
-        ProductRequest $request,
+        ProductFiffthRequest $request,
         StoreProductService $service,
         BaseHttpResponse $response,
         ProductVariationInterface $variationRepository,
@@ -171,7 +239,15 @@ class ProductController extends BaseController
         StoreAttributesOfProductService $storeAttributesOfProductService,
         StoreProductTagService $storeProductTagService
     ) {
-
+        // dd($request->session()->get('product_data'));
+        foreach($request->session()->get('product_data') as $key => $value)
+        {
+            $request[$key] = $value;
+        }
+        // dd($request);
+        $request['status'] = BaseStatusEnum::PENDING;
+        $request['category_id'] = $request->session()->get('product_data')['categories'][0];
+        $request['model'] = Product::class;
         $product = $this->productRepository->getModel();
         $product->status = BaseStatusEnum::PENDING;
         $request->merge([
@@ -303,10 +379,13 @@ class ProductController extends BaseController
         StoreProductTagService $storeProductTagService
     ) {
         $product = $this->productRepository->findOrFail($id);
+        $product->status = $product->status;
 
         if ($product->is_variation || $product->store_id != auth('customer')->user()->store->id) {
             abort(404);
         }
+
+
 
         $request->merge([
             'store_id' => auth('customer')->user()->store->id,
@@ -371,7 +450,6 @@ class ProductController extends BaseController
                 ];
             }, array_filter(explode(',', $request->input('grouped_products', '')))));
         }
-
         return $response
             ->setPreviousUrl(route('marketplace.vendor.products.index'))
             ->setMessage(trans('core/base::notices.update_success_message'));

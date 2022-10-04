@@ -75,11 +75,9 @@ class Product extends BaseModel
         'packaging_language',
         'product_meterial',
         'peice_count',
-        'package_content',
         'is_guaranteed',
         'guarantee',
         'delivery_time',
-
     ];
 
     /**

@@ -1,23 +1,32 @@
 @extends('plugins/marketplace::themes.dashboard.layouts.master')
 @section('content')
     <div class="container">
-        <form  action="{{ route('marketplace.vendor.products.post_create_step_2') }}"
-            method="POST">
+        <form id="step_2_form" action="{{ route('marketplace.vendor.products.post_create_step_2') }}">
             @csrf
             <div class="row mb-5">
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label class="text-title-field  required">
-                            {{ __('Descreption') }}
+                            {{ __('Content') }}
                         </label>
                     </div>
-                    <textarea class="form-control editor-ckeditor" rows="4" cols="5" name="description" with-short-code="true"
+                    <textarea class="form-control " rows="4" cols="5" name="content" with-short-code="true" aria-required="true"></textarea>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="text-title-field  required">
+                            {{ __('Deliverables') }}
+                        </label>
+                    </div>
+                    <textarea class="form-control " rows="4" cols="5" name="deliverables" with-short-code="true"
                         aria-required="true"></textarea>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     <div class="form-group">
                         <label class="text-title-field  required">
                             {{ __('Price') }}
@@ -30,18 +39,29 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     <div class="form-group">
                         <label
                             class="text-title-field">{{ trans('plugins/ecommerce::products.form.storehouse.quantity') }}</label>
                         <input type="number" class="form-control" name="quantity" min="1" step="1">
                     </div>
                 </div>
-
-                <div class="col-sm-4">
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="text-title-field">{{ trans('plugins/ecommerce::products.form.brand') }}</label>
+                        <select name="brand_id" class="form-control">
+                            @foreach ($brands as $id => $name)
+                                <option value="{{ $id }}">{{ $name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-6">
                     <div class="form-group">
                         <label
-                            class="text-title-field required text-center">{{ trans('plugins/ecommerce::products.form.Delivery time') }}</label>
+                            class="text-title-field required">{{ trans('plugins/ecommerce::products.form.Delivery time') }}</label>
                         <select type="number" name="delivery_time" class="form-control text-center">
                             <option value="">--SELECT--</option>
                             <option value="24 Hour" @if (old('delivery_time') == '24 Hour' || (isset($product) && $product->delivery_time == '24 Hour')) selected @endif>
@@ -59,31 +79,19 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label
-                            class="text-title-field required text-center">{{ trans('plugins/ecommerce::products.form.image') }}</label>
-                        @include(MarketplaceHelper::viewPath('dashboard.forms.partials.custom-images'), [
-                            'name' => 'images',
-                            'values' => [],
-                            'attributes' => null,
-                        ])
-                    </div>
-                </div>
-            </div>
+
 
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-group text-center">
-                        <button type="submit" 
-                            class="btn btn-outline-success">{{ __('Next') }}</button>
+                        <button type="submit" class="btn btn-outline-success">{{ __('Next') }}</button>
                     </div>
                 </div>
             </div>
         </form>
     </div>
 @endsection
+
 
 
 @push('scripts')

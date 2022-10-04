@@ -21,6 +21,7 @@ class AddRefundColumnsIntoEcProductsTable extends Migration
             $table->string('product_country');
             $table->string('packaging_language');
             $table->string('product_meterial');
+            $table->string('product_color');
             $table->string('peice_count');
             $table->boolean('is_guaranteed');
             $table->text('guarantee')->nullable();
@@ -37,7 +38,7 @@ class AddRefundColumnsIntoEcProductsTable extends Migration
     {
         Schema::table('ec_products', function (Blueprint $table) {
             $table->dropColumn(['attr_weight' , 'attr_height' , 'attr_width' , 'attr_length' ,
-            'product_country' , 'packaging_language' , 'product_meterial' , 'peice_count' , 'package_content' , 'is_guaranteed' ,
+            'product_country' , 'packaging_language' , 'product_meterial' , 'peice_count'  , 'is_guaranteed' ,
             'guarantee' , 'max_delivery_from' , 'max_delivery_to']);
         });
     }

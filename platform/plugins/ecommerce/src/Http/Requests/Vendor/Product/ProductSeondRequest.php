@@ -9,11 +9,11 @@ class ProductSeondRequest extends Request
     public function rules()
     {
         return [
-            'description' => 'required',
-            'images' => 'required',
             'price'      => 'numeric|required|min:1|max:100000000',
             'delivery_time' => 'required' ,
             'quantity'   => 'numeric|required|min:1|max:100000000',
+            'content' => 'required',
+            'deliverables' => 'required',
         ];
     }
 }

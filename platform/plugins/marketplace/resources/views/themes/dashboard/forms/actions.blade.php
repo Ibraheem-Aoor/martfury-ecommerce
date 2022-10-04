@@ -13,7 +13,7 @@
             <button type="submit" name="submit" value="save" class="btn btn-sm btn-info">
                 <i class="fa fa-save"></i> {{ trans('core/base::forms.save') }}
             </button>
-            @if (!isset($only_save) || $only_save == false)
+            @if ((!isset($only_save) || $only_save == false) && Request::segment(3) != 'create-step-5')
                 &nbsp;
                 <button type="submit" name="submit" value="apply" class="btn btn-sm btn-success">
                     <i class="fa fa-check-circle"></i> {{ trans('core/base::forms.save_and_continue') }}

@@ -123,6 +123,13 @@ Route::group([
             Route::post('create-step-2-next' , 'ProductController@postProductSecondStep')->name('post_create_step_2');
             // create product step_3
             Route::get('create-step-3' , 'ProductController@showProductCreateThirdStep')->name('get_create_step_3');
+            Route::post('create-step-3' , 'ProductController@postProductCreateThirdStep')->name('post_create_step_3');
+            // create product step_4
+            Route::get('create-step-4' , 'ProductController@showProductCreateFourthStep')->name('get_create_step_4');
+            Route::post('create-step-4' , 'ProductController@postProductCreateFourthStep')->name('post_create_step_4');
+            // create product step_5
+            Route::get('create-step-5' , 'ProductController@showProductCreateFifthStep')->name('get_create_step_5');
+            // Route::post('create-step-5' , 'ProductController@postProductCreateFifthStep')->name('post_create_step_5');
 
 
 

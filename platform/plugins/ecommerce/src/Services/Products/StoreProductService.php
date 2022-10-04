@@ -85,10 +85,11 @@ class StoreProductService
         /**
          * @var Product $product
          */
-        if(Auth::check())
-        {
+        if (Auth::check()) {
             $product->status = $request->input('price') == 0 ? BaseStatusEnum::PENDING :  $request->input('status');
         }
+        if(auth('customer'))
+            $product->status = BaseStatusEnum::PENDING;
         $product = $this->productRepository->createOrUpdate($product);
 
         if (!$exists) {
@@ -98,7 +99,12 @@ class StoreProductService
         }
 
         if ($product) {
-            $product->categories()->sync($request->input('categories', []));
+            $categories = $request->input('categories');
+            if($categories[1] == null)
+                unset($categories[1]);
+            if($categories[2] == null)
+                unset($categories[2]);
+            $product->categories()->sync($categories);
 
             $product->productCollections()->sync($request->input('product_collections', []));
 
