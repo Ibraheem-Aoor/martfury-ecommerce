@@ -3,6 +3,8 @@
 namespace Botble\Marketplace\Forms;
 
 use Botble\Base\Enums\BaseStatusEnum;
+use Botble\Base\Forms\Fields\BrandLogo;
+use Botble\Base\Forms\Fields\Custom\BrandLogo as CustomBrandLogo;
 use Botble\Base\Forms\FormAbstract;
 use Botble\Ecommerce\Http\Requests\BrandRequest;
 use Botble\Ecommerce\Models\Brand;
@@ -32,6 +34,7 @@ class BrandForm extends FormAbstract
             ->setupModel(new Brand)
             ->setValidatorClass(BrandRequest::class)
             ->withCustomFields()
+            ->addCustomField('logo' , CustomBrandLogo::class)
         ->setActionButtons(MarketplaceHelper::view('dashboard.forms.actions')->render())
             ->add('name', 'text', [
                 'label'      => trans('core/base::forms.name'),
@@ -71,15 +74,15 @@ class BrandForm extends FormAbstract
                 'label_attr' => ['class' => 'control-label required'],
                 'choices'    => BaseStatusEnum::labels(),
             ])
-            // ->add('logo', 'mediaImage', [
-            //     'label'      => trans('plugins/ecommerce::brands.logo'),
-            //     'label_attr' => ['class' => 'control-label'],
-            // ])
             ->add('is_featured', 'onOff', [
                 'label'         => trans('plugins/ecommerce::brands.form.is_featured'),
                 'label_attr'    => ['class' => 'control-label'],
                 'default_value' => false,
             ])
+            ->addMetaBoxes(['Logo' => [
+                'title' => 'asdasdas',
+                'content' =>  MarketplaceHelper::view('custom.brand-logo')
+            ]])
             ->setBreakFieldPoint('status');
     }
 }

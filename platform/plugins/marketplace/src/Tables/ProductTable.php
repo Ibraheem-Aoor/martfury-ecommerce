@@ -55,7 +55,7 @@ class ProductTable extends TableAbstract
         $data = $this->table
             ->eloquent($this->query())
             ->editColumn('name', function ($item) {
-                return Html::link(route('marketplace.vendor.products.edit', $item->id), clean($item->name));
+                return Html::link($item->getSlug(), clean($item->name));
             })
             ->editColumn('image', function ($item) {
                 if ($this->request()->input('action') == 'csv') {
@@ -75,7 +75,7 @@ class ProductTable extends TableAbstract
                 return $item->price_in_table;;
             })
             ->editColumn('quantity', function ($item) {
-                return $item->with_storehouse_management ? $item->quantity : '&#8734;';
+                return  $item->quantity;
             })
             ->editColumn('sku', function ($item) {
                 return clean($item->sku ?: '&mdash;');

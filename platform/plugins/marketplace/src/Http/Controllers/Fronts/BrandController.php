@@ -46,7 +46,6 @@ class BrandController extends BaseController
     public function index(BrandTable $dataTable)
     {
         page_title()->setTitle(trans('plugins/ecommerce::brands.menu'));
-
         return $dataTable->render(MarketplaceHelper::viewPath('dashboard.table.base'));
 
     }
@@ -81,6 +80,7 @@ class BrandController extends BaseController
      */
     public function store(BrandRequest $request, BaseHttpResponse $response)
     {
+        dd($request);
         $request['created_by_id'] = auth('customer')->id();
         $brand = $this->brandRepository->createOrUpdate($request->input());
         event(new CreatedContentEvent(BRAND_MODULE_SCREEN_NAME, $request, $brand));
@@ -100,7 +100,6 @@ class BrandController extends BaseController
     {
         $brand = $this->brandRepository->findOrFail($id);
         page_title()->setTitle(trans('plugins/ecommerce::brands.edit') . ' "' . $brand->name . '"');
-
         return $formBuilder->create(BrandForm::class, ['model' => $brand])->renderForm();
     }
 
@@ -112,6 +111,7 @@ class BrandController extends BaseController
      */
     public function update($id, BrandRequest $request, BaseHttpResponse $response)
     {
+        dd($request);
         $brand = $this->brandRepository->findOrFail($id);
         $brand->fill($request->input());
 

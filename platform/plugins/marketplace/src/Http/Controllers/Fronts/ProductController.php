@@ -36,6 +36,7 @@ use Botble\Marketplace\Forms\ProductForm;
 use Botble\Marketplace\Forms\ProductForm2;
 use Botble\Marketplace\Forms\ProductForm_2;
 use Botble\Marketplace\Tables\ProductTable;
+use Botble\Slug\Models\Slug;
 use Carbon\Carbon;
 use EmailHandler;
 use Exception;
@@ -110,11 +111,10 @@ class ProductController extends BaseController
      */
     public function postProductFirstStep(ProductFirstStepRequest $request)
     {
-        $data['name'] = $request->name;
+        $data['name'] = strtolower($request->name);
         $splited_name = explode(' ' , strtolower($request->name));
         if(count($splited_name) > 0)
         {
-
             $data['slug'] = $this->getProductSlug($splited_name);
         }
 
@@ -122,6 +122,7 @@ class ProductController extends BaseController
         $request->session()->put('product_data' , $data);
         return response(['status' => true  , 'route' => route('marketplace.vendor.products.get_create_step_2')] , 200);
     }
+
 
 
     public function getProductSlug($splited_name)
@@ -170,6 +171,7 @@ class ProductController extends BaseController
 
         public function showProductCreateThirdStep(Request $request)
         {
+            page_title()->setTitle(__('Product Attributes'));
             $data['countries']   = Helper::countries();
             $data['languages'] = SupportsLanguage::getListLanguages();
             return MarketplaceHelper::view('dashboard.products.create-step-3' , $data);
@@ -183,6 +185,7 @@ class ProductController extends BaseController
 
         public function showProductCreateFourthStep(Request $request)
         {
+            page_title()->setTitle(__('Product Shipping Attributes'));
             $data = [];
             return MarketplaceHelper::view('dashboard.products.create-step-4' , $data);
         }
@@ -244,7 +247,7 @@ class ProductController extends BaseController
         {
             $request[$key] = $value;
         }
-        // dd($request);
+        $request['ean_code'] = $request->session()->get('checked_ean_code');
         $request['status'] = BaseStatusEnum::PENDING;
         $request['category_id'] = $request->session()->get('product_data')['categories'][0];
         $request['model'] = Product::class;
@@ -318,6 +321,12 @@ class ProductController extends BaseController
         }
         $product->status = BaseStatusEnum::PENDING;
         $product->save();
+        Slug::create([
+            'key' => $request->slug,
+            'prefix' => 'products',
+            'reference_type' => Product::class,
+            'reference_id' => $product->id,
+        ]);
         return $response
             ->setPreviousUrl(route('marketplace.vendor.products.index'))
             ->setNextUrl(route('marketplace.vendor.products.edit', $product->id))

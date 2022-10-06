@@ -96,7 +96,6 @@ class BrandController extends BaseController
      */
     public function update($id, BrandRequest $request, BaseHttpResponse $response)
     {
-        dd('gg from admin');
         $brand = $this->brandRepository->findOrFail($id);
         $brand->fill($request->input());
 

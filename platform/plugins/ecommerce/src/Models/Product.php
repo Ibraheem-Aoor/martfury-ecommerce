@@ -11,6 +11,7 @@ use Botble\Ecommerce\Enums\StockStatusEnum;
 use Botble\Ecommerce\Facades\DiscountFacade;
 use Botble\Ecommerce\Facades\FlashSaleFacade;
 use Botble\Ecommerce\Services\Products\UpdateDefaultProductService;
+use Botble\Slug\Models\Slug;
 use EcommerceHelper;
 use Exception;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -742,5 +743,11 @@ class Product extends BaseModel
         }, []);
 
         return $imagesReduced;
+    }
+
+    public function getSlug()
+    {
+        $link = Slug::query()->wherePrefix('products')->whereReferenceId($this->id)->first()->key ?? '#';
+        return 'products/'. $link.'?preview=true';
     }
 }
