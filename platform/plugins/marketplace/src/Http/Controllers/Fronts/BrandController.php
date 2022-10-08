@@ -21,6 +21,7 @@ use MarketplaceHelper;
 use Botble\Marketplace\Forms\BrandForm;
 use Assets;
 use Illuminate\Support\Facades\Route;
+use RvMedia;
 
 class BrandController extends BaseController
 {
@@ -80,8 +81,14 @@ class BrandController extends BaseController
      */
     public function store(BrandRequest $request, BaseHttpResponse $response)
     {
-        dd($request);
         $request['created_by_id'] = auth('customer')->id();
+        if ($request->hasFile('logo_input')) {
+            $result = RvMedia::handleUpload($request->file('logo_input'), 0, 'brands');
+            if ($result['error'] == false) {
+                $file = $result['data'];
+                $request->merge(['logo' => $file->url]);
+            }
+        }
         $brand = $this->brandRepository->createOrUpdate($request->input());
         event(new CreatedContentEvent(BRAND_MODULE_SCREEN_NAME, $request, $brand));
 
@@ -111,8 +118,16 @@ class BrandController extends BaseController
      */
     public function update($id, BrandRequest $request, BaseHttpResponse $response)
     {
-        dd($request);
         $brand = $this->brandRepository->findOrFail($id);
+
+        if ($request->hasFile('logo_input')) {
+            $result = RvMedia::handleUpload($request->file('logo_input'), 0, 'brands');
+            if ($result['error'] == false) {
+                $file = $result['data'];
+                $request->merge(['logo' => $file->url]);
+            }
+        }
+
         $brand->fill($request->input());
 
         $this->brandRepository->createOrUpdate($brand);

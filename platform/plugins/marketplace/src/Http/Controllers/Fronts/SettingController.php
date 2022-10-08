@@ -48,7 +48,7 @@ class SettingController
     {
         $store = auth('customer')->user()->store;
 
-        
+
         if ($request->hasFile('logo_input')) {
             $result = RvMedia::handleUpload($request->file('logo_input'), 0, 'stores');
             if ($result['error'] == false) {

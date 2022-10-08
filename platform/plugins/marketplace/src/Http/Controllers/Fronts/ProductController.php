@@ -136,6 +136,7 @@ class ProductController extends BaseController
 
     public function showProductCreateSecondStep(Request $request)
     {
+        page_title()->setTitle(trans('plugins/ecommerce::products.form.description'));
         Assets::addStyles(['datetimepicker'])
         ->addScripts([
             'moment',

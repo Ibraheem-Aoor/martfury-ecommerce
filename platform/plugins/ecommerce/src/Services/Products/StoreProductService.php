@@ -86,11 +86,17 @@ class StoreProductService
         /**
          * @var Product $product
          */
-        if (Auth::check()) {
-            $product->status = $request->input('price') == 0 ? BaseStatusEnum::PENDING :  $request->input('status');
+        if (Auth::check())
+        {
+            if($request->input('status') != null){
+                $product->update(['status' => $request->input('status')]);
+            }elseif($request->input('price') == 0){
+                $product->update(['status' => BaseStatusEnum::PENDING]);
+            }
         }
         if(auth('customer'))
-            $product->status = BaseStatusEnum::PENDING;
+            $product->update(['status' => BaseStatusEnum::PENDING]);
+        dd($product);
         $product = $this->productRepository->createOrUpdate($product);
 
         if (!$exists) {
@@ -112,7 +118,7 @@ class StoreProductService
 
             }catch(Throwable $e)
             {
-                
+
             }
 
 

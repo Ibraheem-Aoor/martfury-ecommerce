@@ -10,18 +10,18 @@
                             {{ __('Content') }}
                         </label>
                     </div>
-                    <textarea class="form-control " rows="4" cols="5" name="content" with-short-code="true" aria-required="true"></textarea>
+                    <textarea class="form-control " rows="4" cols="5" name="content" with-short-code="true" aria-required="true">{{trans('plugins/ecommerce::products.form.content_placeholder')}}</textarea>
                 </div>
             </div>
             <div class="row mb-5">
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label class="text-title-field  required">
-                            {{ __('Deliverables') }}
+                            {{ __('Deliverables') }}<i class="fa fa-exclamation"></i>
                         </label>
                     </div>
                     <textarea class="form-control " rows="4" cols="5" name="deliverables" with-short-code="true"
-                        aria-required="true"></textarea>
+                        aria-required="true">{{trans('plugins/ecommerce::products.form.deleviralbes_placeholder')}}</textarea>
                 </div>
             </div>
 

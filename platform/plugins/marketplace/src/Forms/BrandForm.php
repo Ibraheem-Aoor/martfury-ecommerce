@@ -34,7 +34,6 @@ class BrandForm extends FormAbstract
             ->setupModel(new Brand)
             ->setValidatorClass(BrandRequest::class)
             ->withCustomFields()
-            ->addCustomField('logo' , CustomBrandLogo::class)
         ->setActionButtons(MarketplaceHelper::view('dashboard.forms.actions')->render())
             ->add('name', 'text', [
                 'label'      => trans('core/base::forms.name'),
@@ -80,8 +79,8 @@ class BrandForm extends FormAbstract
                 'default_value' => false,
             ])
             ->addMetaBoxes(['Logo' => [
-                'title' => 'asdasdas',
-                'content' =>  MarketplaceHelper::view('custom.brand-logo')
+                'title' => 'Brand Image',
+                'content' =>  MarketplaceHelper::view('custom.brand-logo' , ['brand' => $this->getModel()])
             ]])
             ->setBreakFieldPoint('status');
     }

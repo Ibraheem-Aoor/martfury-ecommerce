@@ -203,7 +203,6 @@ class ProductController extends BaseController
         ProductVariationItemInterface $productVariationItemRepository,
         StoreProductTagService $storeProductTagService
     ) {
-
         $product = $this->productRepository->findOrFail($id);
         $product = $service->execute($request, $product);
         $storeProductTagService->execute($request, $product);

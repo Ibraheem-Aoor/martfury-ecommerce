@@ -16,6 +16,8 @@ return [
         'name_placeholder' => 'Product\'s name (Maximum 120 characters)',
         'description' => 'Description',
         'description_placeholder' => 'Short description for product (Maximum 400 characters)',
+        'content_placeholder' => 'Short description of the content of the  product (Maximum 400 characters)',
+        'deleviralbes_placeholder' => 'What Customer Will Receive When Buying This Product (Maximum 400 characters)',
         'categories' => 'Categories',
         'content' => 'Content',
         'deliverables' => 'Deliverables (what customer will receive?)',
