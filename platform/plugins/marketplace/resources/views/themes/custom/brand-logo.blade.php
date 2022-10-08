@@ -8,6 +8,3 @@
     </div>
 </div>
 
-<script>
-    $('input[name="logo"]').attr('required' , 'required');
-</script>

@@ -99,9 +99,6 @@ Theme::set('headerMobile', Theme::partial('header-mobile-product'));
                                         <li>
                                             {{ trans('plugins/ecommerce::products.form.Number of pieces') . ': ' . $product->peice_count }}
                                         </li>
-                                        <li>
-                                            {{ trans('plugins/ecommerce::products.form.Delivery time') . ': ' . $product->delivery_time }}
-                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -214,17 +211,13 @@ Theme::set('headerMobile', Theme::partial('header-mobile-product'));
                             <div class="ps-product__specification">
 
                                 <p @if (!$product->sku) style="display: none" @endif>
-                                <div class="container">
-                                    <div class="row">
-                                        <strong>{{ __('BORVAT CODE') }}:</strong> <span
-                                            id="product-sku">{{ $product->sku }}</span>
-                                        <div class="col-sm-2"></div>
-                                        <div class="col-sm-6" style="padding:0;">
-                                            <strong>{{ __('EAN CODE') }}:</strong> <span
-                                                id="product-sku">123456789777557</span>
-                                        </div>
-                                    </div>
-                                </div>
+                                    <strong>{{ __('BORVAT CODE') }}:</strong> <span
+                                        id="product-sku">{{ $product->sku }}</span>
+                                    @if ($product->ean_code)
+                                        <p><strong> {{ __('EAN CODE') }}:</strong>
+                                            {{ $product->ean_code }}
+                                        </p>
+                                    @endif
 
 
 
@@ -540,6 +533,12 @@ Theme::set('headerMobile', Theme::partial('header-mobile-product'));
             <div class="ps-page__right">
                 <aside class="widget widget_product widget_features">
                     @for ($i = 1; $i <= 5; $i++)
+                        @if ($i == 2)
+                            <p><i class="icon-3d-rotate"></i>
+                                {{ trans('plugins/ecommerce::products.form.Delivery time') . ': ' . $product->delivery_time }}
+                            </p>
+                            @continue
+                        @endif
                         @if (theme_option('product_feature_' . $i . '_title'))
                             <p><i class="{{ theme_option('product_feature_' . $i . '_icon') }}"></i>
                                 {{ theme_option('product_feature_' . $i . '_title') }}</p>

@@ -10,6 +10,7 @@ class ProductFiffthRequest extends Request
     {
         return [
             'images' => 'required',
+            'image_input' => 'required',
             'added_attributes.*' => 'required',
             'added_attributes' => 'required',
         ];
@@ -20,6 +21,7 @@ class ProductFiffthRequest extends Request
         return [
             'added_attributes.*'=> trans('plugins/ecommerce::products.form.no_attributes_selected'),
             'added_attributes'=> trans('plugins/ecommerce::products.form.no_attributes_selected'),
+            'image_input.required'=> trans('plugins/ecommerce::products.featured_image_required'),
         ];
     }
 }

@@ -42,6 +42,9 @@
                     <div class="form-group">
                         <label
                             class="text-title-field required">{{ trans('plugins/ecommerce::products.form.product_meterial') }}
+                                &nbsp;
+                            <i class="fa fa-question" style="display:inline !important;"
+                                title="{{ trans('plugins/ecommerce::products.form.product_meterial_placeholder') }}"></i>
                         </label>
                         <input type="text" class="form-control" name="product_meterial">
                     </div>

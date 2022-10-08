@@ -18,6 +18,7 @@ return [
         'description_placeholder' => 'Short description for product (Maximum 400 characters)',
         'content_placeholder' => 'Short description of the content of the  product (Maximum 400 characters)',
         'deleviralbes_placeholder' => 'What Customer Will Receive When Buying This Product (Maximum 400 characters)',
+        'product_meterial_placeholder' => 'what is it made of? Example: silicone',
         'categories' => 'Categories',
         'content' => 'Content',
         'deliverables' => 'Deliverables (what customer will receive?)',
@@ -157,6 +158,7 @@ return [
     'product_create_validate_attr_width_number' => 'Product Width Required',
     'product_create_validate_product_country_required' => 'Product Country Width Required',
     'attr_wright_required' => 'Discounts cannot be left blank when scheduling is selected',
+    'featured_image_required' => 'Featured Image Required',
     'stock_statuses' => [
         'in_stock' => 'In stock',
         'out_of_stock' => 'Out of stock',

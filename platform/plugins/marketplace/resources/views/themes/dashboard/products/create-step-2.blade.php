@@ -8,20 +8,29 @@
                     <div class="form-group">
                         <label class="text-title-field  required">
                             {{ __('Content') }}
+                            &nbsp;
+                            <i class="fa fa-question" style="display:inline !important;"
+                                title="{{ trans('plugins/ecommerce::products.form.content_placeholder') }}"></i>
+
                         </label>
                     </div>
-                    <textarea class="form-control " rows="4" cols="5" name="content" with-short-code="true" aria-required="true">{{trans('plugins/ecommerce::products.form.content_placeholder')}}</textarea>
+                    <textarea class="form-control " rows="4" cols="5" name="content" with-short-code="true"
+                        aria-required="true"></textarea>
                 </div>
             </div>
             <div class="row mb-5">
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label class="text-title-field  required">
-                            {{ __('Deliverables') }}<i class="fa fa-exclamation"></i>
+                            {{ __('Deliverables') }}
+                            &nbsp;
+                            <i class="fa fa-question" style="display:inline !important;"
+                                title="{{ trans('plugins/ecommerce::products.form.deleviralbes_placeholder') }}"></i>
+
                         </label>
                     </div>
                     <textarea class="form-control " rows="4" cols="5" name="deliverables" with-short-code="true"
-                        aria-required="true">{{trans('plugins/ecommerce::products.form.deleviralbes_placeholder')}}</textarea>
+                        aria-required="true"></textarea>
                 </div>
             </div>
 

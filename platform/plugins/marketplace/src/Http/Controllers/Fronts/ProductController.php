@@ -51,6 +51,7 @@ use JetBrains\PhpStorm\Language;
 use MarketplaceHelper;
 use ProductCategoryHelper;
 use Throwable;
+use RvMedia;
 
 class ProductController extends BaseController
 {
@@ -243,10 +244,16 @@ class ProductController extends BaseController
         StoreAttributesOfProductService $storeAttributesOfProductService,
         StoreProductTagService $storeProductTagService
     ) {
-        // dd($request->session()->get('product_data'));
         foreach($request->session()->get('product_data') as $key => $value)
         {
             $request[$key] = $value;
+        }
+        if ($request->hasFile('image_input')) {
+            $result = RvMedia::handleUpload($request->file('image_input'), 0, 'brands');
+            if ($result['error'] == false) {
+                $file = $result['data'];
+                $request->merge(['image' => $file->url]);
+            }
         }
         $request['ean_code'] = $request->session()->get('checked_ean_code');
         $request['status'] = BaseStatusEnum::PENDING;
@@ -395,6 +402,13 @@ class ProductController extends BaseController
             abort(404);
         }
 
+        if ($request->hasFile('image_input')) {
+            $result = RvMedia::handleUpload($request->file('image_input'), 0, 'brands');
+            if ($result['error'] == false) {
+                $file = $result['data'];
+                $request->merge(['image' => $file->url]);
+            }
+        }
 
 
         $request->merge([

@@ -96,7 +96,6 @@ class StoreProductService
         }
         if(auth('customer'))
             $product->update(['status' => BaseStatusEnum::PENDING]);
-        dd($product);
         $product = $this->productRepository->createOrUpdate($product);
 
         if (!$exists) {

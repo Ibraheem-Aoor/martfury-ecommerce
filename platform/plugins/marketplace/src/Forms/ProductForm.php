@@ -150,6 +150,10 @@ class ProductForm extends BaseProductForm
                     'data-url'    => route('marketplace.vendor.tags.all'),
                 ],
             ])
+            ->addMetaBoxes(['Image' => [
+                'title' => 'Featured Image',
+                'content' =>  MarketplaceHelper::view('custom.product-featured-image' , ['product' => $product])
+            ]])
             ->setBreakFieldPoint('categories[]');
 
         if (empty($productVariations) || $productVariations->isEmpty()) {
