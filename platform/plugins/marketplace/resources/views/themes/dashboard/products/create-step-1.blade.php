@@ -31,9 +31,9 @@
                     <div class="form-group">
                         <label for="">&nbsp;</label>
                         <select class="form-control" name="sub_1_id" id="sub_1_id">
-                            @if ($sub_1_category)
+                            @isset ($sub_1_category)
                                 <option value="{{ $sub_1_category->id }}">{{ $sub_1_category->name }}</option>
-                            @endif
+                            @endisset
                         </select>
                     </div>
                 </div>
@@ -41,9 +41,9 @@
                     <div class="form-group">
                         <label for="">&nbsp;</label>
                         <select class="form-control" name="sub_2_id" id="sub_2_id">
-                            @if ($sub_2_category)
+                            @isset ($sub_2_category)
                                 <option value="{{ $sub_2_category->id }}">{{ $sub_2_category->name }}</option>
-                            @endif
+                            @endisset
                         </select>
                     </div>
                 </div>
