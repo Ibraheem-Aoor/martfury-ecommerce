@@ -64,11 +64,11 @@
 @push('scripts')
     <script src="{{ asset('vendor/core/plugins/ecommerce/js/product-vendor-create/step_1.js') }}"></script>
     <script>
-        @if ($sub_1_category)
+        @isset ($sub_1_category)
             sub_1_id_select.show();
-        @endif
-        @if ($sub_2_category)
+        @endisset
+        @isset ($sub_2_category)
             sub_2_id_select.show();
-        @endif
+        @endisset
     </script>
 @endpush
