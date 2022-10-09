@@ -19,6 +19,6 @@ return [
         .'	                <li>An error may have occurred.</li>'."\n"
         .'	                <li>You are not authorized to view the requested resource.</li>',
     'reasons' => 'This may have occurred because of several reasons',
-    'try_again' => 'Please try again in a few minutes, or alternatively return to the homepage by <a href="http://martfury.test/admin">clicking here</a>.',
+    'try_again' => 'Please try again in a few minutes, or alternatively return to the homepage by <a href="#">clicking here</a>.',
     'not_found' => 'Not Found',
 ];

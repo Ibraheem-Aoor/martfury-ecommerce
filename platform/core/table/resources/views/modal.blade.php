@@ -31,3 +31,13 @@
         'data-load-url' => route('tables.bulk-change.data'),
     ],
 ])
+@include('core/table::partials.modal-item', [
+    'type' => 'info',
+    'name' => 'modal-quantity-change',
+    'title' => trans('core/base::tables.edit_quantity'),
+    'content' => '<div class="modal-quantity-change-content"><input class="form-control" name="quantity"></div>',
+    'action_name' => trans('core/base::tables.save'),
+    'action_button_attributes' => [
+        'class' => 'change-quantity-button',
+    ],
+])

@@ -132,6 +132,7 @@ Route::group([
             // Route::post('create-step-5' , 'ProductController@postProductCreateFifthStep')->name('post_create_step_5');
             Route::get('back-to-step/{step}' , 'ProductController@backToPreviousStep')->name('back_to_step');
 
+            Route::post('change-product-quantity' , 'ProductController@changeQuantity')->name('change_quantity');
 
 
                 Route::delete('items/destroy', [

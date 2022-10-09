@@ -84,6 +84,7 @@ return [
         'variation_existed' => 'This variation is existed.',
         'no_attributes_selected' => 'No attributes selected!',
         'added_variation_success' => 'Added variation successfully!',
+        'quantity_change_success' => 'Quantity Chnaged successfully!',
         'updated_variation_success' => 'Updated variation successfully!',
         'created_all_variation_success' => 'Created all variations successfully!',
         'updated_product_attributes_success' => 'Updated product attributes successfully!',
@@ -170,4 +171,5 @@ return [
     'delete_variations' => 'Delete variations',
     'category' => 'Category',
     'ean_check' => 'EAN CODE CHECK',
+    'error' => 'Something Went Wrong',
 ];

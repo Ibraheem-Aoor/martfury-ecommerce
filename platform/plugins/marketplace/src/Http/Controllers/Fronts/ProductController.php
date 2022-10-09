@@ -664,4 +664,19 @@ class ProductController extends BaseController
         $view = 'dashboard.products.create-step-'.$step_no;
         return  MarketplaceHelper::view($view , $data);
     }
+
+    /**
+     * Change  Quantity
+     */
+    public function changeQuantity(Request $request)
+    {
+        if($request->has('id') && $request->has('quantity')){
+            $product = Product::findOrFail($request->id);
+            $product->quantity = $request->quantity;
+            $product->save();
+            return response()->json(['status' => true , 'message' => trans('plugins/ecommerce::products.form.quantity_change_success')] , 200);
+        }
+        return response()->json(['status' => true , 'message' => trans('plugins/ecommerce::products.error')] , 500);
+
+    }
 }
