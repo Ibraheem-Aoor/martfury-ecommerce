@@ -55,7 +55,7 @@ class ProductTable extends TableAbstract
         $data = $this->table
             ->eloquent($this->query())
             ->editColumn('name', function ($item) {
-                return Html::link($item->getSlug(), clean($item->name));
+                return Html::link($item->getSlug(), clean($item->name)  , ['target' => '_blank']);
             })
             ->editColumn('image', function ($item) {
                 if ($this->request()->input('action') == 'csv') {
@@ -135,6 +135,11 @@ class ProductTable extends TableAbstract
                 'title' => trans('core/base::tables.id'),
                 'width' => '20px',
             ],
+            'status'     => [
+                'title' => trans('core/base::tables.status'),
+                'width' => '100px',
+                'class' => 'text-center',
+            ],
             'image'      => [
                 'name'  => 'images',
                 'title' => trans('plugins/ecommerce::products.image'),
@@ -167,11 +172,7 @@ class ProductTable extends TableAbstract
                 'width' => '100px',
                 'class' => 'text-center',
             ],
-            'status'     => [
-                'title' => trans('core/base::tables.status'),
-                'width' => '100px',
-                'class' => 'text-center',
-            ],
+
         ];
     }
 

@@ -264,7 +264,7 @@ Theme::set('headerMobile', Theme::partial('header-mobile-product'));
                                 <li><a href="#tab-reviews">{{ __('Reviews') }} ({{ $product->reviews_count }})</a>
                                 </li>
                             @endif
-                            <li><a href="#tab-deliverables ">{{ __('Deliverables ') }}</a></li>
+                            {{-- <li><a href="#tab-deliverables ">{{ __('Deliverables ') }}</a></li> --}}
 
                             @if (is_plugin_active('marketplace') && $product->store_id)
                                 <li><a href="#tab-vendor">{{ __('Vendor') }}</a></li>
@@ -471,13 +471,13 @@ Theme::set('headerMobile', Theme::partial('header-mobile-product'));
                             @endif
 
                             {{-- Start  Deliverables --}}
-                            <div class="ps-tab active" id="tab-deliverables">
+                            {{-- <div class="ps-tab active" id="tab-deliverables">
                                 <div class="ps-document">
                                     <div>
                                         {!! clean($product->deliverables) !!}
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             {{-- End  Deliverables --}}
 
 

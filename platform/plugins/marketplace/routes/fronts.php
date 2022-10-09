@@ -130,6 +130,7 @@ Route::group([
             // create product step_5
             Route::get('create-step-5' , 'ProductController@showProductCreateFifthStep')->name('get_create_step_5');
             // Route::post('create-step-5' , 'ProductController@postProductCreateFifthStep')->name('post_create_step_5');
+            Route::get('back-to-step/{step}' , 'ProductController@backToPreviousStep')->name('back_to_step');
 
 
 

@@ -46,6 +46,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Illuminate\View\View;
 use JetBrains\PhpStorm\Language;
 use MarketplaceHelper;
@@ -118,9 +119,9 @@ class ProductController extends BaseController
         {
             $data['slug'] = $this->getProductSlug($splited_name);
         }
-
         $data['categories'] = [$request->parent_id , $request->sub_1_id , $request->sub_2_id];
-        $request->session()->put('product_data' , $data);
+        $product_data = $request->session()->get('product_data');
+        $request->session()->put('product_data' , array_merge($product_data , $data));
         return response(['status' => true  , 'route' => route('marketplace.vendor.products.get_create_step_2')] , 200);
     }
 
@@ -131,6 +132,10 @@ class ProductController extends BaseController
         $slug = '';
         foreach ($splited_name as $part)
             $slug .= $part.'-';
+        while(Slug::whereKey($slug)->exists())
+        {
+            $slug .= '-'.mt_rand(10000,90000);
+        }
         return $slug;
     }
 
@@ -152,13 +157,15 @@ class ProductController extends BaseController
             ]);
             Assets::addScriptsDirectly(config('core.base.general.editor.ckeditor.js'));
             Assets::addScriptsDirectly('vendor/core/core/base/js/editor.js');
+            $data = $request->session()->get('product_data');
             $data['brands'] = app(BrandInterface::class)->pluck('name', 'id');
             return MarketplaceHelper::view('dashboard.products.create-step-2' , $data);
     }
 
 
 
-     /**
+
+        /**
          * create product step 2
          *
          */
@@ -174,6 +181,7 @@ class ProductController extends BaseController
         public function showProductCreateThirdStep(Request $request)
         {
             page_title()->setTitle(__('Product Attributes'));
+            $data = $request->session()->get('product_data');
             $data['countries']   = Helper::countries();
             $data['languages'] = SupportsLanguage::getListLanguages();
             return MarketplaceHelper::view('dashboard.products.create-step-3' , $data);
@@ -188,7 +196,7 @@ class ProductController extends BaseController
         public function showProductCreateFourthStep(Request $request)
         {
             page_title()->setTitle(__('Product Shipping Attributes'));
-            $data = [];
+            $data =  $request->session()->get('product_data');
             return MarketplaceHelper::view('dashboard.products.create-step-4' , $data);
         }
 
@@ -623,6 +631,7 @@ class ProductController extends BaseController
             return response()->json(['status' => true , 'is_unique' => false , 'route' => route('marketplace.vendor.products.edit' , $new_product->id)] , 200);
         }
         session()->put('checked_ean_code' , $ean_code);
+        $request->session()->put('product_data'  , []);
         return response()->json(['status' => true , 'is_unique' => true , 'route' => route('marketplace.vendor.products.get_create_step_1')] , 200);
     }
 
@@ -634,5 +643,25 @@ class ProductController extends BaseController
             $categories =  ProductCategory::whereParentId($request->id)->get();
             return response()->json(['status' => true , 'categories' => $categories] , 200);
         }
+    }
+
+
+    /**
+     * Back To previous page with old data.
+     */
+    public function backToPreviousStep($step_no  , Request $request)
+    {
+        $data = $request->session()->get('product_data');
+        $data['brands'] = app(BrandInterface::class)->pluck('name', 'id');
+        $data['product_categories'] = $data['categories'];
+        $data['categories'] = ProductCategoryHelper::getAllProductCategories();
+        $data['countries']   = Helper::countries();
+        $data['languages'] = SupportsLanguage::getListLanguages();
+        if(($id = $data['product_categories'][1]) != null)
+            $data['sub_1_category'] = ProductCategory::whereId($id)->first();
+        if(($id = $data['product_categories'][2] )!= null)
+            $data['sub_2_category'] = ProductCategory::whereId($id)->first();
+        $view = 'dashboard.products.create-step-'.$step_no;
+        return  MarketplaceHelper::view($view , $data);
     }
 }

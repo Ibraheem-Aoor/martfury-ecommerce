@@ -12,7 +12,7 @@
                         <label
                             class="text-title-field required">{{ trans('plugins/ecommerce::products.form.shipping.weight') }}
                             ({{ ecommerce_width_height_unit() }})</label>
-                        <input required type="number" name="weight" class="form-control">
+                        <input required type="number" name="weight" class="form-control" value="{{$weight ?? null}}">
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -20,7 +20,7 @@
                         <label
                             class="text-title-field required">{{ trans('plugins/ecommerce::products.form.shipping.height') }}
                             ({{ ecommerce_width_height_unit() }})</label>
-                        <input required type="number" name="height" class="form-control">
+                        <input required type="number" name="height" class="form-control" value="{{$height ?? null}}">
                     </div>
                 </div>
 
@@ -29,7 +29,7 @@
                         <label
                             class="text-title-field required">{{ trans('plugins/ecommerce::products.form.shipping.wide') }}
                             ({{ ecommerce_width_height_unit() }})</label>
-                        <input required type="number" name="wide" class="form-control">
+                        <input required type="number" name="wide" class="form-control" value="{{$wide ?? null}}">
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -37,7 +37,7 @@
                         <label
                             class="text-title-field required">{{ trans('plugins/ecommerce::products.form.shipping.length') }}
                             ({{ ecommerce_width_height_unit() }})</label>
-                        <input required type="number" name="length" class="form-control">
+                        <input required type="number" name="length" class="form-control" value="{{$length ?? null}}">
                     </div>
                 </div>
             </div>
@@ -55,18 +55,31 @@
                         <label
                             class="text-title-field required">{{ trans('plugins/ecommerce::products.form.Guarantee Details') }}</label>
                         <textarea class="form-control editor-ckeditor" rows="2" name="guarantee" id="guarntee-details"
-                            with-short-code="true" aria-required="true">{{ isset($product) ? $product->guarantee : old('guarantee', null) }}</textarea>
+                            with-short-code="true" aria-required="true">{{ $guarantee ?? null }}</textarea>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group text-center">
+
+
+            <div class="row mt-5">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-3 text-left">
+                    <div class="form-group">
+                        <a href="{{ route('marketplace.vendor.products.back_to_step', 3) }}"
+                            class="btn btn-outline-warning p-2"><i class="fa fa-arrow-left"></i>
+                            {{ __('Back') }}</a>
+                    </div>
+                </div>
+                <div class="col-sm-3"></div>
+                <div class="col-sm-3 text-right">
+                    <div class="form-group">
                         <button type="button" onclick="$('#step_4_form').submit();"
-                            class="btn btn-outline-success">{{ __('Next') }}</button>
+                            class="btn btn-outline-success p-2">{{ __('Next') }} <i
+                                class="fa fa-arrow-right"></i></button>
                     </div>
                 </div>
             </div>
+
 
         </form>
     </div>
@@ -75,4 +88,9 @@
 
 @push('scripts')
     <script src="{{ asset('vendor/core/plugins/ecommerce/js/product-vendor-create/step_4.js') }}"></script>
+    <script>
+        @if(isset($is_guaranteed) && ($is_guaranteed == 1))
+            $('#is_guaranteed_true').click();
+        @endif
+    </script>
 @endpush
