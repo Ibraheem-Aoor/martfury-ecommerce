@@ -21,7 +21,7 @@
                         <select class="form-control" required name="parent_id" id="parent_id"
                             data-route="{{ route('marketplace.vendor.products.get_children_categories') }}">
                             @foreach ($categories as $category)
-                                <option value="{{ $category->id }}" @if ($product_categories[0] == $category->id) selected @endif>
+                                <option value="{{ $category->id }}" @if (isset($product_categories) &&  $product_categories[0] == $category->id) selected @endif>
                                     {{ $category->name }}</option>
                             @endforeach
                         </select>
