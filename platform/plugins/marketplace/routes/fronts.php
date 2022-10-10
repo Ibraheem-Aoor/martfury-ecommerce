@@ -133,6 +133,7 @@ Route::group([
             Route::get('back-to-step/{step}' , 'ProductController@backToPreviousStep')->name('back_to_step');
 
             Route::post('change-product-quantity' , 'ProductController@changeQuantity')->name('change_quantity');
+            Route::get('test' , 'ProductController@seedData');
 
 
                 Route::delete('items/destroy', [
