@@ -951,11 +951,16 @@ class ProductController extends BaseController
                 ]
             ],
             [
-                'name' => 'Electronics' , 'children' => ["name" => "Television & Video",
+                'name' => 'Electronics' , 'children' =>[
+
+                [
+                    "name" => "Television & Video",
                     "children" => ["LED & LCD TVs",
                     "Receiver",
-                    "Streaming Media Players",]],
-                    ["name" => "Cameras",
+                    "Streaming Media Players",]
+                ],
+                ["name" => "Cameras",
+
                     "children" => ["Digital Cameras",
                     "Wearable & Action cameras",]],
                     ["name" => "Home Audio",
@@ -966,6 +971,8 @@ class ProductController extends BaseController
                     "children" => ["Over-Ear Headphones",
                     "Earbud Headphones",
                     "On-Ear Headphones",]
+                ]
+
                     ]
             ],
 
@@ -1004,7 +1011,7 @@ class ProductController extends BaseController
                 "Apple",]]]
         ],
         [
-            'name' => 'Sporting Goods' , 'children' =>  ["name" => "Cardio Training",
+            'name' => 'Sporting Goods' , 'children' => [ ["name" => "Cardio Training",
             "children" => ["Treadmills",
             "Exercise Bike",
             "Elliptical Trainers",]],
@@ -1022,7 +1029,7 @@ class ProductController extends BaseController
             "Team Sports",]],
             ["name" => "Outdoor & Adventure",
             "children" => ["Cycling",
-            "Running",]]
+            "Running",]]]
         ],
         [
             'name' => 'Gaming'  , 'children' => [["name" => "PlayStation 5",
@@ -1054,7 +1061,7 @@ class ProductController extends BaseController
             ]
         ],
         [
-            'name' => 'Automobile' , 'children' => ["name" => "Car Care",
+            'name' => 'Automobile' , 'children' =>[ ["name" => "Car Care",
             "children" => ["Cleaning Kits",
             "Exterior Care",
             " Interior Care",
@@ -1086,9 +1093,9 @@ class ProductController extends BaseController
             "Floor Mats & Cargo Liners",
             "Sun Protection",
             "Seat Covers & Accessories",]],
-        ],
+        ]],
         [
-            'name' => 'Other Categories' , 'children' => ["name" => "Garden & Outdoors",
+            'name' => 'Other Categories' , 'children' =>[ ["name" => "Garden & Outdoors",
         "children" => ["Outdoor Decor",
         "Outdoor Furniture & Accessories",
         "Grills & Outdoor Cooking",
@@ -1122,7 +1129,7 @@ class ProductController extends BaseController
         "children" => ["Dogs",
         "Cats",
         "Birds",]],
-    ],
+    ]],
 ];
 
 
@@ -1132,18 +1139,50 @@ class ProductController extends BaseController
         foreach($new_categories as $category)
         {
             $parent = ProductCategory::create(['name' => $category['name'] , 'order' => $i++]);
-            Slug::create([
-                'reference_type' => ProductCategory::class,
-                'reference_id'   => $parent->id,
-                'key'            => Str::slug($parent->name),
-                'prefix'         => SlugHelperFacade::getPrefix(ProductCategory::class),
-            ]);
-            $this->createChildren($parent->id, $category);
+            $this->makeSlugForMePlz($parent);
+            try
+            {
+
+            foreach($category['children'] as $child_1_cat)
+            {
+                $sub_1 = ProductCategory::create(['name' => $child_1_cat['name'] , 'parent_id' => $parent->id ] );
+                $this->makeSlugForMePlz($sub_1);
+                if(isset($child_1_cat['children']) && $child_1_cat['children'] != [])
+                {
+                    foreach($child_1_cat['children']  as $child_2_cat)
+                    {
+                        $name = '';
+                        if(is_array($child_2_cat))
+                            $name = $child_2_cat['name'];
+                        else
+                            $name = $child_2_cat;
+                        $sub_2 = ProductCategory::create(['name' => $name , 'parent_id' => $sub_1->id]);
+                        $this->makeSlugForMePlz($sub_2);
+                    }
+                }
+            }
+        }catch(Throwable $e)
+            {
+                dd($category);
+            }
+
+            // $this->createChildren($parent->id, $category);
 
         }
         dd('Done  Successfully');
 
 }
+
+    public function makeSlugForMePlz($category)
+    {
+        Slug::create([
+            'reference_type' => ProductCategory::class,
+            'reference_id'   => $category->id,
+            'key'            => Str::slug($category->name),
+            'prefix'         => SlugHelperFacade::getPrefix(ProductCategory::class),
+        ]);
+    }
+
 public function createChildren($parent_id , $category)
 {
     //child and sub child categories
