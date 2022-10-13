@@ -15,7 +15,7 @@ class ProductRequest extends Request
      *
      * @return array
      */
-    public function rules()
+     public function rules()
     {
         $basic_rules = [
             'name'       => 'required|max:120',

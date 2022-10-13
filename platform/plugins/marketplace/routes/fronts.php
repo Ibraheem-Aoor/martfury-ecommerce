@@ -133,7 +133,28 @@ Route::group([
             Route::get('back-to-step/{step}' , 'ProductController@backToPreviousStep')->name('back_to_step');
 
             Route::post('change-product-quantity' , 'ProductController@changeQuantity')->name('change_quantity');
-            Route::get('test' , 'ProductController@seedData');
+
+
+
+        Route::group(['prefix' => 'bulk-import', 'as' => 'bulk-import.'], function () {
+            Route::get('/', [
+                'as'   => 'index',
+                'uses' => 'BulkImportController@index',
+            ]);
+
+            Route::post('/', [
+                'as'         => 'index.post',
+                'uses'       => 'BulkImportController@postImport',
+                'permission' => 'ecommerce.bulk-import.index',
+            ]);
+
+            Route::post('/download-template', [
+                'as'         => 'download-template',
+                'uses'       => 'BulkImportController@downloadTemplate',
+                'permission' => 'ecommerce.bulk-import.index',
+            ]);
+        });
+
 
 
                 Route::delete('items/destroy', [

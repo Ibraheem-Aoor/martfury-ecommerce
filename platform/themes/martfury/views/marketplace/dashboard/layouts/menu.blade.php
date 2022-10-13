@@ -16,6 +16,15 @@
             ],
             'order' => 2,
         ],
+        [
+            'key'    => 'marketplace.vendor.products.bulk-import.index',
+            'icon'   => 'fas fa-file-import',
+            'name'   => __('Import'),
+            'routes' => [
+                'marketplace.vendor.products.bulk-import.index',
+            ],
+            'order' => 2,
+        ],
         // [
         //     'key'    => 'marketplace.vendor.product-attribute-sets.index',
         //     'icon'   => 'fas fa-glass-martini',

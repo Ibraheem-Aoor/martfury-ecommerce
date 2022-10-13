@@ -70,7 +70,7 @@
                                     {!! Theme::partial('product-categories-dropdown', compact('categories')) !!}
                                 </ul>
                             </div>
-                        </div><a class="ps-logo" href="{{ route('public.index') }}"><img src="{{ RvMedia::getImageUrl(theme_option('logo')) }}" alt="{{ theme_option('site_title') }}" height="40"></a>
+                        </div><a class="ps-logo" href="{{ route('public.index') }}"><img src="{{ RvMedia::getImageUrl(theme_option('logo')) }}" alt="{{ theme_option('site_title') }}" height="60"></a>
                     </div>
                     @if (is_plugin_active('ecommerce'))
                         <div class="header__center">
