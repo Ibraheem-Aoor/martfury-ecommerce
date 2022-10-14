@@ -141,5 +141,7 @@
              });
          </script>
      @endif
+     <script id="sbinit" src="http://supportboard.hyper-sys.com/supportboard/js/main.js"></script>
+     <script id="chat-init" src="https://cloud.board.support/account/js/init.js?id=181016947"></script>
     </body>
 </html>
