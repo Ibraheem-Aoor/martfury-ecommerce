@@ -66,44 +66,13 @@ class BulkImportController extends BaseController
 
         $file = $request->file('file');
         $importer = new VendorProductImport();
-        FacadesExcel::import($importer , $file);
-        if ($this->validateProductImport->failures()->count()) {
-            $data = [
-                'total_failed'  => $this->validateProductImport->failures()->count(),
-                'total_error'   => $this->validateProductImport->errors()->count(),
-                'failures'      => $this->validateProductImport->failures(),
-            ];
-
+        if(FacadesExcel::import($importer , $file)){
+            $message = trans('plugins/ecommerce::bulk-import.imported_successfully');
+        }else{
             $message = trans('plugins/ecommerce::bulk-import.import_failed_description');
-            dd($data);
-
-            return $response
-                ->setError()
-                ->setData($data)
-                ->setMessage($message);
         }
+        return $response->setMessage($message);
 
-        $this->productImport
-            ->setValidatorClass(new ProductRequest)
-            ->setImportType('products')
-            ->import($file); // Start import
-
-        $data = [
-            'total_success' => $this->productImport->successes()->count(),
-            'total_failed'  => $this->productImport->failures()->count(),
-            'total_error'   => $this->productImport->errors()->count(),
-            'failures'      => $this->productImport->failures(),
-            'successes'     => $this->productImport->successes(),
-        ];
-
-        $message = trans('plugins/ecommerce::bulk-import.imported_successfully');
-
-        $result = trans('plugins/ecommerce::bulk-import.results', [
-            'success' => $data['total_success'],
-            'failed'  => $data['total_failed'],
-        ]);
-
-        return $response->setData($data)->setMessage($message . ' ' . $result);
     }
 
     /**
