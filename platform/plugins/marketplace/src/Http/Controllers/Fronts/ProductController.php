@@ -343,8 +343,8 @@ class ProductController extends BaseController
         $product->status = BaseStatusEnum::PENDING;
         $product->save();
         Slug::create([
-            'key' => $request->slug,
-            'prefix' => 'products',
+            'key' => Str::slug($product->name),
+            'prefix' => SlugHelperFacade::getPrefix(Product::class),
             'reference_type' => Product::class,
             'reference_id' => $product->id,
         ]);
@@ -689,64 +689,6 @@ class ProductController extends BaseController
 
 
 
-
-
-public function createChildren($parent_id , $category)
-{
-    //child and sub child categories
-    if(isset($category['children']) &&  @$category['children'] != null)
-    {
-        foreach($category['children'] as $child)
-        {
-            try{
-                $name = '';
-                if(is_array($child))
-                {
-                    if(isset($child['name']))
-                        $name = $child['name'];
-                    else{
-                        foreach($child as $c)
-                        {
-
-                            $new_c = ProductCategory::create(['name' => $c  , 'parent_id' => $parent_id]);
-                            Slug::create([
-                                'reference_type' => ProductCategory::class,
-                                'reference_id'   => $new_c->id,
-                                'key'            => Str::slug($new_c->name),
-                                'prefix'         => SlugHelperFacade::getPrefix(ProductCategory::class),
-                            ]);
-                        }
-                    }
-                }else{
-                    $name = $child;
-                }
-                $new_child = ProductCategory::create(['name' => $name  , 'parent_id' => $parent_id]);
-                Slug::create([
-                    'reference_type' => ProductCategory::class,
-                    'reference_id'   => $new_child->id,
-                    'key'            => Str::slug($new_child->name),
-                    'prefix'         => SlugHelperFacade::getPrefix(ProductCategory::class),
-                ]);
-                if(is_array($child) &&  isset($child['children']) && @$child['children'] != null)
-                {
-                    foreach($child['children'] as $child)
-                        {
-                            $new_sub_child = ProductCategory::create(['name' => $child  , 'parent_id' => $new_child->id]);
-                            Slug::create([
-                                'reference_type' => ProductCategory::class,
-                                'reference_id'   => $new_sub_child->id,
-                                'key'            => Str::slug($new_sub_child->name),
-                                'prefix'         => SlugHelperFacade::getPrefix(ProductCategory::class),
-                            ]);
-                        }
-                }
-            }catch(Throwable $ex)
-            {
-                dd($child);
-            }
-        }
-    }
-}
 
 
 }

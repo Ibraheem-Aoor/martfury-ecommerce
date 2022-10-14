@@ -31,7 +31,7 @@ class ProductRequest extends Request
             'ean_code' => 'required|digits:13',
             'description' => 'nullable',
             'content' => 'required',
-            'deliverables' => 'required',
+            'deliverables' => 'nullable',
             'images' => 'required',
             'added_attributes.*' => 'required',
         ];

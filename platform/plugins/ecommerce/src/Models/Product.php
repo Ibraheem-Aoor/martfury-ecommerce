@@ -745,9 +745,15 @@ class Product extends BaseModel
         return $imagesReduced;
     }
 
+    public function slug() : HasOne
+    {
+        return $this->hasOne(Slug::class , 'reference_id');
+    }
+
+
     public function getSlug()
     {
-        $link = Slug::query()->wherePrefix('products')->whereReferenceId($this->id)->first()->key ?? '#';
+        $link = $this->slug ?? '#';
         return 'products/'. $link.'?preview=true';
     }
 }
