@@ -13,7 +13,7 @@ class ProductSeondRequest extends Request
             'delivery_time' => 'required' ,
             'quantity'   => 'numeric|required|min:1|max:100000000',
             'content' => 'required',
-            'deliverables' => 'nullable',
+            'deliverables' => 'nullable', //disabled for now
         ];
     }
 }

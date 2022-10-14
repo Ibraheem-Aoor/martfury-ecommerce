@@ -52,7 +52,7 @@
                     </div>
                 </div>
             </div>
-            <div class="hidden main-form-message">
+             {{-- <div class="hidden main-form-message">
                 <p id="imported-message"></p>
                 <div class="show-errors hidden">
                     <h3 class="text-warning text-center">{{ trans('plugins/ecommerce::bulk-import.failures') }}</h3>
@@ -69,12 +69,12 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
     {!! Form::close() !!}
 
-    <div class="widget meta-boxes">
+     {{-- <div class="widget meta-boxes">
         <div class="widget-title pl-2">
             <h4 class="text-info">{{ trans('plugins/ecommerce::bulk-import.template') }}</h4>
         </div>
@@ -206,8 +206,8 @@
                 </table>
             </div>
         </div>
-    </div>
-
+    </div> --}}
+{{--
     <div class="widget meta-boxes mt-4">
         <div class="widget-title pl-2">
             <h4 class="text-info">{{ trans('plugins/ecommerce::bulk-import.rules') }}</h4>
@@ -334,7 +334,7 @@
                 </tbody>
             </table>
         </div>
-    </div>
+    </div> --}}
     <script type="text/x-custom-template" id="failure-template">
         <tr>
             <td scope="row">__row__</td>

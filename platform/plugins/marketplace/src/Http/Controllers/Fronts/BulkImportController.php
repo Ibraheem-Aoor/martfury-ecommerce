@@ -1,6 +1,7 @@
 <?php
 
 namespace Botble\Marketplace\Http\Controllers\Fronts;
+use Botble\Ecommerce\Imports\VendorProductImport;
 use Botble\Base\Http\Controllers\BaseController;
 use Botble\Base\Http\Responses\BaseHttpResponse;
 use Assets;
@@ -11,8 +12,10 @@ use Botble\Ecommerce\Imports\ProductImport;
 use Botble\Ecommerce\Imports\ValidateProductImport;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Facades\Excel as FacadesExcel;
 use MarketplaceHelper;
 
 
@@ -58,16 +61,12 @@ class BulkImportController extends BaseController
      */
     public function postImport(Request $request, BaseHttpResponse $response)
     {
-        dd($request);
         @ini_set('max_execution_time', -1);
         @ini_set('memory_limit', -1);
 
         $file = $request->file('file');
-
-        $this->validateProductImport
-            ->setValidatorClass(new ProductRequest)
-            ->import($file);
-
+        $importer = new VendorProductImport();
+        FacadesExcel::import($importer , $file);
         if ($this->validateProductImport->failures()->count()) {
             $data = [
                 'total_failed'  => $this->validateProductImport->failures()->count(),
@@ -76,6 +75,7 @@ class BulkImportController extends BaseController
             ];
 
             $message = trans('plugins/ecommerce::bulk-import.import_failed_description');
+            dd($data);
 
             return $response
                 ->setError()
@@ -85,7 +85,7 @@ class BulkImportController extends BaseController
 
         $this->productImport
             ->setValidatorClass(new ProductRequest)
-            ->setImportType($request->input('type'))
+            ->setImportType('products')
             ->import($file); // Start import
 
         $data = [
@@ -114,7 +114,8 @@ class BulkImportController extends BaseController
     {
         $extension = $request->input('extension');
         $extension = $extension == 'csv' ? $extension : Excel::XLSX;
-
-        return (new TemplateProductExport($extension))->download('template_products_import.' . $extension);
+        $file = 'product-import-template/product_bulk_demo.'.$extension;
+        ob_clean();
+        return Storage::download($file);
     }
 }
