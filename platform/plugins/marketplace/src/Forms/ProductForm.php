@@ -6,9 +6,12 @@ namespace Botble\Marketplace\Forms;
 use Botble\Base\Forms\Fields\MultiCheckListField;
 use Botble\Base\Forms\Fields\TagField;
 use Botble\Base\Supports\Helper;
+use Botble\Base\Supports\Language;
+use Botble\Blog\Models\Category;
 use Botble\Ecommerce\Forms\Fields\CategoryMultiField;
 use Botble\Ecommerce\Forms\ProductForm as BaseProductForm;
 use Botble\Ecommerce\Models\Product;
+use Botble\Ecommerce\Models\ProductCategory;
 use Botble\Ecommerce\Repositories\Interfaces\BrandInterface;
 use Botble\Ecommerce\Repositories\Interfaces\ProductAttributeInterface;
 use Botble\Ecommerce\Repositories\Interfaces\ProductAttributeSetInterface;
@@ -27,15 +30,21 @@ use MarketplaceHelper;
 class ProductForm extends BaseProductForm
 {
 
+
     /**
      * {@inheritDoc}
      */
     public function buildForm()
     {
         $countries = Helper::countries();
+        $languages= Language::getListLanguages();
         $selectedCategories = [];
         if ($this->getModel()) {
             $selectedCategories = $this->getModel()->categories()->pluck('category_id')->all();
+            asort($selectedCategories);
+            $data['categories']['selectedCategories'] = $selectedCategories;
+            $data['categories']['sub_1_category'] = ProductCategory::query()->find($selectedCategories[1]);
+            $data['categories']['sub_2_category'] = ProductCategory::query()->find($selectedCategories[2]);
         }
 
         $brands = app(BrandInterface::class)->pluck('name', 'id');
@@ -125,8 +134,8 @@ class ProductForm extends BaseProductForm
             ->add('categories[]', 'categoryMulti', [
                 'label'      => trans('plugins/ecommerce::products.form.categories'),
                 'label_attr' => ['class' => 'control-label'],
-                'choices'    => get_product_categories_with_children(),
-                'value'      => old('categories', $selectedCategories),
+                'choices' => get_product_categories_with_children(),
+                'value'      =>  $data['categories'],
             ])
             ->add('brand_id', 'customSelect', [
                 'label'      => trans('plugins/ecommerce::products.form.brand'),
@@ -187,7 +196,7 @@ class ProductForm extends BaseProductForm
                 ])
                 ->addMetaBoxes(['Basic Product Attributes' => [
                     'title' => trans('plugins/ecommerce::products.form.Basic Product Attributes'),
-                    'content' => view('plugins/ecommerce::products.partials.basic-product-attributes' , compact('countries' ,'product')),
+                    'content' => view('plugins/ecommerce::products.partials.basic-product-attributes' , compact('countries' ,'product' , 'languages')),
                 ]])
                 ;
         } elseif ($productId) {

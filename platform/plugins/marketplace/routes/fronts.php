@@ -1,6 +1,7 @@
 <?php
 
 use Botble\Ecommerce\Http\Controllers\BrandController;
+use Botble\Ecommerce\Models\Product;
 use Botble\Marketplace\Models\Store;
 
 Route::group([
@@ -116,7 +117,7 @@ Route::group([
             Route::post('product-ean-check-vendor' ,'ProductController@isProductEanCodeExists' )->name('ean_check_vendor');
             // create product step_1
             Route::get('create-step-1' ,  'ProductController@showProductCreateFirstStep')->name('get_create_step_1');
-            Route::get('get-child-categories' , 'ProductController@getChildrenCategories')->name('get_children_categories');
+            Route::get('get-child-categories' , 'ProductController@getChildrenCategories')->name('get_children_categories')->withoutMiddleware(['web' , 'core' , 'vendor']);
             Route::post('create-step-1-next' ,  'ProductController@postProductFirstStep')->name('post_create_step_1');
             // create product step_2
             Route::get('create-step-2' , 'ProductController@showProductCreateSecondStep')->name('get_create_step_2');
@@ -342,3 +343,4 @@ Route::group([
         ]);
     });
 });
+

@@ -1,9 +1,9 @@
 @php
-Theme::set('stickyHeader', 'false');
-Theme::set('topHeader', Theme::partial('header-product-page', compact('product')));
-Theme::set('bottomFooter', Theme::partial('footer-product-page', compact('product')));
-Theme::set('pageId', 'product-page');
-Theme::set('headerMobile', Theme::partial('header-mobile-product'));
+    Theme::set('stickyHeader', 'false');
+    Theme::set('topHeader', Theme::partial('header-product-page', compact('product')));
+    Theme::set('bottomFooter', Theme::partial('footer-product-page', compact('product')));
+    Theme::set('pageId', 'product-page');
+    Theme::set('headerMobile', Theme::partial('header-mobile-product'));
 @endphp
 <style>
 
@@ -269,6 +269,9 @@ Theme::set('headerMobile', Theme::partial('header-mobile-product'));
                             @if (is_plugin_active('marketplace') && $product->store_id)
                                 <li><a href="#tab-vendor">{{ __('Vendor') }}</a></li>
                             @endif
+                            @if ($product->is_guaranteed)
+                                <li><a href="#tab-guarantee">{{ __('Guarantee') }}</a></li>
+                            @endif
                             @if (is_plugin_active('faq'))
                                 @if (count($product->faq_items) > 0)
                                     <li><a href="#tab-faq">{{ __('Questions and Answers') }}</a></li>
@@ -492,6 +495,14 @@ Theme::set('headerMobile', Theme::partial('header-mobile-product'));
                                     <a href="{{ $product->store->url }}" class="more-products">
                                         {{ __('More Products from :store', ['store' => $product->store->name]) }}
                                     </a>
+                                </div>
+                            @endif
+
+                            @if ($product->is_guaranteed)
+                                <div class="ps-tab" id="tab-guarantee">
+                                    <div>
+                                        {!! clean($product->guarantee) !!}
+                                    </div>
                                 </div>
                             @endif
 

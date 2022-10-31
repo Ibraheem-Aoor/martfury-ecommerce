@@ -2,19 +2,36 @@
 /**
  * @var string $value
  */
-$value = isset($value) ? (array) $value : [];
+if (isset($value)) {
+    $product_categories = $value['selectedCategories'];
+    $sub_1_category = $value['sub_1_category'];
+    $sub_2_category = $value['sub_2_category'];
+}
+
 ?>
 @if ($categories)
-    <select name="categories" class="form-control">
-        @php
-            if (auth('customer')->check() && auth('customer')->user()->is_vendor == 1) {
-                $categories = array_slice($categories, 1);
-            }
-        @endphp
+    <select class="form-control" required name="parent_id" id="parent_id"
+        data-route="{{ route('marketplace.vendor.products.get_children_categories') }}">
         @foreach ($categories as $category)
-            <option value="{{ $category->id }}">{{ $category->name }}</option>
+            <option value="{{ $category->id }}" @if (@$product_categories[0] == $category->id) selected @endif>
+                {{ $category->name }}</option>
         @endforeach
     </select>
+
+    <select class="form-control" name="sub_1_id" id="sub_1_id">
+        @isset($sub_1_category)
+            <option value="{{ $sub_1_category->id }}">
+                {{ $sub_1_category->name }}</option>
+        @endisset
+    </select>
+
+    <select class="form-control" name="sub_2_id" id="sub_2_id">
+        @isset($sub_2_category)
+            <option value="{{ $sub_2_category->id }}">
+                {{ $sub_2_category->name }}</option>
+        @endisset
+    </select>
+
 
     {{-- <ul>
         @foreach ($categories as $category)
@@ -33,3 +50,14 @@ $value = isset($value) ? (array) $value : [];
         @endforeach
     </ul> --}}
 @endif
+
+
+<script src="{{ asset('vendor/core/plugins/ecommerce/js/product-vendor-create/step_1.js') }}"></script>
+<script>
+    @isset($sub_1_category)
+        sub_1_id_select.show();
+    @endisset
+    @isset($sub_2_category)
+        sub_2_id_select.show();
+    @endisset
+</script>

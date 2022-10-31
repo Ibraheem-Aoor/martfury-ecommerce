@@ -109,8 +109,6 @@
         </div>
 
 
-        {{-- <script id="sbinit" src="http://supportboard.hyper-sys.com/supportboard/js/min/jquery.min.js"></script> --}}
-        {{-- <script id="sbinit" src="http://supportboard.hyper-sys.com/supportboard/js/main.js"></script> --}}
 
         <script>
         window.trans = {
@@ -121,8 +119,6 @@
     </script>
 
     {!! Theme::footer() !!}
-    <script id="sbinit" src="http://supportboard.hyper-sys.com/supportboard/js/min/main.min.js"></script>
-    <script id="chat-init" src="https://cloud.board.support/account/js/init.js?id=54f9837a91188e05aaf1936afeda50fda823e513"></script>
 
      @if (session()->has('success_msg') || session()->has('error_msg') || (isset($errors) && $errors->count() > 0) || isset($error_msg))
          <script type="text/javascript">

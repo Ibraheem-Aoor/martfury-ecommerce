@@ -5,6 +5,7 @@ namespace Botble\Ecommerce\Http\Requests;
 use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Support\Http\Requests\Request;
 use Illuminate\Contracts\Validation\Rule as ValidationRule;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rule;
 
 class ProductRequest extends Request
@@ -28,7 +29,7 @@ class ProductRequest extends Request
             'length'     => 'numeric|required|min:0|max:100000000',
             'status'     => Rule::in(BaseStatusEnum::values()),
             'quantity'   => 'numeric|required|min:1|max:100000000',
-            'ean_code' => 'required|digits:13',
+            'ean_code' => (Route::currentRouteName() != 'products.edit.update' &&  Route::currentRouteName() != 'marketplace.vendor.products.edit.update' ) ? 'required|digits:13' : 'nullable',
             'description' => 'nullable',
             'content' => 'required',
             'deliverables' => 'nullable',

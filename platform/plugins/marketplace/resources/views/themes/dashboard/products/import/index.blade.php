@@ -1,58 +1,65 @@
 @extends('plugins/marketplace::themes.dashboard.layouts.master')
 @section('content')
-    <form action="{{route('marketplace.vendor.products.bulk-import.index.post')}}" enctype="multipart/form-data" method="POST">
+    <form action="{{ route('marketplace.vendor.products.bulk-import.index.post') }}" enctype="multipart/form-data"
+        method="POST">
         @csrf
-    <div class="row justify-content-center">
-        <div class="col-xxl-6 col-xl-8 col-lg-10 col-12">
-            <div class="widget meta-boxes">
-                <div class="widget-title pl-2">
-                    <h4>{{ trans('plugins/ecommerce::bulk-import.menu') }}</h4>
-                </div>
-                <div class="widget-body">
-                    <div class="form-group mb-3 @if ($errors->has('file')) has-error @endif">
-                        <label class="control-label required" for="input-group-file">
-                            {{ trans('plugins/ecommerce::bulk-import.choose_file') }}
-                        </label>
-                        {!! Form::file('file', [
-                            'required' => true,
-                            'class' => 'form-control',
-                            'id' => 'input-group-file',
-                            'aria-describedby' => 'input-group-addon',
-                        ]) !!}
-                        <label class="d-block mt-1 help-block" for="input-group-file">
-                            {{ trans('plugins/ecommerce::bulk-import.choose_file_with_mime', ['types' => implode(', ', config('plugins.ecommerce.general.bulk-import.mimes', []))]) }}
-                        </label>
+        <div class="row justify-content-center">
+            <div class="col-xxl-6 col-xl-8 col-lg-10 col-12">
+                <div class="widget meta-boxes">
+                    <div class="widget-title pl-2">
+                        <h4>{{ trans('plugins/ecommerce::bulk-import.menu') }}</h4>
+                    </div>
+                    <div class="widget-body">
+                        <div class="form-group mb-3 @if ($errors->has('file')) has-error @endif">
+                            <label class="control-label required" for="input-group-file">
+                                {{ trans('plugins/ecommerce::bulk-import.choose_file') }}
+                            </label>
+                            {!! Form::file('file', [
+                                'required' => true,
+                                'class' => 'form-control',
+                                'id' => 'input-group-file',
+                                'aria-describedby' => 'input-group-addon',
+                            ]) !!}
+                            <label class="d-block mt-1 help-block" for="input-group-file">
+                                {{ trans('plugins/ecommerce::bulk-import.choose_file_with_mime', ['types' => implode(', ', config('plugins.ecommerce.general.bulk-import.mimes', []))]) }}
+                            </label>
 
-                        {!! Form::error('file', $errors) !!}
-                        <div class="mt-3 text-center p-2 border bg-light">
-                            <a href="#" class="download-template"
-                                data-url="{{ route('marketplace.vendor.products.bulk-import.download-template') }}" data-extension="csv"
-                                data-filename="template_products_import.csv"
-                                data-downloading="<i class='fas fa-spinner fa-spin'></i> {{ trans('plugins/ecommerce::bulk-import.downloading') }}">
-                                <i class="fas fa-file-csv"></i>
-                                {{ trans('plugins/ecommerce::bulk-import.download-csv-file') }}
-                            </a> &nbsp; | &nbsp;
-                            <a href="#" class="download-template"
-                                data-url="{{ route('marketplace.vendor.products.bulk-import.download-template') }}" data-extension="xlsx"
-                                data-filename="template_products_import.xlsx"
-                                data-downloading="<i class='fas fa-spinner fa-spin'></i> {{ trans('plugins/ecommerce::bulk-import.downloading') }}">
-                                <i class="fas fa-file-excel"></i>
-                                {{ trans('plugins/ecommerce::bulk-import.download-excel-file') }}
-                            </a>
+                            {!! Form::error('file', $errors) !!}
+                            <div class="mt-3 text-center p-2 border bg-light">
+                                <a href="#" class="download-template"
+                                    data-url="{{ route('marketplace.vendor.products.bulk-import.download-template') }}"
+                                    data-extension="csv" data-filename="template_products_import.csv"
+                                    data-downloading="<i class='fas fa-spinner fa-spin'></i> {{ trans('plugins/ecommerce::bulk-import.downloading') }}">
+                                    <i class="fas fa-file-csv"></i>
+                                    {{ trans('plugins/ecommerce::bulk-import.download-csv-file') }}
+                                </a> &nbsp; | &nbsp;
+                                <a href="#" class="download-template"
+                                    data-url="{{ route('marketplace.vendor.products.bulk-import.download-template') }}"
+                                    data-extension="xlsx" data-filename="template_products_import.xlsx"
+                                    data-downloading="<i class='fas fa-spinner fa-spin'></i> {{ trans('plugins/ecommerce::bulk-import.downloading') }}">
+                                    <i class="fas fa-file-excel"></i>
+                                    {{ trans('plugins/ecommerce::bulk-import.download-excel-file') }}
+                                </a>
+                            </div>
+                            <div class="mt-3 text-center p-2 border bg-light">
+                                <p class="text-danger">
+                                    {{ trans('plugins/ecommerce::bulk-import.note') }}</p>
+                                <p class="text-danger">
+                                    {{ trans('plugins/ecommerce::bulk-import.updated_required_after_import') }}</p>
+                            </div>
+                        </div>
+                        <div class="form-group mb-3 d-grid">
+                            <button type="submit" class="btn btn-info"
+                                data-choose-file="{{ trans('plugins/ecommerce::bulk-import.please_choose_the_file') }}"
+                                data-loading-text="{{ trans('plugins/ecommerce::bulk-import.loading_text') }}"
+                                data-complete-text="{{ trans('plugins/ecommerce::bulk-import.imported_successfully') }}"
+                                id="input-group-addon">
+                                {{ trans('plugins/ecommerce::bulk-import.start_import') }}
+                            </button>
                         </div>
                     </div>
-                    <div class="form-group mb-3 d-grid">
-                        <button type="submit" class="btn btn-info"
-                            data-choose-file="{{ trans('plugins/ecommerce::bulk-import.please_choose_the_file') }}"
-                            data-loading-text="{{ trans('plugins/ecommerce::bulk-import.loading_text') }}"
-                            data-complete-text="{{ trans('plugins/ecommerce::bulk-import.imported_successfully') }}"
-                            id="input-group-addon">
-                            {{ trans('plugins/ecommerce::bulk-import.start_import') }}
-                        </button>
-                    </div>
                 </div>
-            </div>
-             {{-- <div class="hidden main-form-message">
+                {{-- <div class="hidden main-form-message">
                 <p id="imported-message"></p>
                 <div class="show-errors hidden">
                     <h3 class="text-warning text-center">{{ trans('plugins/ecommerce::bulk-import.failures') }}</h3>
@@ -70,11 +77,11 @@
                     </table>
                 </div>
             </div> --}}
+            </div>
         </div>
-    </div>
-    {!! Form::close() !!}
+        {!! Form::close() !!}
 
-     {{-- <div class="widget meta-boxes">
+        {{-- <div class="widget meta-boxes">
         <div class="widget-title pl-2">
             <h4 class="text-info">{{ trans('plugins/ecommerce::bulk-import.template') }}</h4>
         </div>
@@ -207,7 +214,7 @@
             </div>
         </div>
     </div> --}}
-{{--
+        {{--
     <div class="widget meta-boxes mt-4">
         <div class="widget-title pl-2">
             <h4 class="text-info">{{ trans('plugins/ecommerce::bulk-import.rules') }}</h4>
@@ -335,11 +342,11 @@
             </table>
         </div>
     </div> --}}
-    <script type="text/x-custom-template" id="failure-template">
+        <script type="text/x-custom-template" id="failure-template">
         <tr>
             <td scope="row">__row__</td>
             <td>__attribute__</td>
             <td>__errors__</td>
         </tr>
     </script>
-@stop
+    @stop

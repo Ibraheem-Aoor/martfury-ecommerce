@@ -25,7 +25,10 @@ $(document).on('click', '#is_refunded_false', function () {
  * Refund Guarntee Section
  */
 var guarntee_details_div = $('#guanrtee-details-div');
-guarntee_details_div.hide();
+if(is_guaranteed == 1)
+    guarntee_details_div.show();
+else
+    guarntee_details_div.hide();
 $(document).on('click', '#is_guaranteed_true', function () {
     guarntee_details_div.show();
     $('#guarntee-details').attr('required', 'required');
@@ -35,7 +38,6 @@ $(document).on('click', '#is_guaranteed_false', function () {
     guarntee_details_div.hide();
     $('#guarntee-details').removeAttr('required');
     $('#guarntee-details').removeAttr('name');
-
 });
 
 

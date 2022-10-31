@@ -12,6 +12,7 @@ use Botble\Ecommerce\Http\Requests\CreateProductWhenCreatingOrderRequest;
 use Botble\Ecommerce\Http\Requests\ProductUpdateOrderByRequest;
 use Botble\Ecommerce\Http\Requests\ProductVersionRequest;
 use Botble\Ecommerce\Models\Product;
+use Botble\Ecommerce\Models\ProductCategory;
 use Botble\Ecommerce\Repositories\Eloquent\ProductVariationRepository;
 use Botble\Ecommerce\Repositories\Interfaces\BrandInterface;
 use Botble\Ecommerce\Repositories\Interfaces\ProductAttributeInterface;
@@ -118,8 +119,6 @@ trait ProductActionsTrait
 
                 $productRelatedToVariation->name = $product->name;
                 $productRelatedToVariation->deliverables = $product->deliverables;
-                $productRelatedToVariation->is_refunded = $product->is_refunded;
-                $productRelatedToVariation->refund_details = $product->refund_details;
                 $productRelatedToVariation->attr_weight = $product->attr_weight;
                 $productRelatedToVariation->attr_height = $product->attr_height;
                 $productRelatedToVariation->attr_width = $product->attr_width;
@@ -128,28 +127,26 @@ trait ProductActionsTrait
                 $productRelatedToVariation->packaging_language = $product->packaging_language;
                 $productRelatedToVariation->product_meterial = $product->product_meterial;
                 $productRelatedToVariation->peice_count = $product->peice_count;
-                $productRelatedToVariation->package_content = $product->package_content;
                 $productRelatedToVariation->is_guaranteed = $product->is_guaranteed;
                 $productRelatedToVariation->guarantee = $product->guarantee;
                 $productRelatedToVariation->is_guaranteed = $product->is_guaranteed;
-                $productRelatedToVariation->max_delivery_from = $product->max_delivery_from;
-                $productRelatedToVariation->max_delivery_to = $product->max_delivery_to;
+                $productRelatedToVariation->delivery_time = $product->delivery_time;
                 $productRelatedToVariation->status = $product->status;
                 $productRelatedToVariation->brand_id = $product->brand_id;
                 $productRelatedToVariation->is_variation = 1;
 
-                $productRelatedToVariation->sku = Arr::get($version, 'sku');
-                if (!$productRelatedToVariation->sku && Arr::get($version, 'auto_generate_sku')) {
-                    $productRelatedToVariation->sku = $product->sku;
-                    if (isset($version['attribute_sets']) && is_array($version['attribute_sets'])) {
-                        foreach ($version['attribute_sets'] as $attributeId) {
-                            $attribute = $this->productAttributeRepository->findById($attributeId);
-                            if ($attribute) {
-                                $productRelatedToVariation->sku .= '-' . Str::upper($attribute->slug);
-                            }
-                        }
-                    }
-                }
+                // $productRelatedToVariation->sku = Arr::get($version, 'sku');
+                // if (!$productRelatedToVariation->sku && Arr::get($version, 'auto_generate_sku')) {
+                //     $productRelatedToVariation->sku = $product->sku;
+                //     if (isset($version['attribute_sets']) && is_array($version['attribute_sets'])) {
+                //         foreach ($version['attribute_sets'] as $attributeId) {
+                //             $attribute = $this->productAttributeRepository->findById($attributeId);
+                //             if ($attribute) {
+                //                 $productRelatedToVariation->sku .= '-' . Str::upper($attribute->slug);
+                //             }
+                //         }
+                //     }
+                // }
                 $productRelatedToVariation->price = Arr::get($version, 'price', $product->price);
                 $productRelatedToVariation->sale_price = Arr::get($version, 'sale_price', $product->sale_price);
                 $productRelatedToVariation->description = Arr::get($version, 'description');
@@ -807,5 +804,15 @@ trait ProductActionsTrait
             return  view('plugins/ecommerce::products.ean-code-form');
         }
         return abort(404);
+    }
+
+
+    public function getChildrenCategories(Request $request)
+    {
+        if($request->id)
+        {
+            $categories =  ProductCategory::whereParentId($request->id)->get();
+            return response()->json(['status' => true , 'categories' => $categories] , 200);
+        }
     }
 }

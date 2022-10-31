@@ -44,3 +44,5 @@ resources/docs
 /log
 
 storage/framework/laravel-excel/
+
+public/storage

@@ -23,7 +23,7 @@
             'routes' => [
                 'marketplace.vendor.products.bulk-import.index',
             ],
-            'order' => 2,
+            'order' => 9,
         ],
         // [
         //     'key'    => 'marketplace.vendor.product-attribute-sets.index',

@@ -18,6 +18,7 @@ return [
     'rules' => 'Rules',
     'choose_file_with_mime' => 'Choose file with mime: (:types)',
     'choose_file' => 'Choose file',
+    'updated_required_after_import' => 'You have to set Category and Brand of the imported products',
     'menu' => 'Import products',
     'download-csv-file' => 'Download CSV template',
     'download-excel-file' => 'Download Excel template',

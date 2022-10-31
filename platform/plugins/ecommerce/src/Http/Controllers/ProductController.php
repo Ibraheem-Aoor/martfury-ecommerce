@@ -91,6 +91,8 @@ class ProductController extends BaseController
 
         page_title()->setTitle(trans('plugins/ecommerce::products.edit', ['name' => $product->name]));
 
+        
+        event(new BeforeEditContentEvent($request, $product));
         Assets::addStyles(['datetimepicker'])
             ->addScripts([
                 'moment',
@@ -102,9 +104,8 @@ class ProductController extends BaseController
             ->addStylesDirectly(['vendor/core/plugins/ecommerce/css/ecommerce.css'])
             ->addScriptsDirectly([
                 'vendor/core/plugins/ecommerce/js/edit-product.js',
+                'vendor/core/plugins/ecommerce/js/product-custom.js',
             ]);
-
-        event(new BeforeEditContentEvent($request, $product));
 
         return $formBuilder
             ->create(ProductForm::class, ['model' => $product])

@@ -423,6 +423,9 @@ class ProductController extends BaseController
             }
         }
 
+        // add categories array to the request body
+        $request['categories'] = [$request->parent_id , $request->sub_1_id , $request->sub_2_id];
+
 
         $request->merge([
             'store_id' => auth('customer')->user()->store->id,
@@ -487,6 +490,7 @@ class ProductController extends BaseController
                 ];
             }, array_filter(explode(',', $request->input('grouped_products', '')))));
         }
+
         return $response
             ->setPreviousUrl(route('marketplace.vendor.products.index'))
             ->setMessage(trans('core/base::notices.update_success_message'));
@@ -641,14 +645,7 @@ class ProductController extends BaseController
     }
 
 
-    public function getChildrenCategories(Request $request)
-    {
-        if($request->id)
-        {
-            $categories =  ProductCategory::whereParentId($request->id)->get();
-            return response()->json(['status' => true , 'categories' => $categories] , 200);
-        }
-    }
+
 
 
     /**

@@ -6,9 +6,12 @@ use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Base\Forms\Fields\MultiCheckListField;
 use Botble\Base\Forms\Fields\TagField;
 use Botble\Base\Forms\FormAbstract;
+use Botble\Base\Supports\Helper as SupportsHelper;
+use Botble\Base\Supports\Language;
 use Botble\Ecommerce\Forms\Fields\CategoryMultiField;
 use Botble\Ecommerce\Http\Requests\ProductRequest;
 use Botble\Ecommerce\Models\Product;
+use Botble\Ecommerce\Models\ProductCategory;
 use Botble\Ecommerce\Repositories\Interfaces\BrandInterface;
 use Botble\Ecommerce\Repositories\Interfaces\ProductAttributeInterface;
 use Botble\Ecommerce\Repositories\Interfaces\ProductAttributeSetInterface;
@@ -20,19 +23,28 @@ use Botble\Ecommerce\Repositories\Interfaces\ProductVariationItemInterface;
 use Botble\Ecommerce\Repositories\Interfaces\TaxInterface;
 use EcommerceHelper;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Route;
 use ProductCategoryHelper;
+use Symfony\Component\Console\Helper\Helper;
 
 class ProductForm extends FormAbstract
 {
+
 
     /**
      * {@inheritDoc}
      */
     public function buildForm()
     {
+        $countries = SupportsHelper::countries();
+        $languages = Language::getListLanguages();
         $selectedCategories = [];
         if ($this->getModel()) {
             $selectedCategories = $this->getModel()->categories()->pluck('category_id')->all();
+            asort($selectedCategories);
+            $data['categories']['selectedCategories'] = $selectedCategories;
+            $data['categories']['sub_1_category'] = ProductCategory::query()->find($selectedCategories[1]);
+            $data['categories']['sub_2_category'] = ProductCategory::query()->find($selectedCategories[2]);
         }
 
         $brands = app(BrandInterface::class)->pluck('name', 'id');
@@ -50,9 +62,11 @@ class ProductForm extends FormAbstract
         $productLabels = app(ProductLabelInterface::class)->pluck('name', 'id');
 
         $selectedProductLabels = [];
+        $product = null;
         if ($this->getModel()) {
             $selectedProductLabels = $this->getModel()->productLabels()->pluck('product_label_id')
                 ->all();
+            $product = $this->getModel();
         }
 
         $productId = $this->getModel() ? $this->getModel()->id : null;
@@ -147,7 +161,7 @@ class ProductForm extends FormAbstract
                 'label'      => trans('plugins/ecommerce::products.form.categories'),
                 'label_attr' => ['class' => 'control-label'],
                 'choices'    => ProductCategoryHelper::getAllProductCategoriesWithChildren(),
-                'value'      => old('categories', $selectedCategories),
+                'value'      => old('categories',  $data['categories']),
             ])
             ->add('brand_id', 'customSelect', [
                 'label'      => trans('plugins/ecommerce::products.form.brand'),
@@ -222,7 +236,11 @@ class ProductForm extends FormAbstract
                         'after_wrapper' => '</div>',
                         'priority'      => 3,
                     ],
-                ]);
+                ])->addMetaBoxes(['Basic Product Attributes' => [
+                    'title' => trans('plugins/ecommerce::products.form.Basic Product Attributes'),
+                    'content' => view('plugins/ecommerce::products.partials.basic-product-attributes' , compact('countries' ,'product' , 'languages')),
+                ]])
+                ;
         } elseif ($productId) {
             $productVariationsInfo = [];
             $productsRelatedToVariation = [];
