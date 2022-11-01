@@ -11,3 +11,7 @@
 |
 */
 
+use Botble\Ecommerce\Http\Controllers\Api\v1\OrderController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('orders' , [OrderController::class , 'index']);

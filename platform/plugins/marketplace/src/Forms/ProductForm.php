@@ -42,9 +42,10 @@ class ProductForm extends BaseProductForm
         if ($this->getModel()) {
             $selectedCategories = $this->getModel()->categories()->pluck('category_id')->all();
             asort($selectedCategories);
+
             $data['categories']['selectedCategories'] = $selectedCategories;
-            $data['categories']['sub_1_category'] = ProductCategory::query()->find($selectedCategories[1]);
-            $data['categories']['sub_2_category'] = ProductCategory::query()->find($selectedCategories[2]);
+            $data['categories']['sub_1_category'] = ProductCategory::query()->find(@$selectedCategories[1]);
+            $data['categories']['sub_2_category'] = ProductCategory::query()->find(@$selectedCategories[2]);
         }
 
         $brands = app(BrandInterface::class)->pluck('name', 'id');

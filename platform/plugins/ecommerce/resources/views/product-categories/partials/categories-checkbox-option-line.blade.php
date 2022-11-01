@@ -3,9 +3,9 @@
  * @var string $value
  */
 if (isset($value)) {
-    $product_categories = $value['selectedCategories'];
-    $sub_1_category = $value['sub_1_category'];
-    $sub_2_category = $value['sub_2_category'];
+    $product_categories = @$value['selectedCategories'];
+    $sub_1_category = @$value['sub_1_category'];
+    $sub_2_category = @$value['sub_2_category'];
 }
 
 ?>
@@ -51,13 +51,27 @@ if (isset($value)) {
     </ul> --}}
 @endif
 
-
-<script src="{{ asset('vendor/core/plugins/ecommerce/js/product-vendor-create/step_1.js') }}"></script>
-<script>
-    @isset($sub_1_category)
-        sub_1_id_select.show();
-    @endisset
-    @isset($sub_2_category)
-        sub_2_id_select.show();
-    @endisset
-</script>
+@auth('customer')
+    @push('scripts')
+        <script src="{{ asset('vendor/core/plugins/ecommerce/js/product-vendor-create/step_1.js') }}"></script>
+        <script>
+            @isset($sub_1_category)
+                sub_1_id_select.show();
+            @endisset
+            @isset($sub_2_category)
+                sub_2_id_select.show();
+            @endisset
+        </script>
+    @endpush
+@endauth
+@push('footer')
+    <script src="{{ asset('vendor/core/plugins/ecommerce/js/product-vendor-create/step_1.js') }}"></script>
+    <script>
+        @isset($sub_1_category)
+            sub_1_id_select.show();
+        @endisset
+        @isset($sub_2_category)
+            sub_2_id_select.show();
+        @endisset
+    </script>
+@endpush

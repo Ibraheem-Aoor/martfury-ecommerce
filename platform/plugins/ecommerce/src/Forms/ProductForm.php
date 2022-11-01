@@ -43,8 +43,8 @@ class ProductForm extends FormAbstract
             $selectedCategories = $this->getModel()->categories()->pluck('category_id')->all();
             asort($selectedCategories);
             $data['categories']['selectedCategories'] = $selectedCategories;
-            $data['categories']['sub_1_category'] = ProductCategory::query()->find($selectedCategories[1]);
-            $data['categories']['sub_2_category'] = ProductCategory::query()->find($selectedCategories[2]);
+            $data['categories']['sub_1_category'] = ProductCategory::query()->find(@$selectedCategories[1]);
+            $data['categories']['sub_2_category'] = ProductCategory::query()->find(@$selectedCategories[2]);
         }
 
         $brands = app(BrandInterface::class)->pluck('name', 'id');
@@ -161,7 +161,7 @@ class ProductForm extends FormAbstract
                 'label'      => trans('plugins/ecommerce::products.form.categories'),
                 'label_attr' => ['class' => 'control-label'],
                 'choices'    => ProductCategoryHelper::getAllProductCategoriesWithChildren(),
-                'value'      => old('categories',  $data['categories']),
+                'value'      => old('categories',  @$data['categories']),
             ])
             ->add('brand_id', 'customSelect', [
                 'label'      => trans('plugins/ecommerce::products.form.brand'),

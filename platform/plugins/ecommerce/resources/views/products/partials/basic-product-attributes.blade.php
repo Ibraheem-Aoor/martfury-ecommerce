@@ -55,7 +55,7 @@ script<div class="container">
                     class="text-title-field required">{{ trans('plugins/ecommerce::products.form.Product Language') }}</label>
                 <select name="packaging_language" class="form-control">
                     @foreach ($languages as $language)
-                        <option value="{{ $language[2] }}" @if ($language[2] == $product->packaging_language) selected @endif>
+                        <option value="{{ $language[2] }}" @if (isset($product) && $language[2] == $product->packaging_language) selected @endif>
                             {{ $language[2] }}</option>
                     @endforeach
                 </select>

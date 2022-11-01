@@ -91,7 +91,7 @@ class ProductController extends BaseController
 
         page_title()->setTitle(trans('plugins/ecommerce::products.edit', ['name' => $product->name]));
 
-        
+
         event(new BeforeEditContentEvent($request, $product));
         Assets::addStyles(['datetimepicker'])
             ->addScripts([
@@ -204,6 +204,8 @@ class ProductController extends BaseController
         ProductVariationItemInterface $productVariationItemRepository,
         StoreProductTagService $storeProductTagService
     ) {
+          // add categories array to the request body
+        $request['categories'] = [$request->parent_id , $request->sub_1_id , $request->sub_2_id];
         $product = $this->productRepository->findOrFail($id);
         $product = $service->execute($request, $product);
         $storeProductTagService->execute($request, $product);
