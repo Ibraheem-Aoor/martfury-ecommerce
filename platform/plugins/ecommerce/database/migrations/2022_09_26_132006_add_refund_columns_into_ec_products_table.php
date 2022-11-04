@@ -39,7 +39,7 @@ class AddRefundColumnsIntoEcProductsTable extends Migration
         Schema::table('ec_products', function (Blueprint $table) {
             $table->dropColumn(['attr_weight' , 'attr_height' , 'attr_width' , 'attr_length' ,
             'product_country' , 'packaging_language' , 'product_meterial' , 'peice_count'  , 'is_guaranteed' , 'delivery_time',
-            'guarantee' ,]);
+            'guarantee' ,'product_color']);
         });
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ApiTrait;
 use App\Http\Resources\OrderResource;
 use Botble\Ecommerce\Models\Order;
 use Botble\Ecommerce\Models\Shipment;
+use Botble\Support\Http\Requests\Request;
 use Illuminate\Routing\Controller;
 use Throwable;
 

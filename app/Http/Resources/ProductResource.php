@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Botble\Media\RvMedia;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProductResource extends JsonResource
@@ -15,10 +16,11 @@ class ProductResource extends JsonResource
     public function toArray($request)
     {
         return [
-            "api_id" => $this->api_id,
+            "api_id" => $this->id,
             "api_order_id" => $this->order_id,
             "qty" => $this->qty,
             "ean_code" => $this->product->ean_code,
+            "image" =>  \RvMedia::getImageUrl($this->product->image),
             "price" => $this->price,
             "tax_amount" => $this->tax_amount,
             "options" => $this->options,

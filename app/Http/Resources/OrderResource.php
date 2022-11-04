@@ -17,6 +17,7 @@ class OrderResource extends JsonResource
         return [
             'api_id' => $this->id,
             'code' => get_order_code($this->id),
+            'quantity' => $this->products()->sum('qty'),
             'basic_attributes' => [
                 "user_id" => $this->user_id,
                 "shipping_option" => $this->shipping_option,
@@ -47,5 +48,10 @@ class OrderResource extends JsonResource
             'address' => $this->whenLoaded('address'),
             'payment' => $this->whenLoaded('payment'),
         ];
+    }
+
+
+    public function getQty()
+    {
     }
 }
