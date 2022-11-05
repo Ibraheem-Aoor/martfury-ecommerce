@@ -1,4 +1,4 @@
-script<div class="container">
+<div class="container">
     <div class="row">
         <div class="col-md-3">
             <div class="form-group">
@@ -140,6 +140,18 @@ script<div class="container">
 
     --}}
 
-<script>
-    var is_guaranteed = "{{ $product?->is_guaranteed == 1 || old('is_guaranteed') == 1 ? true : false }}";
-</script>
+{{-- @push('scripts')
+    <script>
+        var guarntee_details_div = $('#guanrtee-details-div');
+        $(document).on('click', '#is_guaranteed_true', function() {
+            guarntee_details_div.show();
+            $('#guarntee-details').attr('required', 'required');
+            $('#guarntee-details').attr('name', 'guarantee');
+        });
+        $(document).on('click', '#is_guaranteed_false', function() {
+            guarntee_details_div.hide();
+            $('#guarntee-details').removeAttr('required');
+            $('#guarntee-details').removeAttr('name');
+        });
+    </script>
+@endpush --}}

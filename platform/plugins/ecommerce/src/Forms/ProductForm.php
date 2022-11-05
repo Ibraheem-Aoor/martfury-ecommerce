@@ -236,11 +236,7 @@ class ProductForm extends FormAbstract
                         'after_wrapper' => '</div>',
                         'priority'      => 3,
                     ],
-                ])->addMetaBoxes(['Basic Product Attributes' => [
-                    'title' => trans('plugins/ecommerce::products.form.Basic Product Attributes'),
-                    'content' => view('plugins/ecommerce::products.partials.basic-product-attributes' , compact('countries' ,'product' , 'languages')),
-                ]])
-                ;
+                ]);
         } elseif ($productId) {
             $productVariationsInfo = [];
             $productsRelatedToVariation = [];
@@ -270,6 +266,10 @@ class ProductForm extends FormAbstract
                     ],
                 ]);
         }
+        $this->addMetaBoxes(['Basic Product Attributes' => [
+            'title' => trans('plugins/ecommerce::products.form.Basic Product Attributes'),
+            'content' => view('plugins/ecommerce::products.partials.basic-product-attributes' , compact('countries' ,'product' , 'languages')),
+        ]]);
     }
 
     /**

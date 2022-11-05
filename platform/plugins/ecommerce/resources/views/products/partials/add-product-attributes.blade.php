@@ -10,7 +10,7 @@
                         <div class="col-md-4 col-sm-6">
                             <div class="form-group mb-3">
                                 <label class="text-title-field">{{ trans('plugins/ecommerce::products.form.attribute_name') }}</label>
-                                <select required class="next-input product-select-attribute-item">
+                                <select class="next-input product-select-attribute-item">
                                     @foreach ($productAttributeSets as $item)
                                         <option value="{{ $item->id }}">
                                             {{ $item->title }}
@@ -52,7 +52,7 @@
                 </div>
             @endforeach
         </div>
-        <div class="list-product-attribute-wrap">
+        <div class="list-product-attribute-wrap hidden">
             <div class="list-product-attribute-wrap-detail">
                 <div class="product-attribute-set-item">
                     <div class="row">

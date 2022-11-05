@@ -77,7 +77,7 @@ class ProductTable extends TableAbstract
                 return $item->price_in_table;
             })
             ->editColumn('quantity', function ($item) {
-                return $item->with_storehouse_management ? $item->quantity : '&#8734;';
+                return $item->quantity;
             })
             ->editColumn('sku', function ($item) {
                 return clean($item->sku ?: '&mdash;');
