@@ -124,15 +124,15 @@ class ProductForm extends FormAbstract
 
                 ],
             ])
-            ->add('deliverables', 'editor', [
-                'label'      => trans('plugins/ecommerce::products.form.deliverables'),
-                'label_attr' => ['class' => 'text-title-field'],
-                'attr'       => [
-                    'rows'            => 4,
-                    'with-short-code' => true,
-                    'required' => 'required',
-                ],
-            ])
+            // ->add('deliverables', 'editor', [
+            //     'label'      => trans('plugins/ecommerce::products.form.deliverables'),
+            //     'label_attr' => ['class' => 'text-title-field'],
+            //     'attr'       => [
+            //         'rows'            => 4,
+            //         'with-short-code' => true,
+            //         'required' => 'required',
+            //     ],
+            // ])
             ->add('images[]', 'mediaImages', [
                 'label'      => trans('plugins/ecommerce::products.form.image'),
                 'label_attr' => ['class' => 'control-label'],
