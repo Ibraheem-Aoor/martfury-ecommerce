@@ -14,7 +14,7 @@ class AddDeliverablesIntoEcProductsTable extends Migration
     public function up()
     {
         Schema::table('ec_products', function (Blueprint $table) {
-            $table->string('deliverables')->nullable();
+            $table->longText('deliverables')->nullable();
         });
     }
 

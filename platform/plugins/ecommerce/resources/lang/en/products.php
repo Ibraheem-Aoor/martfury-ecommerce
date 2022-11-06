@@ -5,6 +5,11 @@ return [
     'create'                                         => 'New product',
     'edit'                                           => 'Edit product - :name',
     'form'                                           => [
+        '24 Hour' => '24 Hour',
+        '2 Days' => '2 Days',
+        '5 Days' => '5 Days',
+        '1 Week' => '1 Week',
+        '2 Weeks' => '2 Weeks',
         'Product Country'                    =>  'Product Country',
         'Product Language'                    =>  'Product Language',
         'Product Material'                    =>  'Product Material',
@@ -157,4 +162,5 @@ return [
     'delete_variations'                              => 'Delete variations',
     'category'                                       => 'Category',
     'is_refunded'     =>                              'Is Refunded Field Required',
+    'ean_check' => 'EAN CODE CHECK',
 ];
