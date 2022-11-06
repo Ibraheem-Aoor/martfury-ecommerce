@@ -12,7 +12,7 @@
                         </div>
                     </div>
                     <div class="empty-displayTmpl-btn">
-                        <a class="btn btn-primary btn-lg" href="{{ route('products.create') }}">{{ trans('plugins/ecommerce::products.add_new_product') }}</a>
+                        <a class="btn btn-primary btn-lg" href="{{ route('products.ean.show_form') }}">{{ trans('plugins/ecommerce::products.add_new_product') }}</a>
                     </div>
                 </div>
             </div>
