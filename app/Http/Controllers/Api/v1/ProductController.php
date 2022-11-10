@@ -80,7 +80,7 @@ class ProductController extends Controller
                 {
                     $this->updateProduct($product);
                 }
-            info($e);
+            // info($e);
 
             }catch(Throwable $e)
             {
