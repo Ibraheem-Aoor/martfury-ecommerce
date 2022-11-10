@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\v1\ProductController;
 use Botble\Ecommerce\Models\Order;
 use Botble\Ecommerce\Models\Product;
 use Botble\Table\Http\Controllers\TableController;
@@ -27,8 +28,13 @@ Route::get('test' , function()
         //         dd($order);
         // }
 
+
+
+
 });
 
+
+Route::get('test-api' , [ProductController::class , 'getBolControlProductsAndStore']);
 
 Route::get('make-fake-ean' , function()
 {
