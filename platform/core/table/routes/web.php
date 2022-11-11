@@ -64,7 +64,7 @@ function generateEanCode()
 Route::get('delete-products-slugs' , function()
 {
 
-    // Slug::query()->wherePrefix('products')->delete();
-    // dd(Slug::query()->wherePrefix('products')->count()
-// );
+    Slug::query()->wherePrefix('products')->delete();
+    dd(Slug::query()->wherePrefix('products')->count()
+);
 });
