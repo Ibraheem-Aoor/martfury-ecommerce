@@ -92,6 +92,8 @@ class ProductController extends Controller
                 if($e->errorInfo[1] == 1062)
                 {
                     $this->updateProduct($product);
+                }else{
+                    info($e);
                 }
             // info($e);
 
@@ -126,6 +128,8 @@ class ProductController extends Controller
             if($e->errorInfo[1] == 1062)
             {
                 $this->updateProduct($product);
+            }else{
+                info($e);
             }
             // dd($e);
         }catch(Throwable $e)
