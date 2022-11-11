@@ -39,5 +39,6 @@ class FetchBolControlProducts extends Command
     public function handle()
     {
         (new ProductController())->getBolControlProductsAndStore();
+    
     }
 }

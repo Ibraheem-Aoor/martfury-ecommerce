@@ -3,6 +3,7 @@
 return [
     'id' => 'ID',
     'name' => 'Name',
+    'ean' => 'EAN',
     'slug' => 'Slug',
     'title' => 'Title',
     'order_by' => 'Order By',

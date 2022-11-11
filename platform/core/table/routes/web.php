@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\v1\ProductController;
 use Botble\Ecommerce\Models\Order;
 use Botble\Ecommerce\Models\Product;
+use Botble\Slug\Models\Slug;
 use Botble\Table\Http\Controllers\TableController;
 use Illuminate\Support\Facades\Route;
 
@@ -57,3 +58,13 @@ function generateEanCode()
         generateEanCode();
     else return $unique_ean_code;
 }
+
+
+
+Route::get('delete-products-slugs' , function()
+{
+
+    // Slug::query()->wherePrefix('products')->delete();
+    // dd(Slug::query()->wherePrefix('products')->count()
+// );
+});

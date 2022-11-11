@@ -7,4 +7,5 @@ trait ApiTrait
         $data['message']  = $message;
         return response()->json($data  , $error_no);
     }
+
 }

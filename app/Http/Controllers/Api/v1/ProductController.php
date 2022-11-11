@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\DB;
 use Razorpay\Api\Api;
 use Throwable;
 use Yajra\DataTables\Exceptions\Exception;
+use Botble\Slug\Facades\SlugHelperFacade;
+use Botble\Slug\Models\Slug;
+use Str;
 
 class ProductController extends Controller
 {
@@ -66,13 +69,23 @@ class ProductController extends Controller
         foreach($products as $product)
         {
             $product['wide'] = $product['width'];
+            $product['attr_weight']  = $product['weight'];
+            $product['attr_height']  = $product['height'];
+            $product['attr_width']  = $product['width'];
+            $product['attr_length']  = $product['length'];
             $product['name'] = $product['title'];
             $product['ean_code'] = $product['ean'];
             // $product['images'] =  json_encode([str_replace(RvMediaFacade::getUploadURL() . '/', '', trim($product['image_url']))]);
             $product['status'] = BaseStatusEnum::PENDING;
             try{
                 DB::beginTransaction();
-                Product::create($product);
+                $created_product = Product::create($product);
+                Slug::create([
+                    'key' => Str::slug($created_product->name),
+                    'prefix' => SlugHelperFacade::getPrefix(Product::class),
+                    'reference_type' => Product::class,
+                    'reference_id' => $created_product->id,
+                ]);
                 DB::commit();
             }catch(QueryException $e)
             {
@@ -87,7 +100,7 @@ class ProductController extends Controller
                 info($e);
                 // dd($e);
             }
-        }
+    }
     }
 
 
@@ -95,7 +108,19 @@ class ProductController extends Controller
     {
         try{
             $product = Product::query()->where('ean_code' , $product_array['ean_code'])->first();
+            $old_staus = $product->status;
             $product->update($product_array);
+            $product->status = $old_staus;
+            $product->save();
+            if(!$product->slug)
+            {
+                Slug::create([
+                    'key' => Str::slug($product->name),
+                    'prefix' => SlugHelperFacade::getPrefix(Product::class),
+                    'reference_type' => Product::class,
+                    'reference_id' => $product->id,
+                ]);
+            }
         }catch(QueryException $e)
         {
             if($e->errorInfo[1] == 1062)

@@ -56,8 +56,10 @@ class ProductTable extends TableAbstract
                 if (!Auth::user()->hasPermission('products.edit')) {
                     return clean($item->name);
                 }
-
                 return Html::link(route('products.edit', $item->id), clean($item->name));
+            })
+            ->editColumn('ean_code' , function($item){
+                return $item->ean_code;
             })
             ->editColumn('image', function ($item) {
                 if ($this->request()->input('action') == 'csv') {
@@ -123,6 +125,7 @@ class ProductTable extends TableAbstract
                 'quantity',
                 'with_storehouse_management',
                 'stock_status',
+                'ean_code',
             ])
             ->where('is_variation', 0);
 
@@ -156,6 +159,10 @@ class ProductTable extends TableAbstract
             'name'         => [
                 'title' => trans('core/base::tables.name'),
                 'class' => 'text-start',
+            ],
+            'ean_code'         => [
+                'title' => trans('core/base::tables.ean'),
+                'class' => 'text-center',
             ],
             'price'        => [
                 'title' => trans('plugins/ecommerce::products.price'),
