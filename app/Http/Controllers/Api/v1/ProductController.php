@@ -81,7 +81,7 @@ class ProductController extends Controller
                 DB::beginTransaction();
                 $created_product = Product::create($product);
                 Slug::create([
-                    'key' => Str::slug($created_product->name),
+                    'key' => Str::slug(Str::limit($created_product->name,120, '...')),
                     'prefix' => SlugHelperFacade::getPrefix(Product::class),
                     'reference_type' => Product::class,
                     'reference_id' => $created_product->id,
@@ -117,7 +117,7 @@ class ProductController extends Controller
             if(!$product->slug)
             {
                 Slug::create([
-                    'key' => Str::slug($product->name),
+                    'key' => Str::slug(Str::limit($product->name,120, '...')),
                     'prefix' => SlugHelperFacade::getPrefix(Product::class),
                     'reference_type' => Product::class,
                     'reference_id' => $product->id,

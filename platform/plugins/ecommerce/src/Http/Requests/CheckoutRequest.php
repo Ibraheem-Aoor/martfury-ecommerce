@@ -34,7 +34,8 @@ class CheckoutRequest extends Request
             $rules['address.state'] = 'required|max:120';
             $rules['address.city'] = 'required|max:120';
             $rules['address.address'] = 'required|string';
-
+            $rules['address.house_no'] = 'required';
+            $rules['address.zip_code'] = 'required';
             if (count(EcommerceHelper::getAvailableCountries()) > 1) {
                 $rules['address.country'] = 'required|' . Rule::in(array_keys(EcommerceHelper::getAvailableCountries()));
             }
@@ -66,6 +67,8 @@ class CheckoutRequest extends Request
             'address.city.required'    => trans('plugins/ecommerce::order.address_city_required'),
             'address.country.required' => trans('plugins/ecommerce::order.address_country_required'),
             'address.address.required' => trans('plugins/ecommerce::order.address_address_required'),
+            'address.house_no.required' => trans('plugins/ecommerce::order.address_house_no_required'),
+            'address.zip_code.required' => trans('plugins/ecommerce::order.address_zip_code_required'),
         ];
 
         $messages = apply_filters(PROCESS_CHECOUT_MESSAGES_REQUEST_ECOMMERCE, $messages);
@@ -86,6 +89,8 @@ class CheckoutRequest extends Request
             'address.city'    => __('City'),
             'address.country' => __('Country'),
             'address.address' => __('Address'),
+            'address.house_no' => __('House No'),
+            'address.Zip code' => __('Zip code'),
         ];
 
         return array_merge(parent::attributes(), $attributes);

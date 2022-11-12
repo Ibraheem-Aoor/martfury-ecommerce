@@ -45,6 +45,8 @@ return [
     'address_city_required' => 'The city field is required.',
     'address_country_required' => 'The country field is required.',
     'address_address_required' => 'The address field is required.',
+    'address_house_no_required' => 'The house no field is required.',
+    'address_zip_code_required' => 'The zip code field is required.',
     'create_order_from_payment_page' => 'Order was created from checkout page',
     'order_was_verified_by' => 'Order was verified by %user_name%',
     'new_order' => 'New order :order_id',

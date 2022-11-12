@@ -403,6 +403,7 @@ class PublicCheckoutController
                 'city'       => $address->city,
                 'address'    => $address->address,
                 'zip_code'   => $address->zip_code,
+                'house_no'   => $address->house_no ,
                 'order_id'   => $sessionData['created_order_id'],
                 'address_id' => $address->id,
             ];
@@ -493,6 +494,7 @@ class PublicCheckoutController
             'state'   => 'required|max:120',
             'city'    => 'required|max:120',
             'address' => 'required|max:120',
+            'house_no' => 'required',
             'phone'   => EcommerceHelper::getPhoneValidationRule(),
         ];
 

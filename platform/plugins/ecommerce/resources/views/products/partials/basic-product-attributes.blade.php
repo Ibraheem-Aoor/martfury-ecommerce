@@ -3,7 +3,7 @@
         <div class="col-md-3">
             <div class="form-group">
                 <label class="text-title-field required">{{ trans('plugins/ecommerce::products.form.shipping.weight') }}
-                    ({{ ecommerce_width_height_unit() }})</label>
+                    ({{ ecommerce_weight_unit() }})</label>
                 <input type="number" name="attr_weight" class="form-control"
                     value="{{ old('attr_weight', isset($product) ? $product->attr_weight : null) }}">
             </div>

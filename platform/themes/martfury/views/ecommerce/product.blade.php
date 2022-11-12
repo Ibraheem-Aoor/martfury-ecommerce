@@ -79,7 +79,7 @@
                                 <div class="ps-list--dot">
                                     <ul>
                                         <li>
-                                            {{ trans('plugins/ecommerce::products.form.shipping.weight') . ': ' . $product->attr_weight . ' ' . ecommerce_width_height_unit() }}
+                                            {{ trans('plugins/ecommerce::products.form.shipping.weight') . ': ' . $product->attr_weight . ' ' . ecommerce_weight_unit() }}
                                         </li>
                                         <li>
                                             {{ trans('plugins/ecommerce::products.form.shipping.height') . ': ' . $product->attr_height . ' ' . ecommerce_width_height_unit() }}

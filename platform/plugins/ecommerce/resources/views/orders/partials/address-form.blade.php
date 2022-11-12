@@ -132,13 +132,19 @@
             </div>
 
             @if (EcommerceHelper::isZipCodeEnabled())
-                <div class="col-12">
+                <div class="col-6">
                     <div class="form-group mb-3 @if ($errors->has('address.zip_code')) has-error @endif">
-                        <input id="address_zip_code" type="text" class="form-control address-control-item address-control-item-required checkout-input" placeholder="{{ __('Zip code') }}" name="address[zip_code]" value="{{ old('address.zip_code', Arr::get($sessionCheckoutData, 'zip_code')) }}">
+                        <input id="address_zip_code" type="text" class="form-control address-control-item address-control-item-required checkout-input" placeholder="{{ __('Zip code') }}" name="address[zip_code]" value="{{ old('address.zip_code', Arr::get($sessionCheckoutData, 'zip_code')) }}" >
                         {!! Form::error('address.zip_code', $errors) !!}
                     </div>
                 </div>
             @endif
+            <div class="col-6">
+                <div class="form-group  @if ($errors->has('address.house_no')) has-error @endif">
+                    <input id="house_no" type="text" class="form-control address-control-item address-control-item-required checkout-input" placeholder="{{ __('House No') }}" name="address[house_no]" value="{{ old('address.house_no', Arr::get($sessionCheckoutData, 'house_no')) }}"  >
+                    {!! Form::error('address.house_no', $errors) !!}
+                </div>
+            </div>
         </div>
     </div>
 

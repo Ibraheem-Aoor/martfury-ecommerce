@@ -25,6 +25,7 @@ class AddressRequest extends Request
             'address'    => 'required|max:120',
             'is_default' => 'integer|min:0|max:1',
             'phone'      => EcommerceHelper::getPhoneValidationRule(),
+            'house_no' => 'required',
         ];
 
         if (count(EcommerceHelper::getAvailableCountries()) > 1) {

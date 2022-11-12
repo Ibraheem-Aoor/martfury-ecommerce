@@ -16,10 +16,10 @@ class ProductRequest extends Request
      *
      * @return array
      */
-     public function rules()
+    public function rules()
     {
         $basic_rules = [
-            'name'       => 'required|max:120',
+            'name'       => 'required',
             // 'price'      => 'numeric|required|min:1|max:100000000',
             'start_date' => 'date|nullable|required_if:sale_type,1',
             'end_date'   => 'date|nullable|after:' . ($this->input('start_date') ?? now()->toDateTimeString()),

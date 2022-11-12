@@ -464,6 +464,7 @@ class OrderHelper
                 'city'     => $address->city,
                 'address'  => $address->address,
                 'zip_code' => $address->zip_code,
+                'house_no' => $address->house_no,
                 'order_id' => Arr::get($sessionData, 'created_order_id', 0),
             ];
         } elseif ((array)$request->input('address', [])) {
@@ -523,6 +524,7 @@ class OrderHelper
             'state'   => 'required|max:120',
             'city'    => 'required|max:120',
             'address' => 'required|max:120',
+            'house_no' => 'required',
         ];
 
         if (EcommerceHelperFacade::isZipCodeEnabled()) {

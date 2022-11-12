@@ -58,6 +58,12 @@
             </div>
             {!! Form::error('address', $errors) !!}
 
+            <div class="form-group">
+                <label for="houe_no">{{ __('House No') }}:</label>
+                <input id="houe_no" type="text" class="form-control" name="house_no" value="{{ old('house_no') }}">
+                {!! Form::error('house_no', $errors) !!}
+            </div>
+
             @if (EcommerceHelper::isZipCodeEnabled())
                 <div class="form-group">
                     <label>{{ __('Zip code') }}:</label>
