@@ -99,7 +99,6 @@ class HandleShippingFeeService
         if ($default) {
             $result['default'] = $default;
         }
-
         return $result;
     }
 
@@ -114,7 +113,12 @@ class HandleShippingFeeService
         $weight = Arr::get($data, 'weight', 0.1);
         $weight = $weight ?: 0.1;
         $orderTotal = Arr::get($data, 'order_total', 0);
-
+        if($data['country'] == "NL") //Nl tax
+        {
+            $tax = ($orderTotal * 0.21);
+        }else{
+            $tax = 0;
+        }
         if (count(EcommerceHelper::getAvailableCountries()) > 1) {
             $country = Arr::get($data, 'country');
         } else {
@@ -141,7 +145,8 @@ class HandleShippingFeeService
                         $weight,
                         $orderTotal,
                         Arr::get($data, 'city'),
-                        $option
+                        $option,
+                        $tax
                     );
                 }
 
@@ -161,7 +166,8 @@ class HandleShippingFeeService
                         $weight,
                         $orderTotal,
                         Arr::get($data, 'city'),
-                        $option
+                        $option,
+                        $tax,
                     );
                 }
                 break;
@@ -178,7 +184,7 @@ class HandleShippingFeeService
      * @param null $option
      * @return array
      */
-    protected function calculateDefaultFeeByAddress($address, $weight, $orderTotal, $city, $option = null)
+    protected function calculateDefaultFeeByAddress($address, $weight, $orderTotal, $city, $option = null , $tax = 0)
     {
         $weight = ecommerce_convert_weight($weight);
         $result = [];
@@ -201,12 +207,12 @@ class HandleShippingFeeService
                 if ($ruleDetail) {
                     $result[] = [
                         'name'  => $rule->name,
-                        'price' => $rule->price + $ruleDetail->adjustment_price,
+                        'price' => $tax +  $rule->price + $ruleDetail->adjustment_price,
                     ];
                 } else {
                     $result[] = [
                         'name'  => $rule->name,
-                        'price' => $rule->price,
+                        'price' => $tax +  $rule->price,
                     ];
                 }
             } else {
@@ -251,12 +257,12 @@ class HandleShippingFeeService
                     if ($ruleDetail) {
                         $result[$rule->id] = [
                             'name'  => $rule->name,
-                            'price' => $rule->price + $ruleDetail->adjustment_price,
+                            'price' => $tax +  $rule->price + $ruleDetail->adjustment_price,
                         ];
                     } else {
                         $result[$rule->id] = [
                             'name'  => $rule->name,
-                            'price' => $rule->price,
+                            'price' => $tax +  $rule->price,
                         ];
                     }
                 }
