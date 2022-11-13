@@ -47,7 +47,7 @@ class Order extends BaseModel
         'shipping_tracking_id',
         'shipping_tracking_link',
         'estimate_arrival_date',
-        'note', 
+        'note',
     ];
 
     /**
@@ -193,5 +193,18 @@ class Order extends BaseModel
     public function isInvoiceAvailable(): bool
     {
         return !EcommerceHelper::disableOrderInvoiceUntilOrderConfirmed() || $this->is_confirmed;
+    }
+
+
+    /**
+     * clalculate the sum of order producsts weight
+     */
+    public function getTotalWeight()
+    {
+        $weight = 0;
+        foreach ($this->products as $orderProduct) {
+            $weight += $orderProduct->weight ?? 0.1;
+        }
+        return  $weight > 0.1 ? $weight : 0.1;
     }
 }

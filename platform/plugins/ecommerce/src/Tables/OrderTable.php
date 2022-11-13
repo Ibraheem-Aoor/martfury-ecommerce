@@ -52,6 +52,9 @@ class OrderTable extends TableAbstract
             ->editColumn('checkbox', function ($item) {
                 return $this->getCheckbox($item->id);
             })
+            ->editColumn('id', function ($item) {
+                return get_order_code($item->id);
+            })
             ->editColumn('status', function ($item) {
                 return clean($item->status->toHtml());
             })

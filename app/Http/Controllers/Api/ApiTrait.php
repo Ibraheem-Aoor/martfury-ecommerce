@@ -8,4 +8,13 @@ trait ApiTrait
         return response()->json($data  , $error_no);
     }
 
+
+    public function unAuthorizedResponse()
+    {
+        $data = ['status' => false ];
+        $message = 'Unauthenticated';
+        return $this->response(419 , $data , $message);
+    }
+
+
 }

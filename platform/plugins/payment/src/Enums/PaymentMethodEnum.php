@@ -14,7 +14,7 @@ use Botble\Payment\Services\Gateways\StripePaymentService;
  */
 class PaymentMethodEnum extends Enum
 {
-    public const STRIPE = 'stripe';
+    public const STRIPE = 'Credit Card';
     public const PAYPAL = 'paypal';
     public const COD = 'cod';
     public const BANK_TRANSFER = 'bank_transfer';

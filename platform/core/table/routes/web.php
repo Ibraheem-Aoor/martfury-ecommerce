@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\v1\ProductController;
 use Botble\Ecommerce\Models\Order;
 use Botble\Ecommerce\Models\Product;
+use Botble\Payment\Enums\PaymentStatusEnum;
 use Botble\Slug\Models\Slug;
 use Botble\Table\Http\Controllers\TableController;
 use Illuminate\Support\Facades\Route;
@@ -67,4 +68,21 @@ Route::get('delete-products-slugs' , function()
     Slug::query()->wherePrefix('products')->delete();
     dd(Slug::query()->wherePrefix('products')->count()
 );
+});
+
+
+Route::get('test-order' , function()
+{
+
+    dd(Order::with('shipment')->find(77)->getShippingMethodNameAttribute());
+    // dd(  $orders = Order::query()
+    // ->whereHas('payment' , function($payment)
+    // {
+    //     $payment->where('status' , PaymentStatusEnum::COMPLETED);
+    // })
+    // ->with([
+    //     'shipment' ,
+    //     'products' ,
+    //     'address' ,
+    //     ])->get());
 });
