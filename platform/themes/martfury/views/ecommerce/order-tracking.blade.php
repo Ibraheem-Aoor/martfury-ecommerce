@@ -101,11 +101,11 @@
                             <h5>{{ __('Shipping  information') }}</h5>
                             <p>
                                 <span>{{ __('Shipping Company Name') }}:</span>
-                                <strong>{{ $order->shipping_company_name }} </strong>
+                                <strong>{{ $order->shipping_company_name == 'OTHER'  ? 'BORVAT' : $order->shipping_company_name}} </strong>
                             </p>
 
                             <p>
-                                <span>{{ __('Tracking ID') }}:</span> <strong>{{ $order->shipping_tracking_id }}
+                                <span>{{ __('Tracking ID') }}:</span> <strong>{{ $order->shipping_tracking_id  }}
                                 </strong>
                             </p>
 
@@ -114,10 +114,6 @@
                                 <strong>{{ $order->shipping_tracking_link }}</strong>
                             </p>
 
-                            <p>
-                                <span>{{ __('Estimate Date Shipped') }}:</span>
-                                <strong>{{ $order->estimate_arrival_date }} </strong>
-                            </p>
                             <p>
                                 <span>{{ __('Note') }}:</span> <strong> {{ $order->note }} </strong>
                             </p>
