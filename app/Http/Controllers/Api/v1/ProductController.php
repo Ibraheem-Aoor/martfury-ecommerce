@@ -68,6 +68,8 @@ class ProductController extends Controller
     {
         foreach($products as $product)
         {
+            if(!(Product::query()->where('ean_code' , $product['ean'])->exists()) )
+            {
             $product['wide'] = $product['width'];
             $product['attr_weight']  = $product['weight'];
             $product['attr_height']  = $product['height'];
@@ -91,7 +93,7 @@ class ProductController extends Controller
             {
                 if($e->errorInfo[1] == 1062)
                 {
-                    $this->updateProduct($product);
+                    // $this->updateProduct($product);
                 }else{
                     info($e);
                 }
@@ -102,6 +104,8 @@ class ProductController extends Controller
                 info($e);
                 // dd($e);
             }
+        }
+
     }
     }
 
@@ -139,5 +143,9 @@ class ProductController extends Controller
         }
     }
 
+
+
+
+    
 
 }

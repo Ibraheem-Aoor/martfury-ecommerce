@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\View;
 use Throwable;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class ProductController extends BaseController
 {
@@ -274,9 +275,11 @@ class ProductController extends BaseController
 
     public function isProductEanCodeExists(Request $request)
     {
-        $request->validate(['ean_code_check' => 'required|digits:13'] , ['ean_code_check.required' => 'EAN CODE REQUIRED' , 'ean_code_check.digits' => 'EAN CODE NOT VALID']);
-        $ean_code = $request->ean_code_check;
-        $product = Product::query()->where('ean_code' , $ean_code)->first();
+        $request->validate(['ean_code_check' => 'required|digits:13'] ,
+                ['ean_code_check.required' => trans('plugins/ecommerce::products.ean_required') ,
+                'ean_code_check.digits' => trans('plugins/ecommerce::products.ean_not_valid')]);
+                $ean_code = $request->ean_code_check;
+        $product = Product::query()->where([['ean_code' , $ean_code] , ['created_by_id' , '!=' , Auth::id()]])->first();
         if($product){
             $new_product = $product->replicate();
             $new_product->created_at = Carbon::now();
@@ -287,5 +290,13 @@ class ProductController extends BaseController
         }
         session()->put('checked_ean_code' , $ean_code);
         return response()->json(['status' => true , 'is_unique' => true  ,'route' => (route('products.create') ) ] , 200);
+    }
+
+
+    function  transTest()
+    {
+        dd(str_split('en_NL' , 2));
+        // $tr = new GoogleTranslate('en'); // Translates into English
+        // $tr->setSource('ar');
     }
 }

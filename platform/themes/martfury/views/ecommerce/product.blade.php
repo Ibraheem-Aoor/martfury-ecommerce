@@ -76,7 +76,7 @@
                                     </p>
                                 @endif
 
-                                <div class="ps-list--dot">
+                                {{-- <div class="ps-list--dot">
                                     <ul>
                                         <li>
                                             {{ trans('plugins/ecommerce::products.form.shipping.weight') . ': ' . $product->attr_weight . ' ' . ecommerce_weight_unit() }}
@@ -100,7 +100,7 @@
                                             {{ trans('plugins/ecommerce::products.form.Number of pieces') . ': ' . $product->peice_count }}
                                         </li>
                                     </ul>
-                                </div>
+                                </div> --}}
                             </div>
                             @php $flashSale = $product->latestFlashSales()->first(); @endphp
 
@@ -549,9 +549,9 @@
                 <aside class="widget widget_product widget_features">
                     @for ($i = 1; $i <= 5; $i++)
                         @if ($i == 2)
-                            <p><i class="icon-3d-rotate"></i>
+                            {{-- <p><i class="icon-3d-rotate"></i>
                                 {{ trans('plugins/ecommerce::products.form.Delivery time') . ': ' . $product->delivery_time }}
-                            </p>
+                            </p> --}}
                             @continue
                         @endif
                         @if (theme_option('product_feature_' . $i . '_title'))

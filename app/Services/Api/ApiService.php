@@ -12,7 +12,7 @@ Class ApiService
     protected $headers;
 
     protected $base_url;
-    public function __construct($base_url , $token , $headers = [])
+    public function __construct($base_url , $token=null , $headers = [])
     {
         $this->base_url = $base_url;
         $this->token = $token;
@@ -38,6 +38,18 @@ Class ApiService
 
 
     /**
+     * Make Basic Auth
+     */
+    public function authWithBasic($endpoint , $credits , $params = [])
+    {
+        $response = Http::withBasicAuth($credits['clientId'] , $credits['clientSecret'])
+                ->withHeaders($this->headers)
+                ->post('https://login.bol.com/token?grant_type=client_credentials')->body();
+        return $this->decodeJsonResponse($response);
+    }
+
+
+    /**
      * Decode The JSON Response
      */
     public function decodeJsonResponse($response)
@@ -45,5 +57,10 @@ Class ApiService
         return  is_array($response) ? $response : json_decode($response , true);
     }
 
+
+    public function setToken($token)
+    {
+        $this->token = $token;
+    }
 
 }

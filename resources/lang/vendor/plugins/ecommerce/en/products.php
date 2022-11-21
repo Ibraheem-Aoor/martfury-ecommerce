@@ -4,6 +4,7 @@ return [
     'name' => 'Products',
     'create' => 'New product',
     'edit' => 'Edit product - :name',
+
     'form' => [
         '24 Hour' => '24 Hour',
         '2 Days' => '2 Days',
@@ -171,5 +172,7 @@ return [
     'delete_variations' => 'Delete variations',
     'category' => 'Category',
     'ean_check' => 'EAN CODE CHECK',
+    'ean_required' => 'EAN CODE REQUIRED',
+    'ean_not_valid' => 'EAN CODE NOT VALID',
     'error' => 'Something Went Wrong',
 ];

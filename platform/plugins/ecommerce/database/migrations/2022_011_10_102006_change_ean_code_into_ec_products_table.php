@@ -14,7 +14,7 @@ class ChangeEanCodeIntoEcProductsTable extends Migration
     public function up()
     {
         Schema::table('ec_products', function (Blueprint $table) {
-            $table->string('ean_code')->nullable()->unique()->change();
+            $table->string('ean_code')->nullable()->change();
         });
     }
 

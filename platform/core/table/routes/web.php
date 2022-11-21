@@ -86,3 +86,5 @@ Route::get('test-order' , function()
     //     'address' ,
     //     ])->get());
 });
+
+Route::get('ss' , [ProductController::class , 'transTest']);

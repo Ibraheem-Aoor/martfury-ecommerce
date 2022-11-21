@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('bol-control-products:fetch')->everyMinute()->runInBackground();
+        $schedule->command('bol-products:fetch')->everyMinute()->runInBackground();
     }
 
     /**

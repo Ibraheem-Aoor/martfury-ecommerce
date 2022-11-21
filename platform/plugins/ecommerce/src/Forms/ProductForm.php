@@ -266,10 +266,10 @@ class ProductForm extends FormAbstract
                     ],
                 ]);
         }
-        $this->addMetaBoxes(['Basic Product Attributes' => [
-            'title' => trans('plugins/ecommerce::products.form.Basic Product Attributes'),
-            'content' => view('plugins/ecommerce::products.partials.basic-product-attributes' , compact('countries' ,'product' , 'languages')),
-        ]]);
+        // $this->addMetaBoxes(['Basic Product Attributes' => [
+        //     'title' => trans('plugins/ecommerce::products.form.Basic Product Attributes'),
+        //     'content' => view('plugins/ecommerce::products.partials.basic-product-attributes' , compact('countries' ,'product' , 'languages')),
+        // ]]);
     }
 
     /**

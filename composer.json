@@ -10,9 +10,9 @@
     "require": {
         "php": "^7.3|^8.0",
         "ext-curl": "*",
+        "ext-gd": "*",
         "ext-json": "*",
         "ext-zip": "*",
-        "ext-gd": "*",
         "botble/menu": "*@dev",
         "botble/page": "*@dev",
         "botble/platform": "*@dev",
@@ -25,6 +25,7 @@
         "guzzlehttp/guzzle": "^7.3",
         "laravel/framework": "^8.62",
         "league/flysystem-aws-s3-v3": "^1.0",
+        "stichoza/google-translate-php": "^4.1",
         "wikimedia/composer-merge-plugin": "^2.0"
     },
     "require-dev": {
