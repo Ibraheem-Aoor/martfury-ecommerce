@@ -76,31 +76,9 @@
                                     </p>
                                 @endif
 
-                                {{-- <div class="ps-list--dot">
-                                    <ul>
-                                        <li>
-                                            {{ trans('plugins/ecommerce::products.form.shipping.weight') . ': ' . $product->attr_weight . ' ' . ecommerce_weight_unit() }}
-                                        </li>
-                                        <li>
-                                            {{ trans('plugins/ecommerce::products.form.shipping.height') . ': ' . $product->attr_height . ' ' . ecommerce_width_height_unit() }}
-                                        </li>
-                                        <li>
-                                            {{ trans('plugins/ecommerce::products.form.shipping.wide') . ': ' . $product->attr_width . ' ' . ecommerce_width_height_unit() }}
-                                        </li>
-                                        <li>
-                                            {{ trans('plugins/ecommerce::products.form.shipping.length') . ': ' . $product->attr_length . ' ' . ecommerce_width_height_unit() }}
-                                        </li>
-                                        <li>
-                                            {{ trans('plugins/ecommerce::products.form.Product Country') . ': ' . $product->product_country }}
-                                        </li>
-                                        <li>
-                                            {{ trans('plugins/ecommerce::products.form.Product Language') . ': ' . $product->packaging_language }}
-                                        </li>
-                                        <li>
-                                            {{ trans('plugins/ecommerce::products.form.Number of pieces') . ': ' . $product->peice_count }}
-                                        </li>
-                                    </ul>
-                                </div> --}}
+                               <div >
+                                {!! clean($product->content) !!}
+                                </div>
                             </div>
                             @php $flashSale = $product->latestFlashSales()->first(); @endphp
 
@@ -284,7 +262,7 @@
                             <div class="ps-tab active" id="tab-description">
                                 <div class="ps-document">
                                     <div>
-                                        {!! clean($product->content) !!}
+                                        {!! clean($product->description) !!}
                                     </div>
                                     @if (theme_option('facebook_comment_enabled_in_product', 'yes') == 'yes')
                                         <br />
