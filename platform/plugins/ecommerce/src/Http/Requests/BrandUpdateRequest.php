@@ -6,7 +6,7 @@ use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Support\Http\Requests\Request;
 use Illuminate\Validation\Rule;
 
-class BrandRequest extends Request
+class BrandUpdateRequest extends Request
 {
 
     /**
@@ -17,7 +17,7 @@ class BrandRequest extends Request
     public function rules()
     {
         $validation_admin = [
-            'name'   => 'required|unique:ec_brands,name',
+            'name'   => 'required|unique:ec_brands,name,'.$this->segment(5),
             'slug'   => 'required',
             'order'  => 'required|integer|min:0|max:10000',
             'status' => Rule::in(BaseStatusEnum::values()),

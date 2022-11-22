@@ -10,6 +10,7 @@ use Botble\Base\Http\Controllers\BaseController;
 use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\Ecommerce\Forms\BrandForm;
 use Botble\Ecommerce\Http\Requests\BrandRequest;
+use Botble\Ecommerce\Http\Requests\BrandUpdateRequest;
 use Botble\Ecommerce\Models\Brand;
 use Botble\Ecommerce\Repositories\Interfaces\BrandInterface;
 use Botble\Ecommerce\Tables\BrandTable;
@@ -94,7 +95,7 @@ class BrandController extends BaseController
      * @param BaseHttpResponse $response
      * @return BaseHttpResponse
      */
-    public function update($id, BrandRequest $request, BaseHttpResponse $response)
+    public function update($id, BrandUpdateRequest $request, BaseHttpResponse $response)
     {
         $brand = $this->brandRepository->findOrFail($id);
         $brand->fill($request->input());
