@@ -144,8 +144,12 @@ class ProductController extends Controller
     }
 
 
+    public function transTest()
+    {
+        $products_with_trans = Product::query()->whereHas('translations')->count();
+        dd($products_with_trans);
+    }
 
 
-    
 
 }
