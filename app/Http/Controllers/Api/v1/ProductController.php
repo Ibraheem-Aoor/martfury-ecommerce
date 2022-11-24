@@ -160,6 +160,9 @@ class ProductController extends Controller
         //         }
         //     }
         // });
+
+        ini_set('max_execution_time' , 900);
+        
         dd(Product::query()->whereHas('translations' , function($trans){
             $trans->whereNull('content');
         })->count()
