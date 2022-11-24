@@ -14,6 +14,8 @@ use Throwable;
 use Yajra\DataTables\Exceptions\Exception;
 use Botble\Slug\Facades\SlugHelperFacade;
 use Botble\Slug\Models\Slug;
+use Maatwebsite\Excel\Excel as ExcelExcel;
+use Maatwebsite\Excel\Facades\Excel;
 use Str;
 
 class ProductController extends Controller
@@ -169,7 +171,15 @@ class ProductController extends Controller
             $trans->whereNull('content');
         })->pluck('ean_code');
         $result = $without_content_count->merge($without_desc_count);
-        dd($result->unique());
+        Excel::create('borvat-products', function($excel) use($result){
+
+            $excel->sheet('products', function($sheet)use($result){
+
+                $sheet->fromArray($result);
+
+            });
+
+        })->export('xls');
         // dd(Product::query()->whereDoesntHave('translations')->count());
         // dd('Done');
     }
