@@ -143,6 +143,7 @@ class FetchBolProductsCommand extends Command
      */
     protected function fillProductData(array $product)
     {
+        info($product);
         $languages = ['ar' , 'nl_NL' , 'en_US'];
         foreach($languages as $lang)
         {
@@ -151,8 +152,8 @@ class FetchBolProductsCommand extends Command
             ProductTranslation::firstOrCreate(['ec_products_id' => $product['id'] , 'lang_code' => $lang] ,
             [
                 'name' =>  $tr->translate($product['name']),
-                'description' =>  $tr->translate($product['description']),
-                'content' =>  $tr->translate($product['content']),
+                'description' =>  $tr->translate($product['description'] ?? ""),
+                'content' =>  $tr->translate($product['content'] ?? ""),
             ]
         );
         }

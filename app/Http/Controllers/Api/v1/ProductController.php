@@ -146,8 +146,22 @@ class ProductController extends Controller
 
     public function transTest()
     {
-        $products_with_trans = Product::query()->whereNull('weight')->count();
-        dd($products_with_trans);
+        // Product::query()->chunk(200 , function($products)
+        // {
+        //     foreach($products as $product)
+        //     {
+        //         try{
+
+        //             $product->weight =  number_format((double)($product->weight  * 1000) , 0 ,2);
+        //             $product->save();
+        //         }catch(Throwable $e)
+        //         {
+        //             dd($e);
+        //         }
+        //     }
+        // });
+        dd(Product::query()->whereDoesntHave('translations')->count());
+        dd('Done');
     }
 
 
