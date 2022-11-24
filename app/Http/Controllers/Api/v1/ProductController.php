@@ -164,10 +164,10 @@ class ProductController extends Controller
         ini_set('max_execution_time' , 900);
         $without_desc_count = Product::query()->whereHas('translations' , function($trans){
             $trans->whereNull('description');
-        })->count();
+        })->pluck('ean_code');
         $without_content_count = Product::query()->whereHas('translations' , function($trans){
             $trans->whereNull('content');
-        })->count();
+        })->pluck('ean_code');
         dd($without_desc_count , $without_content_count);
         // dd(Product::query()->whereDoesntHave('translations')->count());
         // dd('Done');
