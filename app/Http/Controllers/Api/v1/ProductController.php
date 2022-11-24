@@ -160,8 +160,20 @@ class ProductController extends Controller
         //         }
         //     }
         // });
+        dd(Product::query()->whereHas('translations' , function($trans){
+            $trans->whereNull('content');
+        })->count()
+        ,
+        Product::query()->whereHas('translations' , function($trans){
+            $trans->whereNull('description');
+        })->count()
+        ,
+        Product::query()->whereHas('translations' , function($trans){
+            $trans->whereNull('name');
+        })->count()
+    );
         dd(Product::query()->whereDoesntHave('translations')->count());
-        dd('Done');
+        // dd('Done');
     }
 
 
