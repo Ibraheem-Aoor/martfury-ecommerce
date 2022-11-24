@@ -168,7 +168,8 @@ class ProductController extends Controller
         $without_content_count = Product::query()->whereHas('translations' , function($trans){
             $trans->whereNull('content');
         })->pluck('ean_code');
-        dd($without_desc_count , $without_content_count);
+        $result = $without_content_count->merge($without_desc_count);
+        dd($result->unique());
         // dd(Product::query()->whereDoesntHave('translations')->count());
         // dd('Done');
     }
