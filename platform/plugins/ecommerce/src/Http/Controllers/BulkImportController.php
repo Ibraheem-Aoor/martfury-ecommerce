@@ -130,7 +130,7 @@ class BulkImportController extends BaseController
         $product = Product::where('ean_code' , $product_array_values[1])->first();
         $product->update([
             'name' => \clean($product_array_values[2]),
-            'price' => $this->getProductPrice($product_array_values[3]),
+            'price' => $this->getProductBasePrice($product_array_values[3]),
             'description' => \clean($product_array_values[4]),
             'content' => \clean($product_array_values[5]),
             'weight' => $product_array_values[6] != ""  ? $product_array_values[6] :0,
@@ -141,7 +141,11 @@ class BulkImportController extends BaseController
             'images' => $product_array_values[11]  != null ?  $this->getProductImages($product_array_values[11]) : null ,
             'brand_id' => $product_array_values[12] != null ? $this->getProductBrand($product_array_values[12]) : null,
         ]);
-
+        if($product->price != 0)
+        {
+            $product->sale_price = $this->getProductSalePrice($product->price);
+            $product->save();
+        }
         $this->updateProductTranslations($product);
         if($product_array_values[0] == '*' || (int)$product->price == 0 || $product->weight == null || $product->weight == 0)
         {
@@ -154,6 +158,12 @@ class BulkImportController extends BaseController
         dd($e);
     }
 
+    }
+
+
+    public function getProductBasePrice($base_price)
+    {
+        return isset($old_price) && $old_price != "" ? $base_price: 0;
     }
 
     public function getProductImages($images)
@@ -170,11 +180,11 @@ class BulkImportController extends BaseController
     /**
      * Product Price with sale of 20% from old price
      */
-    public function getProductPrice($old_price)
+    public function getProductSalePrice($old_price)
     {
         try
         {
-        return isset($old_price) && $old_price != "" ? ($old_price - (0.2 * $old_price) ) : 0;
+            return isset($old_price) && $old_price != "" ? ($old_price - (0.2 * $old_price) ) : 0;
         }catch(Throwable $e)
         {
             dd($old_price);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Services\Api\ApiService;
 use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Ecommerce\Models\Product;
+use Botble\Ecommerce\Models\ProductTranslation;
 use Botble\Media\Facades\RvMediaFacade;
 use Botble\Media\RvMedia;
 use Illuminate\Database\QueryException;
@@ -195,7 +196,13 @@ class ProductController extends Controller
 
 
 
+    public function  importProducts()
+    {
+        $no_content = ProductTranslation::whereNull('content')->count();
+        $no_desc = ProductTranslation::whereNull('description')->count();
+        dd($no_content , $no_desc);
 
+    }
 
 
 }
