@@ -142,6 +142,7 @@ class StoreProductService
             }
         }
 
+
         return $product;
     }
 }

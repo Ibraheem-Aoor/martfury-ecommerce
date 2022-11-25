@@ -2,6 +2,7 @@
 
 namespace Botble\Ecommerce\Models;
 
+use App\Models\ProductPricePerQuantity;
 use Auth;
 use Botble\ACL\Models\User;
 use Botble\Base\Enums\BaseStatusEnum;
@@ -43,7 +44,7 @@ class Product extends BaseModel
         'image', // Featured image
         'images',
         'sku',
-        'ean_code',
+        'c',
         'order',
         'quantity',
         'allow_checkout_when_out_of_stock',
@@ -755,5 +756,10 @@ class Product extends BaseModel
     {
         $link = $this->slug ?? '#';
         return 'products/'. $link.'?preview=true';
+    }
+
+    public function pricePerQty() : HasMany
+    {
+        return $this->hasMany(ProductPricePerQuantity::class , 'ec_products_id');
     }
 }

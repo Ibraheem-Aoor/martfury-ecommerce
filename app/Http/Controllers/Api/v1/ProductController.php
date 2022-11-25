@@ -14,9 +14,11 @@ use Throwable;
 use Yajra\DataTables\Exceptions\Exception;
 use Botble\Slug\Facades\SlugHelperFacade;
 use Botble\Slug\Models\Slug;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Excel as ExcelExcel;
 use Maatwebsite\Excel\Facades\Excel;
 use Str;
+
 
 class ProductController extends Controller
 {
@@ -58,6 +60,13 @@ class ProductController extends Controller
             // dd($e);
         }
     }
+
+
+    public function importExcelProducts()
+    {
+
+    }
+
 
     /**
      * Change name to long text
@@ -183,6 +192,9 @@ class ProductController extends Controller
         // dd(Product::query()->whereDoesntHave('translations')->count());
         // dd('Done');
     }
+
+
+
 
 
 

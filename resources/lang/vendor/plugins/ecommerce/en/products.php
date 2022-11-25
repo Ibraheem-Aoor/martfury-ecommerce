@@ -99,6 +99,7 @@ return [
         'Refund Details' => 'Refund Details',
         'is_refunded' => 'Please Select One',
         'Basic Product Attributes' => 'Basic Product Attributes',
+        'product_volume' => 'Product Volume',
     ],
     'price' => 'Price',
     'quantity' => 'Quantity',

@@ -256,5 +256,5 @@ Route::group(['namespace' => 'Botble\Ecommerce\Http\Controllers\Fronts', 'middle
         ]);
     });
 
-    
+
 });

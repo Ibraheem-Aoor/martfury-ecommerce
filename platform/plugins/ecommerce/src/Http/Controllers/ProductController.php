@@ -105,7 +105,8 @@ class ProductController extends BaseController
             ->addStylesDirectly(['vendor/core/plugins/ecommerce/css/ecommerce.css'])
             ->addScriptsDirectly([
                 'vendor/core/plugins/ecommerce/js/edit-product.js',
-                'vendor/core/plugins/ecommerce/js/product-custom.js',
+                'vendor/core/plugins/ecommerce/js/price-per-qty.js',
+                // 'vendor/core/plugins/ecommerce/js/product-custom.js',
             ]);
 
         return $formBuilder

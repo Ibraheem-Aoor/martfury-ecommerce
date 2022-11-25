@@ -87,4 +87,4 @@ Route::get('test-order' , function()
     //     ])->get());
 });
 
-Route::get('ss' , [ProductController::class , 'transTest']);
+Route::get('ss' , [ProductController::class , 'importProducts']);

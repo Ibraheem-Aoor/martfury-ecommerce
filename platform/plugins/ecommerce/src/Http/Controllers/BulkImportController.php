@@ -8,12 +8,15 @@ use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\Ecommerce\Exports\TemplateProductExport;
 use Botble\Ecommerce\Http\Requests\BulkImportRequest;
 use Botble\Ecommerce\Http\Requests\ProductRequest;
+use Botble\Ecommerce\Imports\CustomProductImporter;
 use Botble\Ecommerce\Imports\ProductImport;
 use Botble\Ecommerce\Imports\ValidateProductImport;
+use Botble\Ecommerce\Imports\VendorProductImport;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Facades\Excel as FacadesExcel;
 
 class BulkImportController extends BaseController
 {
@@ -60,47 +63,13 @@ class BulkImportController extends BaseController
         @ini_set('memory_limit', -1);
 
         $file = $request->file('file');
-
-        $this->validateProductImport
-            ->setValidatorClass(new ProductRequest)
-            ->import($file);
-
-        if ($this->validateProductImport->failures()->count()) {
-            $data = [
-                'total_failed'  => $this->validateProductImport->failures()->count(),
-                'total_error'   => $this->validateProductImport->errors()->count(),
-                'failures'      => $this->validateProductImport->failures(),
-            ];
-
+        $importer = new CustomProductImporter();
+        if(FacadesExcel::import($importer , $file)){
+            $message = trans('plugins/ecommerce::bulk-import.imported_successfully');
+        }else{
             $message = trans('plugins/ecommerce::bulk-import.import_failed_description');
-
-            return $response
-                ->setError()
-                ->setData($data)
-                ->setMessage($message);
         }
-
-        $this->productImport
-            ->setValidatorClass(new ProductRequest)
-            ->setImportType($request->input('type'))
-            ->import($file); // Start import
-
-        $data = [
-            'total_success' => $this->productImport->successes()->count(),
-            'total_failed'  => $this->productImport->failures()->count(),
-            'total_error'   => $this->productImport->errors()->count(),
-            'failures'      => $this->productImport->failures(),
-            'successes'     => $this->productImport->successes(),
-        ];
-
-        $message = trans('plugins/ecommerce::bulk-import.imported_successfully');
-
-        $result = trans('plugins/ecommerce::bulk-import.results', [
-            'success' => $data['total_success'],
-            'failed'  => $data['total_failed'],
-        ]);
-
-        return $response->setData($data)->setMessage($message . ' ' . $result);
+        return $response->setMessage($message);
     }
 
     /**
