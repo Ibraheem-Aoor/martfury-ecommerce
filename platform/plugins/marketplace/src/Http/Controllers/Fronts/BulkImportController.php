@@ -63,7 +63,6 @@ class BulkImportController extends BaseController
     {
         @ini_set('max_execution_time', -1);
         @ini_set('memory_limit', -1);
-
         $file = $request->file('file');
         $importer = new VendorProductImport();
         if(FacadesExcel::import($importer , $file)){

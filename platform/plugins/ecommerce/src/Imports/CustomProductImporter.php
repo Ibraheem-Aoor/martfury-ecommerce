@@ -38,6 +38,8 @@ class CustomProductImporter implements ToCollection
                 foreach($product_rows as $product)
                 {
                     try{
+                        session()->put('product_rows' , $product_rows);
+                        return true;
                         $product_array_values = $this->trimProductData($product);
                         $product = $this->updateProduct($product_array_values);
                         $product->save();
@@ -75,10 +77,10 @@ class CustomProductImporter implements ToCollection
         {
         $product = Product::where('ean_code' , $product_array_values[1])->first();
         $product->update([
-            'name' =>  $product_array_values[2],
+            'name' => \clean($product_array_values[2]),
             'price' => $this->getProductPrice($product_array_values[3]),
-            'description' => $product_array_values[4],
-            'content' => $product_array_values[5],
+            'description' => \clean($product_array_values[4]),
+            'content' => \clean($product_array_values[5]),
             'weight' => $product_array_values[6] != ""  ? $product_array_values[6] :0,
             'length' => $product_array_values[7] != "" ? $product_array_values[7] : 0,
             'wide' => $product_array_values[8] != ""  ? $product_array_values[8] :0,
@@ -87,6 +89,7 @@ class CustomProductImporter implements ToCollection
             'images' => $product_array_values[11]  != null ?  $this->getProductImages($product_array_values[11]) : null ,
             'brand_id' => $product_array_values[12] != null ? $this->getProductBrand($product_array_values[12]) : null,
         ]);
+
         // $this->updateProductTranslations($product);
         if($product_array_values[0] == '*' || (int)$product->price == 0 || $product->weight == null || $product->weight == 0)
         {
@@ -140,15 +143,15 @@ class CustomProductImporter implements ToCollection
                 ]);
             $brand->save();
             $languages = $this->getLanguages();
-            foreach($languages as $lang)
-            {
-                $dist_lang = str_split($lang , 2)[0];
-                $tr = new GoogleTranslate($dist_lang);
-                BrandTranslation::firstOrCreate(['ec_brands_id' => $brand->id  , 'lang_code' => $lang] ,
-                [
-                    'name' =>  $tr->translate($brand->name),
-                ]);
-            }
+            // foreach($languages as $lang)
+            // {
+            //     $dist_lang = str_split($lang , 2)[0];
+            //     $tr = new GoogleTranslate($dist_lang);
+            //     BrandTranslation::firstOrCreate(['ec_brands_id' => $brand->id  , 'lang_code' => $lang] ,
+            //     [
+            //         'name' =>  $tr->translate($brand->name),
+            //     ]);
+            // }
             return $brand->id;
         }catch(QueryException $e)
         {
@@ -158,6 +161,9 @@ class CustomProductImporter implements ToCollection
             }else{
                 dd($e);
             }
+        }catch(Throwable $e)
+        {
+            dd($e);
         }
     }
 
