@@ -129,10 +129,10 @@ class BulkImportController extends BaseController
         {
         $product = Product::where('ean_code' , $product_array_values[1])->first();
         $product->update([
-            'name' => \clean($product_array_values[2]),
+            'name' => ($product_array_values[2]),
             'price' => $this->getProductBasePrice($product_array_values[3]),
-            'description' => \clean($product_array_values[4]),
-            'content' => \clean($product_array_values[5]),
+            'description' => ($product_array_values[4]),
+            'content' => ($product_array_values[5]),
             'weight' => $product_array_values[6] != ""  ? $product_array_values[6] :0,
             'length' => $product_array_values[7] != "" ? $product_array_values[7] : 0,
             'wide' => $product_array_values[8] != ""  ? $product_array_values[8] :0,
