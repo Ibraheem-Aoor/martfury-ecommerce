@@ -206,16 +206,16 @@ class RvMedia
             return url($url);
         }
 
-        if ($size &&
-            array_key_exists($size, $this->getSizes()) &&
-            $this->canGenerateThumbnails($this->getMimeType($url))
-        ) {
-            $url = str_replace(
-                File::name($url) . '.' . File::extension($url),
-                File::name($url) . '-' . $this->getSize($size) . '.' . File::extension($url),
-                $url
-            );
-        }
+        // if ($size &&
+        //     array_key_exists($size, $this->getSizes()) &&
+        //     $this->canGenerateThumbnails($this->getMimeType($url))
+        // ) {
+        //     $url = str_replace(
+        //         File::name($url) . '.' . File::extension($url),
+        //         File::name($url) . '-' . $this->getSize($size) . '.' . File::extension($url),
+        //         $url
+        //     );
+        // }
 
         if ($relativePath) {
             return $url;

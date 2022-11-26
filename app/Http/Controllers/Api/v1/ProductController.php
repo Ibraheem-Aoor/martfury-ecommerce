@@ -198,6 +198,7 @@ class ProductController extends Controller
 
     public function  importProducts()
     {
+        dd(Product::whereEanCode('2016418667733')->first());
         $no_content = ProductTranslation::whereNull('content')->count();
         $no_desc = ProductTranslation::whereNull('description')->count();
         dd($no_content , $no_desc);

@@ -137,7 +137,7 @@ class BulkImportController extends BaseController
             'length' => $product_array_values[7] != "" ? $product_array_values[7] : 0,
             'wide' => $product_array_values[8] != ""  ? $product_array_values[8] :0,
             'height' => $product_array_values[9] != ""  ? $product_array_values[9] :0,
-            'image' => $product_array_values[10] ,
+            'image' => $product_array_values[10],
             'images' => $product_array_values[11]  != null ?  $this->getProductImages($product_array_values[11]) : null ,
             'brand_id' => $product_array_values[12] != null ? $this->getProductBrand($product_array_values[12]) : null,
         ]);
@@ -150,8 +150,10 @@ class BulkImportController extends BaseController
         if($product_array_values[0] == '*' || (int)$product->price == 0 || $product->weight == null || $product->weight == 0)
         {
             $product->status = BaseStatusEnum::PENDING;
-            $product->save();
+        }else{
+            $product->status = BaseStatusEnum::PUBLISHED;
         }
+        $product->save();
         return $product;
     }catch(Throwable $e)
     {
