@@ -241,17 +241,24 @@ class BulkImportController extends BaseController
             try{
             $dist_lang = str_split($lang , 2)[0];
             $tr = new GoogleTranslate($dist_lang);
-            ProductTranslation::query()->updateOrCreate(
-                [
-                    'lang_code' => $lang,
-                    'ec_products_id' => $product->id ,
-                ] ,[
+            if(($target = ProductTranslation::query()->where([  'lang_code' => $lang , 'ec_products_id' => $product->id])->first()) != null)
+            {
+                $target->update([
                 'name' =>  $tr->translate($product->name),
                 'description' => $tr->translate($product->description),
                 'content' => $tr->translate($product->content),
                 'ec_products_id' => $product->id ,
                 'lang_code' => $lang,
-            ]);
+                ]);
+            }else{
+                ProductTranslation::create([
+                    'name' =>  $tr->translate($product->name),
+                    'description' => $tr->translate($product->description),
+                    'content' => $tr->translate($product->content),
+                    'ec_products_id' => $product->id ,
+                    'lang_code' => $lang,
+                ]);
+            }
 
             if($dist_lang == 'en')
             {
