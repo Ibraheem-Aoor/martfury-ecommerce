@@ -206,4 +206,15 @@ class ProductController extends Controller
     }
 
 
+
+    public function disableProductsWithoutPrice()
+    {
+        Product::query()->whereNull('ean_code')->orWhere('price' , 0)->orWhere('price' , null)->update([
+            'status' => BaseStatusEnum::PENDING,
+        ]);
+        dd('Done Successfully');
+    }
+
+
+
 }
