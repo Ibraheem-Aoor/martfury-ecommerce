@@ -13,12 +13,13 @@ use Illuminate\Support\Facades\DB;
 use Razorpay\Api\Api;
 use Throwable;
 use Yajra\DataTables\Exceptions\Exception;
-use Botble\Slug\Facades\SlugHelperFacade;
 use Botble\Slug\Models\Slug;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Excel as ExcelExcel;
 use Maatwebsite\Excel\Facades\Excel;
 use Str;
+use Botble\Slug\Facades\SlugHelperFacade;
+
 
 
 class ProductController extends Controller
@@ -215,6 +216,36 @@ class ProductController extends Controller
         dd('Done Successfully');
     }
 
+
+    public function updateProductsSlug()
+    {
+        @ini_set('max_execution_time', -1);
+        @ini_set('memory_limit', -1);
+        Slug::query()->whereReferenceType(Product::class)->delete();
+        Product::query()->chunk(200 , function($products){
+            foreach($products as $product)
+            {
+                $this->createSlug($product);
+            }
+        });
+        dd(Slug::query()->whereReferenceType(Product::class)->count());
+    }
+
+    public function createSlug($created_product)
+    {
+        try
+        {
+             Slug::create([
+                'reference_type' => Product::class,
+                'reference_id'   => $created_product->id,
+                'key'            => Str::slug(Str::limit($created_product->name , 20 , '...')),
+                'prefix'         => SlugHelperFacade::getPrefix(Product::class),
+        ]);
+        }catch(Throwable $ex){
+            dd($ex);
+        }
+
+    }
 
 
 }
