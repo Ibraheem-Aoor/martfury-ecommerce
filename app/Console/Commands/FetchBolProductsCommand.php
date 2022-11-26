@@ -65,8 +65,6 @@ class FetchBolProductsCommand extends Command
         $this->generateToken();
         $this->api->setToken($this->token);
         $eans = Product::query()->whereNull('content')->pluck('ean_code' , 'id');
-        info($eans);
-
         foreach($eans as $id => $ean)
         {
             try{

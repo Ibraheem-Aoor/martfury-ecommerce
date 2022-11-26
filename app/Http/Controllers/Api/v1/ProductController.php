@@ -83,34 +83,34 @@ class ProductController extends Controller
         {
             if(!(Product::query()->where('ean_code' , $product['ean'])->exists()) )
             {
-            $product['wide'] = $product['width'];
-            $product['attr_weight']  = $product['weight'];
-            $product['attr_height']  = $product['height'];
-            $product['attr_width']  = $product['width'];
-            $product['attr_length']  = $product['length'];
-            $product['name'] = $product['title'];
-            $product['ean_code'] = $product['ean'];
-            // $product['images'] =  json_encode([str_replace(RvMediaFacade::getUploadURL() . '/', '', trim($product['image_url']))]);
-            $product['status'] = BaseStatusEnum::PENDING;
-            try{
-                DB::beginTransaction();
-                $created_product = Product::create($product);
-                Slug::create([
-                    'key' => Str::slug(Str::limit($created_product->name,120, '...')),
-                    'prefix' => SlugHelperFacade::getPrefix(Product::class),
-                    'reference_type' => Product::class,
-                    'reference_id' => $created_product->id,
-                ]);
-                DB::commit();
-            }catch(QueryException $e)
-            {
-                if($e->errorInfo[1] == 1062)
+                $product['wide'] = $product['width'];
+                $product['attr_weight']  = $product['weight'];
+                $product['attr_height']  = $product['height'];
+                $product['attr_width']  = $product['width'];
+                $product['attr_length']  = $product['length'];
+                $product['name'] = $product['title'];
+                $product['ean_code'] = $product['ean'];
+                // $product['images'] =  json_encode([str_replace(RvMediaFacade::getUploadURL() . '/', '', trim($product['image_url']))]);
+                $product['status'] = BaseStatusEnum::PENDING;
+                try{
+                    DB::beginTransaction();
+                    $created_product = Product::create($product);
+                    Slug::create([
+                        'key' => Str::slug(Str::limit($created_product->name,120, '...')),
+                        'prefix' => SlugHelperFacade::getPrefix(Product::class),
+                        'reference_type' => Product::class,
+                        'reference_id' => $created_product->id,
+                    ]);
+                    DB::commit();
+                }catch(QueryException $e)
                 {
-                    // $this->updateProduct($product);
-                }else{
-                    info($e);
-                }
-            // info($e);
+                    if($e->errorInfo[1] == 1062)
+                    {
+                        // $this->updateProduct($product);
+                    }else{
+                        info($e);
+                    }
+                // info($e);
 
             }catch(Throwable $e)
             {
