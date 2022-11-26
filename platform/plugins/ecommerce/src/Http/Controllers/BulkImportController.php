@@ -73,13 +73,11 @@ class BulkImportController extends BaseController
 
         $file = $request->file('file');
         $importer = new CustomProductImporter();
-        ob_clean();
         if(FacadesExcel::import($importer , $file)){
             $product_rows = session()->get('product_rows');
             foreach($product_rows as $product)
             {
                 try{
-                    session()->put('product_rows' , $product_rows);
                     $product_array_values = $this->trimProductData($product);
                     $product = $this->updateProduct($product_array_values);
                     $product->save();
@@ -140,8 +138,10 @@ class BulkImportController extends BaseController
             'image' => $product_array_values[10],
             'images' => $product_array_values[11]  != null ?  $this->getProductImages($product_array_values[11]) : null ,
             'brand_id' => $product_array_values[12] != null ? $this->getProductBrand($product_array_values[12]) : null,
+            'quantity' => 50,
         ]);
-        if($product->price != 0)
+        $product->save();
+        if(((int)$product->price) !=  0)
         {
             $product->sale_price = $this->getProductSalePrice($product->price);
             $product->save();
@@ -165,16 +165,7 @@ class BulkImportController extends BaseController
 
     public function getProductBasePrice($base_price)
     {
-        return isset($old_price) && $old_price != "" ? $base_price: 0;
-    }
-
-    public function getProductImages($images)
-    {
-        $images = explode('\n' , $images);
-        foreach ($images as $key => $image) {
-            $product_images[$key] = str_replace(RvMedia::getUploadURL() . '/', '', trim($image));
-        }
-        return json_encode($product_images);
+        return (isset($base_price) && $base_price != "" ) ? $base_price: 0;
     }
 
 
@@ -186,12 +177,23 @@ class BulkImportController extends BaseController
     {
         try
         {
-            return isset($old_price) && $old_price != "" ? ($old_price - (0.2 * $old_price) ) : 0;
+            return (isset($old_price) && $old_price != "" ) ? ($old_price - (0.2 * $old_price) ) : 0;
         }catch(Throwable $e)
         {
             dd($old_price);
         }
     }
+
+
+    public function getProductImages($images)
+    {
+        $images = explode('\n' , $images);
+        foreach ($images as $key => $image) {
+            $product_images[$key] = str_replace(RvMedia::getUploadURL() . '/', '', trim($image));
+        }
+        return json_encode($product_images);
+    }
+
 
 
 
@@ -211,7 +213,7 @@ class BulkImportController extends BaseController
             {
                 $dist_lang = str_split($lang , 2)[0];
                 $tr = new GoogleTranslate($dist_lang);
-                BrandTranslation::firstOrCreate(['ec_brands_id' => $brand->id  , 'lang_code' => $lang] ,
+                BrandTranslation::updateOrCreate(['ec_brands_id' => $brand->id  , 'lang_code' => $lang] ,
                 [
                     'name' =>  $tr->translate($brand->name),
                 ]);
@@ -236,14 +238,34 @@ class BulkImportController extends BaseController
         $languages = $this->getLanguages();
         foreach($languages as $lang)
         {
+            try{
             $dist_lang = str_split($lang , 2)[0];
             $tr = new GoogleTranslate($dist_lang);
-            ProductTranslation::firstOrCreate(['ec_products_id' => $product->id , 'lang_code' => $lang] ,
-            [
+            ProductTranslation::query()->updateOrCreate(
+                [
+                    'lang_code' => $lang,
+                    'ec_products_id' => $product->id ,
+                ] ,[
                 'name' =>  $tr->translate($product->name),
                 'description' => $tr->translate($product->description),
                 'content' => $tr->translate($product->content),
+                'ec_products_id' => $product->id ,
+                'lang_code' => $lang,
             ]);
+
+            if($dist_lang == 'en')
+            {
+                $product->update([
+                    'name' => $tr->translate($product->name),
+                    'description' => $tr->translate($product->name),
+                    'content' => $tr->translate($product->name),
+                ]);
+            }
+        }catch(Throwable $e)
+        {
+            dd($e);
+        }
+
         }
     }
 

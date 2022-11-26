@@ -198,10 +198,11 @@ class ProductController extends Controller
 
     public function  importProducts()
     {
-        dd(Product::whereEanCode('2016418667733')->first());
+        dd(Product::whereEanCode('0073981021753')->first()->update(['price' => 6]));
         $no_content = ProductTranslation::whereNull('content')->count();
         $no_desc = ProductTranslation::whereNull('description')->count();
-        dd($no_content , $no_desc);
+        $no_price = Product::where('price' , 0)->orWhereNull('price')->count();
+        dd($no_content , $no_desc , $no_price);
 
     }
 
