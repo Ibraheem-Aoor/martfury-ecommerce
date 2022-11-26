@@ -187,9 +187,10 @@ class BulkImportController extends BaseController
 
     public function getProductImages($images)
     {
-        $images = explode('\n' , $images);
-        foreach ($images as $key => $image) {
-            $product_images[$key] = str_replace(RvMedia::getUploadURL() . '/', '', trim($image));
+
+        $exploded_images = explode("\n" , $images);
+        foreach ($exploded_images as $key => $tmp_image) {
+            $product_images[$key] = str_replace(RvMedia::getUploadURL() . '/', '', trim($tmp_image));
         }
         return json_encode($product_images);
     }
