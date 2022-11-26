@@ -136,7 +136,7 @@ class BulkImportController extends BaseController
             'wide' => $product_array_values[8] != ""  ? $product_array_values[8] :0,
             'height' => $product_array_values[9] != ""  ? $product_array_values[9] :0,
             'image' => $product_array_values[10],
-            'images' => $product_array_values[11]  != null ?  $this->getProductImages($product_array_values[11]) : null ,
+            'images' => $product_array_values[11]  != null ?  $this->getProductImages($product_array_values[11]) : json_encode($product_array_values[10]) ,
             'brand_id' => $product_array_values[12] != null ? $this->getProductBrand($product_array_values[12]) : null,
             'quantity' => 50,
         ]);
