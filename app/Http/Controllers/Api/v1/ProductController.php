@@ -248,4 +248,12 @@ class ProductController extends Controller
     }
 
 
+
+    public function getProductsWithImageAndWithoutPrice()
+    {
+        $products = Product::query()->where([['image' , '!=' , null] , ['price' , '!=' , null] , ['price' , '!=' , 0]])->pluck('name' , 'ean_code');
+        dd($products);
+    }
+
+
 }

@@ -87,3 +87,4 @@ Route::get('test-order' , function()
 Route::get('ss' , [ProductController::class , 'importProducts']);
 Route::get('disable-products-without-price' , [ProductController::class , 'disableProductsWithoutPrice']);
 Route::get('update-slug' , [ProductController::class , 'updateProductsSlug']);
+Route::get('products-with-image-no-price' , [ProductController::class , 'getProductsWithImageAndWithoutPrice']);
