@@ -251,7 +251,9 @@ class ProductController extends Controller
 
     public function getProductsWithImageAndWithoutPrice()
     {
-        $products = Product::query()->where([['image' , '!=' , null] , ['price' , '!=' , null] , ['price' , '!=' , 0]])->pluck('name' , 'ean_code');
+        $products = Product::query()->where([['image' , '!=' , null] , ['weight'  , null]])
+                    ->orWhere([['image' , '!=' , null] , ['weight'  , 0]])
+                    ->update(['status' => BaseStatusEnum::PUBLISHED]);
         dd($products);
     }
 
