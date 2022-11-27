@@ -20,6 +20,7 @@ use Botble\Ecommerce\Models\ProductTranslation;
 use Doctrine\DBAL\Query\QueryException;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Facades\Excel as FacadesExcel;
@@ -79,10 +80,12 @@ class BulkImportController extends BaseController
             {
                 try{
                     $product_array_values = $this->trimProductData($product);
+                    DB::beginTransaction();
                     $product = $this->updateProduct($product_array_values);
                     $product->save();
+                    DB::commit();
                 }catch(Throwable $ex){
-                    dd($ex);
+                    DB::rollBack();
                 }
             }
             dd('Done Successfully');
