@@ -251,8 +251,8 @@ class ProductController extends Controller
 
     public function getProductsWithImageAndWithoutPrice()
     {
-        $products = Product::query()->where([['image' , '!=' , null] , ['weight'  , null]])
-                    ->orWhere([['image' , '!=' , null] , ['weight'  , 0]])
+        $products = Product::query()->where([['image' , '!=' , null] , ['weight'  , null] , ['price' , '!=' , 0]])
+                    ->orWhere([['image' , '!=' , null] , ['weight'  , 0] , ['price' , '!=' , 0]])
                     ->update(['status' => BaseStatusEnum::PUBLISHED]);
         dd($products);
     }
@@ -268,4 +268,17 @@ class ProductController extends Controller
     }
 
 
+
+    // public function updatePublishedProductsTranslations()
+    // {
+    //     Product::query()
+    //                 ->whereStatus(BaseStatusEnum::PUBLISHED)
+    //                 ->whereHas('translations')->chunk(200 , function($products){
+    //                     foreach($products as $product)
+    //                     {
+    //                         $this->updateProductTrans($);
+    //                     }
+    //                 });
+    //     dd("Done");
+    // }
 }

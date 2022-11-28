@@ -76,6 +76,7 @@ class BulkImportController extends BaseController
         $importer = new CustomProductImporter();
         if(FacadesExcel::import($importer , $file)){
             $product_rows = session()->get('product_rows');
+            dd($product_rows);
             foreach($product_rows as $product)
             {
                 try{
@@ -122,7 +123,7 @@ class BulkImportController extends BaseController
 
     public function updateProductPrice($product_array_values)
     {
-        $product = Product::where('ean_code' , $product_array_values[0])->first();
+        $product = Product::query()->where('ean_code' , $product_array_values[0])->first();
         $product->update([
             'price' =>  $this->getProductBasePrice($product_array_values[1]),
         ]);
