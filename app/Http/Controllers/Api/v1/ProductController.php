@@ -258,4 +258,14 @@ class ProductController extends Controller
     }
 
 
+
+
+
+    public function updateProductsWithoutPrice()
+    {
+        $products = Product::query()->wherePrice(0)->orWhere('price' , null)->count();
+        dd($products);
+    }
+
+
 }

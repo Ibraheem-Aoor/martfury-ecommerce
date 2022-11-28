@@ -81,7 +81,7 @@ class BulkImportController extends BaseController
                 try{
                     $product_array_values = $this->trimProductData($product);
                     DB::beginTransaction();
-                    $product = $this->updateProduct($product_array_values);
+                    $product = $this->updateProductPrice($product_array_values);
                     $product->save();
                     DB::commit();
                 }catch(Throwable $ex){
@@ -109,7 +109,7 @@ class BulkImportController extends BaseController
 
 
 
-     /**
+    /**
      * Trim the porduct data from incoming collection object
      * @param  Collection $collection
      * @return array
@@ -119,6 +119,21 @@ class BulkImportController extends BaseController
         return array_map('trim' , $collection->toArray());
     }
 
+
+    public function updateProductPrice($product_array_values)
+    {
+        $product = Product::where('ean_code' , $product_array_values[0])->first();
+        $product->update([
+            'price' =>  $this->getProductBasePrice($product_array_values[1]),
+        ]);
+        if(((int)$product->price) !=  0)
+        {
+            $product->sale_price = $this->getProductSalePrice($product->price);
+            $product->status = BaseStatusEnum::PUBLISHED;
+            $product->save();
+        }
+        return $product;
+    }
 
     /**
      * make a full product
