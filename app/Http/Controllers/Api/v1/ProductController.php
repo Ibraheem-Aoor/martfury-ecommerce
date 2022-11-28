@@ -263,7 +263,10 @@ class ProductController extends Controller
         dd($products);
     }
 
-
+    public function getProductsWithoutDiscAttr()
+    {
+        $products = Product::query()->where('description' , 'null')->count();
+    }
 
 
 
