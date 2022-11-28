@@ -87,6 +87,7 @@ class BulkImportController extends BaseController
                     DB::commit();
                 }catch(Throwable $ex){
                     DB::rollBack();
+                    dd($ex);
                 }
             }
             dd('Done Successfully');
