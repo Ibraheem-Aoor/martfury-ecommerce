@@ -258,7 +258,7 @@ class ProductController extends Controller
                             ->where('image' , '!=' , null)
                             ->where('price' , 0)
                             ->orWhere('price' , null)
-                            ->pluck('name' , 'ean_code');
+                            ->pluck('ean_code');
 
         dd($products);
     }
@@ -266,6 +266,7 @@ class ProductController extends Controller
     public function getProductsWithoutDiscAttr()
     {
         $products = Product::query()->where('description' , 'null')->count();
+        dd($products);
     }
 
 
