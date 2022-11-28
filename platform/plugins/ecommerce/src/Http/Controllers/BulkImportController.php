@@ -76,6 +76,7 @@ class BulkImportController extends BaseController
         $importer = new CustomProductImporter();
         if(FacadesExcel::import($importer , $file)){
             $product_rows = session()->get('product_rows');
+            $i = 0;
             foreach($product_rows as $product)
             {
                 try{
@@ -84,12 +85,13 @@ class BulkImportController extends BaseController
                     $product = $this->updateProductPrice($product_array_values);
                     $product->save();
                     DB::commit();
+                    ++$i;
                 }catch(Throwable $ex){
                     DB::rollBack();
                     dd($ex);
                 }
             }
-            dd('Done Successfully');
+            dd('Done Successfully' , $i);
         }else{
             $message = trans('plugins/ecommerce::bulk-import.import_failed_description');
         }
