@@ -254,7 +254,11 @@ class ProductController extends Controller
         // $products = Product::query()->where([['image' , '!=' , null] , ['weight'  , null] , ['price' , '!=' , 0]])
         //             ->orWhere([['image' , '!=' , null] , ['weight'  , 0] , ['price' , '!=' , 0]])
         //             ->update(['status' => BaseStatusEnum::PUBLISHED]);
-        $products = Product::query()->where([['image' , '!=' , null] , ['price' , '=' , null] , ['price' , '=' , 0]])->pluck('name' , 'ean_code');
+        $products = Product::query()
+                            ->where('image' , '!=' , null)
+                            ->where('price' , 0)
+                            ->orWhere('price' , null)
+                            ->pluck('name' , 'ean_code');
 
         dd($products);
     }
