@@ -305,6 +305,7 @@ class ProductController extends Controller
             $languages = $this->getLanguages();
             foreach($products as $product)
             {
+                sleep(5);
                 foreach($languages as $lang)
                 {
                     try{
