@@ -265,12 +265,15 @@ class ProductController extends Controller
 
     public function getProductsWithoutDiscAttr()
     {
-        $products = Product::query()->where('description' , null)
-                        ->orwhere('image' , null)
-                        ->orWhere('price' , null)
-                        ->orWhere('weight' , null)
-                        ->count();
-        dd($products);
+        // $products = Product::query()->where('description' , null)
+        //                 ->orwhere('image' , null)
+        //                 ->orWhere('price' , null)
+        //                 ->orWhere('weight' , null)
+        //                 ->count();
+        $no_img = Product::query()->whereStatus(BaseStatusEnum::PUBLISHED)->where('image' , null);
+        $no_price = Product::query()->whereStatus(BaseStatusEnum::PUBLISHED)->where('price' , null)->orwhere('price' , 0);
+        $no_weight = Product::query()->whereStatus(BaseStatusEnum::PUBLISHED)->where('weight' , null)->orwhere('weight' , 0);
+        dd("no_img:".$no_img , "no_price:". $no_price , "no_weight:".$no_weight);
     }
 
 
