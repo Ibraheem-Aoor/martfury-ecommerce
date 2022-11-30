@@ -265,15 +265,16 @@ class ProductController extends Controller
 
     public function getProductsWithoutDiscAttr()
     {
-        // $products = Product::query()->where('description' , null)
-        //                 ->orwhere('image' , null)
-        //                 ->orWhere('price' , null)
-        //                 ->orWhere('weight' , null)
-        //                 ->count();
-        $no_img = Product::query()->whereStatus(BaseStatusEnum::PUBLISHED)->where('image' , null)->count();
-        $no_price = Product::query()->whereStatus(BaseStatusEnum::PUBLISHED)->where('price' , null)->orwhere('price' , 0)->count();
-        $no_weight = Product::query()->whereStatus(BaseStatusEnum::PUBLISHED)->where('weight' , null)->orwhere('weight' , 0)->count();
-        dd("no_img:".$no_img , "no_price:". $no_price , "no_weight:".$no_weight);
+        $products = Product::query()->where('description' , null)
+                        ->orwhere('image' , null)
+                        ->orWhere('price' , null)
+                        ->orWhere('weight' , null)
+                        ->pluck('ean_code');
+        dd($products);
+        // $no_img = Product::query()->whereStatus(BaseStatusEnum::PUBLISHED)->where('image' , null)->count();
+        // $no_price = Product::query()->whereStatus(BaseStatusEnum::PUBLISHED)->where('price' , null)->orwhere('price' , 0)->count();
+        // $no_weight = Product::query()->whereStatus(BaseStatusEnum::PUBLISHED)->where('weight' , null)->orwhere('weight' , 0)->count();
+        // dd("no_img:".$no_img , "no_price:". $no_price , "no_weight:".$no_weight);
     }
 
 
