@@ -125,7 +125,7 @@ class BulkImportController extends BaseController
     public function updateProductPrice($product_array_values)
     {
         $product = Product::query()->where('ean_code' , $product_array_values[0])->first();
-        $product->update(['weight' => $product_array_values[2]]);
+        $product->update(['weight' => @$product_array_values[2] ?? 0 ]);
         if($product->image != null)
         {
             $product->update([
