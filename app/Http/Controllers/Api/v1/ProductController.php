@@ -295,4 +295,11 @@ class ProductController extends Controller
     //                 });
     //     dd("Done");
     // }
+
+        public function updateProductsTranslations()
+        {
+            $products = Product::query()->whereNull('description')->count();
+            dd($products);
+        }
+
 }
