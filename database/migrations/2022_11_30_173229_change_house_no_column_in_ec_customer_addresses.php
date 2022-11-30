@@ -14,7 +14,7 @@ class ChangeHouseNoColumnInEcCustomerAddresses extends Migration
     public function up()
     {
         Schema::table('ec_customer_addresses', function (Blueprint $table) {
-            $table->string('house_no')->nullable();
+            $table->string('house_no')->nullable()->change();
         });
     }
 

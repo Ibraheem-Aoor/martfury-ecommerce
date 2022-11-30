@@ -14,7 +14,7 @@ class ChangeHouseNoColumnInEcOrderAddresses extends Migration
     public function up()
     {
         Schema::table('ec_order_addresses', function (Blueprint $table) {
-            $table->string('house_no')->nullable();
+            $table->string('house_no')->nullable()->change();
 
         });
     }
@@ -28,7 +28,7 @@ class ChangeHouseNoColumnInEcOrderAddresses extends Migration
     {
         Schema::table('ec_order_addresses', function (Blueprint $table) {
             $table->dropColumn(['house_no']);
-            
+
         });
     }
 }
