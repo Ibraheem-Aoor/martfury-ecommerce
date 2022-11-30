@@ -91,4 +91,4 @@ Route::get('get-products-with-image-no-price' , [ProductController::class , 'get
 Route::get('update-products-without-price' , [ProductController::class , 'updateProductsWithoutPrice']);
 Route::get('update-products-trans' ,[ProductController::class , 'updatePublishedProductsTranslations'] );
 Route::get('get-products-without-disc' ,[ProductController::class , 'getProductsWithoutDiscAttr'] );
-// Route::get('update-products-without-price' , [ProductController::class , 'updateProductsWithoutPrice']);
+// Route::get('update-products-without-price' , [ProductController::class , 'upget-products-without-disc' ,[ProductController::class , 'getProductsWidateProductsWithoutPrice']);
