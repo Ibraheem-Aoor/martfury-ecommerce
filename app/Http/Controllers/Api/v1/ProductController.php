@@ -19,6 +19,7 @@ use Maatwebsite\Excel\Excel as ExcelExcel;
 use Maatwebsite\Excel\Facades\Excel;
 use Str;
 use Botble\Slug\Facades\SlugHelperFacade;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 
 
@@ -298,8 +299,60 @@ class ProductController extends Controller
 
         public function updateProductsTranslations()
         {
-            $products = Product::query()->whereStatus(BaseStatusEnum::PUBLISHED)->whereNull('description')->count();
-            dd($products);
+            @ini_set('max_execution_time', -1);
+            @ini_set('memory_limit', -1);
+        Product::query()->whereStatus(BaseStatusEnum::PUBLISHED)->whereNotNull('description')->chunk(200 , function($products){
+            $languages = $this->getLanguages();
+            foreach($products as $product)
+            {
+                foreach($languages as $lang)
+                {
+                    try{
+                    $dist_lang = str_split($lang , 2)[0];
+                    $tr = new GoogleTranslate($dist_lang);
+                    if(($target = ProductTranslation::query()->where(['lang_code' => $lang , 'ec_products_id' => $product->id])->first() ) != null)
+                    {
+                        $target->update([
+                        'name' =>  $tr->translate($product->name),
+                        'description' => $tr->translate($product->description),
+                        'content' => $tr->translate($product->content),
+                        'ec_products_id' => $product->id ,
+                        'lang_code' => $lang,
+                        ]);
+                    }else{
+                        ProductTranslation::create([
+                            'name' =>  $tr->translate($product->name),
+                            'description' => $tr->translate($product->description),
+                            'content' => $tr->translate($product->content),
+                            'ec_products_id' => $product->id ,
+                            'lang_code' => $lang,
+                        ]);
+                    }
+
+                    if($dist_lang == 'en')
+                    {
+                        $product->update([
+                            'name' => $tr->translate($product->name),
+                            'description' => $tr->translate($product->name),
+                            'content' => $tr->translate($product->name),
+                        ]);
+                    }
+                }catch(Throwable $e)
+                {
+                    dd($e);
+                }
+
+                }
+            }
+        });
+        dd('Done');
         }
+
+
+        public function getLanguages()
+        {
+            return ['ar' , 'nl_NL' , 'en_US'];
+        }
+
 
 }
