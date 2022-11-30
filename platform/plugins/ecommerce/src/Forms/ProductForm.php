@@ -267,10 +267,10 @@ class ProductForm extends FormAbstract
                 ]);
         }
         $data['product'] = $this->getModel();
-        $this->addMetaBoxes([trans('plugins/ecommerce::products.form.product_volume') => [
-            'title' => trans('plugins/ecommerce::products.form.product_volume'),
-            'content' => view('plugins/ecommerce::products.partials.price-per-quantity' , $data),
-        ]]);
+        // $this->addMetaBoxes([trans('plugins/ecommerce::products.form.product_volume') => [
+        //     'title' => trans('plugins/ecommerce::products.form.product_volume'),
+        //     'content' => view('plugins/ecommerce::products.partials.price-per-quantity' , $data),
+        // ]]);
     }
 
     /**

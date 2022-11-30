@@ -299,6 +299,8 @@ class ProductController extends Controller
 
         public function updateProductsTranslations()
         {
+            $products = Product::query()->whereHas('variations')->pluck('ean_code');
+            dd($products);
             @ini_set('max_execution_time', -1);
             @ini_set('memory_limit', -1);
         Product::query()->whereStatus(BaseStatusEnum::PUBLISHED)->chunk(200 , function($products){

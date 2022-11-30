@@ -6,12 +6,11 @@ var base_price = $('input[name="price"]').val();
 console.log(base_price);
 
 $(document).on('click', '.add-price-per-qty', function () {
-    var html = addNewRecored();
+    var html = addNewRecored(ppqCoutner);
     $(this).parent().parent().after(html);
 });
 var ppqCoutner = 2;
 $(document).on('click', '.remove-price-per-qty', function () {
-    var html = addNewRecored(ppqCoutner);
     $(this).parent().parent().remove();
 });
 
