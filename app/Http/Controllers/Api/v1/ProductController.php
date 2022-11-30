@@ -265,7 +265,11 @@ class ProductController extends Controller
 
     public function getProductsWithoutDiscAttr()
     {
-        $products = Product::query()->where('description' , null)->count();
+        $products = Product::query()->where('description' , null)
+                        ->orwhere('image' , null)
+                        ->orWhere('price' , null)
+                        ->orWhere('weight' , null)
+                        ->count();
         dd($products);
     }
 
