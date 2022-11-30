@@ -126,8 +126,7 @@ class BulkImportController extends BaseController
     {
         $product = Product::query()->where('ean_code' , $product_array_values[0])->first();
         try{
-
-        if(@$product_array_values[3] == "*")
+        if(@$product_array_values[3] != "*")
         {
             $product->update(['weight' => @$product_array_values[2] ?? 0 ]);
             if($product->image != null)
@@ -144,7 +143,7 @@ class BulkImportController extends BaseController
                 return $product;
             }
         }
-    }catch(Thrwoable $e)
+    }catch(Throwable $e)
     {
         dd($product);
     }
