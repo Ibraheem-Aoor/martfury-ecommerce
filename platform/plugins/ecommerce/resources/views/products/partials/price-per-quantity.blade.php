@@ -9,14 +9,13 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="number" name="ppq['sale_price'][]" class="form-control sale-price">
+                        <input type="number" name="ppq[1]['sale_price']" class="form-control sale-price">
                     </td>
                     <td>
-                        <input type="number" name="ppq['sale_quantity'][]"
-                            class="form-control">
+                        <input type="number" name="ppq[1]['sale_quantity'][]" class="form-control">
                     </td>
                     <td>
-                        <input type="number" name="ppq['sale_rate'][]" class="form-control">
+                        <input type="number" name="ppq[1]['sale_rate'][]" class="form-control">
                     </td>
                     <td>
                         <button type="button" class="btn btn-sm btn-primary mb-1 mt-3 add-price-per-qty"><i

@@ -71,6 +71,7 @@ class ProductController extends BaseController
             ->addStylesDirectly(['vendor/core/plugins/ecommerce/css/ecommerce.css'])
             ->addScriptsDirectly([
                 'vendor/core/plugins/ecommerce/js/edit-product.js',
+                'vendor/core/plugins/ecommerce/js/price-per-qty.js',
             ]);
 
         return $formBuilder->create(ProductForm::class)->renderForm();
@@ -127,7 +128,7 @@ class ProductController extends BaseController
      * @throws Exception
      */
     public function store(
-        ProductRequest $request,
+        Request $request,
         StoreProductService $service,
         BaseHttpResponse $response,
         ProductVariationInterface $variationRepository,
@@ -136,6 +137,7 @@ class ProductController extends BaseController
         StoreAttributesOfProductService $storeAttributesOfProductService,
         StoreProductTagService $storeProductTagService
     ) {
+        dd($request);
         // add categories array to the request body
         $request['categories'] = [$request->parent_id , $request->sub_1_id , $request->sub_2_id];
         $product = $this->productRepository->getModel();
