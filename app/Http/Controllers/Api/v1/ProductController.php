@@ -298,7 +298,7 @@ class ProductController extends Controller
 
         public function updateProductsTranslations()
         {
-            $products = Product::query()->whereNull('description')->count();
+            $products = Product::query()->whereNull('status')->whereNull('description')->count();
             dd($products);
         }
 
