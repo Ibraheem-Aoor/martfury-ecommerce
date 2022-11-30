@@ -314,7 +314,7 @@ class ProductController extends Controller
                     {
                         $target->update([
                         'name' =>  $tr->translate($product->name),
-                        'description' => $tr->translate($product->description),
+                        'description' => $tr->translate($product->description ?? $product->name),
                         'content' => $tr->translate($product->content),
                         'ec_products_id' => $product->id ,
                         'lang_code' => $lang,
