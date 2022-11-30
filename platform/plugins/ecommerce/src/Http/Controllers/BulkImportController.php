@@ -82,8 +82,7 @@ class BulkImportController extends BaseController
                 try{
                     $product_array_values = $this->trimProductData($product);
                     DB::beginTransaction();
-                    $product = $this->updateProductPrice($product_array_values);
-                    $product->save();
+                    $this->updateProductPrice($product_array_values);
                     DB::commit();
                     ++$i;
                 }catch(Throwable $ex){
