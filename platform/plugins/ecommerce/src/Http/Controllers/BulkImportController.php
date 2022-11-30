@@ -142,6 +142,8 @@ class BulkImportController extends BaseController
                 }
                 return $product;
             }
+        }else{
+            $product->update(['status' => BaseStatusEnum::PENDING]);
         }
     }catch(Throwable $e)
     {
