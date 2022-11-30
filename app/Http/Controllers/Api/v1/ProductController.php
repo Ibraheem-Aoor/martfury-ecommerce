@@ -301,7 +301,7 @@ class ProductController extends Controller
         {
             @ini_set('max_execution_time', -1);
             @ini_set('memory_limit', -1);
-        Product::query()->whereStatus(BaseStatusEnum::PUBLISHED)->whereNotNull('description')->chunk(200 , function($products){
+        Product::query()->whereStatus(BaseStatusEnum::PUBLISHED)->chunk(200 , function($products){
             $languages = $this->getLanguages();
             foreach($products as $product)
             {
@@ -329,14 +329,6 @@ class ProductController extends Controller
                         ]);
                     }
 
-                    if($dist_lang == 'en')
-                    {
-                        $product->update([
-                            'name' => $tr->translate($product->name),
-                            'description' => $tr->translate($product->name),
-                            'content' => $tr->translate($product->name),
-                        ]);
-                    }
                 }catch(Throwable $e)
                 {
                     dd($e);
