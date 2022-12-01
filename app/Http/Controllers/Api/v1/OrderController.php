@@ -104,7 +104,7 @@ class OrderController extends Controller
                 ->whereHas('payment' , function($payment)
                 {
                     $payment->where('status' , PaymentStatusEnum::COMPLETED);
-                })->where('is_confirmed' , 0)
+                })
                 ->with([
                     'shipment' ,
                     'products' ,
