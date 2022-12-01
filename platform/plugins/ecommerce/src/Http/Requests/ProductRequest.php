@@ -20,7 +20,7 @@ class ProductRequest extends Request
     {
         $basic_rules = [
             'name'       => 'required',
-            // 'price'      => 'numeric|required|min:1|max:100000000',
+            'price'      => 'numeric|required|min:1|max:100000000',
             'start_date' => 'date|nullable|required_if:sale_type,1',
             'end_date'   => 'date|nullable|after:' . ($this->input('start_date') ?? now()->toDateTimeString()),
             'wide'       => 'numeric|sometimes|min:0|max:100000000',
@@ -35,6 +35,8 @@ class ProductRequest extends Request
             'deliverables' => 'nullable',
             'images' => 'required',
             'added_attributes.*' => 'required',
+            'ppq' => 'sometimes|array',
+            'ppq.*.*' => 'required|numeric',
         ];
         $vendor_rules = [
             'is_guaranteed' => 'required' ,

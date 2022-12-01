@@ -16,9 +16,9 @@ class CreateProductPricePerQuantitiesTable extends Migration
         Schema::create('product_price_per_quantities', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('ec_products_id');
-            $table->double('price');
+            $table->double('sale_price');
             $table->integer('quantity');
-            $table->double('discoune_rate');
+            $table->double('sale_rate');
             $table->timestamps();
         });
     }

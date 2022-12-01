@@ -234,7 +234,7 @@ class ProductForm extends FormAbstract
                             'product'              => $this->getModel(),
                         ])->render(),
                         'after_wrapper' => '</div>',
-                        'priority'      => 3,
+                        'priority'      => 4,
                     ],
                 ]);
         } elseif ($productId) {
@@ -266,10 +266,15 @@ class ProductForm extends FormAbstract
                     ],
                 ]);
         }
-        $data['product'] = $this->getModel();
+        // $data = [];
+        // if(Route::currentRouteName() == 'products.edit')
+        // {
+        //     $data['product'] = $this->getModel();
+        // }
         // $this->addMetaBoxes([trans('plugins/ecommerce::products.form.product_volume') => [
         //     'title' => trans('plugins/ecommerce::products.form.product_volume'),
         //     'content' => view('plugins/ecommerce::products.partials.price-per-quantity' , $data),
+        //     'priority'      => 3,
         // ]]);
     }
 

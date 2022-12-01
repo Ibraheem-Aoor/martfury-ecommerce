@@ -2,6 +2,7 @@
 
 namespace Botble\Ecommerce\Http\Controllers;
 
+use App\Models\ProductPricePerQuantity;
 use App\Models\User;
 use Assets;
 use Botble\Base\Enums\BaseStatusEnum;
@@ -28,6 +29,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\View;
 use Throwable;
@@ -128,7 +130,7 @@ class ProductController extends BaseController
      * @throws Exception
      */
     public function store(
-        Request $request,
+        ProductRequest $request,
         StoreProductService $service,
         BaseHttpResponse $response,
         ProductVariationInterface $variationRepository,
@@ -137,7 +139,7 @@ class ProductController extends BaseController
         StoreAttributesOfProductService $storeAttributesOfProductService,
         StoreProductTagService $storeProductTagService
     ) {
-        dd($request);
+
         // add categories array to the request body
         $request['categories'] = [$request->parent_id , $request->sub_1_id , $request->sub_2_id];
         $product = $this->productRepository->getModel();
@@ -181,6 +183,27 @@ class ProductController extends BaseController
                     'qty' => 1,
                 ];
             }, array_filter(explode(',', $request->input('grouped_products', '')))));
+        }
+
+
+        // Save Product Volume
+        if($request->ppq)
+        {
+            // Save Product Volume
+            foreach($request->ppq as $ppq)
+            {
+                try
+                {
+                    $ppq['ec_products_id'] = $product->id;
+                    DB::beginTransaction();
+                    ProductPricePerQuantity::create($ppq);
+                    DB::commit();
+                }
+                catch(Throwable $e)
+                {
+                    DB::rollBack();
+                }
+            }
         }
 
         return $response
@@ -268,6 +291,26 @@ class ProductController extends BaseController
         }
 
         $relatedProductIds = $product->variations()->pluck('product_id')->all();
+        // Update product volume
+        $product?->pricePerQty()->delete();
+        if($request->ppq)
+        {
+            // Save Product Volume
+            foreach($request->ppq as $ppq)
+            {
+                try
+                {
+                    $ppq['ec_products_id'] = $product->id;
+                    DB::beginTransaction();
+                    ProductPricePerQuantity::create($ppq);
+                    DB::commit();
+                }
+                catch(Throwable $e)
+                {
+                    DB::rollBack();
+                }
+            }
+        }
 
         $this->productRepository->update([['id', 'IN', $relatedProductIds]], ['status' => $product->status]);
 
