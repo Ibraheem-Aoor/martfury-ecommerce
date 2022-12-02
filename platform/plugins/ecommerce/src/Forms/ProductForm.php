@@ -266,16 +266,16 @@ class ProductForm extends FormAbstract
                     ],
                 ]);
         }
-        // $data = [];
-        // if(Route::currentRouteName() == 'products.edit')
-        // {
-        //     $data['product'] = $this->getModel();
-        // }
-        // $this->addMetaBoxes([trans('plugins/ecommerce::products.form.product_volume') => [
-        //     'title' => trans('plugins/ecommerce::products.form.product_volume'),
-        //     'content' => view('plugins/ecommerce::products.partials.price-per-quantity' , $data),
-        //     'priority'      => 3,
-        // ]]);
+        $data = [];
+        if(Route::currentRouteName() == 'products.edit')
+        {
+            $data['product'] = $this->getModel();
+        }
+        $this->addMetaBoxes([trans('plugins/ecommerce::products.form.product_volume') => [
+            'title' => trans('plugins/ecommerce::products.form.product_volume'),
+            'content' => view('plugins/ecommerce::products.partials.price-per-quantity' , $data),
+            'priority'      => 3,
+        ]]);
     }
 
     /**

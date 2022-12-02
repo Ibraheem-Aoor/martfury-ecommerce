@@ -73,7 +73,6 @@ class ProductController extends BaseController
             ->addStylesDirectly(['vendor/core/plugins/ecommerce/css/ecommerce.css'])
             ->addScriptsDirectly([
                 'vendor/core/plugins/ecommerce/js/edit-product.js',
-                'vendor/core/plugins/ecommerce/js/price-per-qty.js',
             ]);
 
         return $formBuilder->create(ProductForm::class)->renderForm();
@@ -108,10 +107,8 @@ class ProductController extends BaseController
             ->addStylesDirectly(['vendor/core/plugins/ecommerce/css/ecommerce.css'])
             ->addScriptsDirectly([
                 'vendor/core/plugins/ecommerce/js/edit-product.js',
-                'vendor/core/plugins/ecommerce/js/price-per-qty.js',
                 // 'vendor/core/plugins/ecommerce/js/product-custom.js',
             ]);
-
         return $formBuilder
             ->create(ProductForm::class, ['model' => $product])
             ->renderForm();

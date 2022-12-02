@@ -21,11 +21,11 @@
                             </td>
                             <td>
                                 <input required type="number" name="ppq[{{ $i }}][quantity]"
-                                    class="form-control" value="{{ $ppq->quantity }}">
+                                    class="form-control" value="{{ $ppq->quantity }}" onkeyup="calcSaleRate($(this));">
                             </td>
                             <td>
                                 <input required type="number" name="ppq[{{ $i++ }}][sale_rate]"
-                                    class="form-control" value="{{ $ppq->sale_rate }}">
+                                    class="form-control" value="{{ $ppq->sale_rate }}" readonly>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-sm btn-primary add-price-per-qty"><i
@@ -44,11 +44,11 @@
                             </td>
                             <td>
                                 <input required type="number" name="ppq[{{ $i }}][quantity]"
-                                    class="form-control" value="{{ $ppq['quantity'] }}">
+                                    class="form-control" value="{{ $ppq['quantity'] }}" onkeyup="calcSaleRate($(this));">
                             </td>
                             <td>
                                 <input required type="number" name="ppq[{{ $i++ }}][sale_rate]"
-                                    class="form-control" value="{{ $ppq['sale_rate'] }}">
+                                    class="form-control" value="{{ $ppq['sale_rate'] }}" readonly>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-sm btn-primary add-price-per-qty"><i
@@ -66,10 +66,11 @@
                             <input required type="number" name="ppq[1][sale_price]" class="form-control sale-price">
                         </td>
                         <td>
-                            <input required type="number" name="ppq[1][quantity]" class="form-control">
+                            <input required type="number" name="ppq[1][quantity]" class="form-control"
+                                onkeyup="calcSaleRate($(this));">
                         </td>
                         <td>
-                            <input required type="number" name="ppq[1][sale_rate]" placeholder="%"
+                            <input required type="number" name="ppq[1][sale_rate]" readonly placeholder="%"
                                 class="form-control">
                         </td>
                         <td>
@@ -84,3 +85,7 @@
         </div>
     </div>
 </div>
+
+@section('javascript')
+    <script src="{{asset('vendor/core/plugins/ecommerce/js/price-per-qty.js')}}"></script>
+@endsection
