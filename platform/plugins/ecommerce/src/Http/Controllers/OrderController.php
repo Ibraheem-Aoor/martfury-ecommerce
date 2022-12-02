@@ -296,6 +296,15 @@ class OrderController extends BaseController
                     $ids[] = $product->original_product->id;
                 }
 
+                $mailer = EmailHandler::setModule(ECOMMERCE_MODULE_SCREEN_NAME);
+                if ($mailer->templateEnabled('order_confirm')) {
+                    OrderHelper::setEmailVariables($order);
+                    $mailer->sendUsingTemplate(
+                        'order_confirm',
+                        $order->user->email ?: $order->address->email
+                    );
+                }
+
                 $this->productRepository
                     ->getModel()
                     ->whereIn('id', $ids)
