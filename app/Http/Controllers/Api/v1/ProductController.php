@@ -352,6 +352,8 @@ class ProductController extends Controller
 
         public function updateBorvatCode()
         {
+            @ini_set('max_execution_time', -1);
+            @ini_set('memory_limit', -1);
             Product::query()->whereNull('sku')->chunk(200, function ($products) {
                 foreach($products as $product)
                 {
@@ -370,7 +372,7 @@ class ProductController extends Controller
         $borvat_code = 'BORVAT-'.rand(1000 , 9000);
         if(Product::query()->where('sku' , $borvat_code)->exists())
         {
-            return $this->generateBorvateCode();
+            return $this->generateBorvatCode();
         }
         return $borvat_code;
     }
