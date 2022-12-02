@@ -100,6 +100,3 @@
     </div>
 </div>
 
-@section('javascript')
-    <script src="{{ asset('vendor/core/plugins/ecommerce/js/price-per-qty.js') }}"></script>
-@endsection
