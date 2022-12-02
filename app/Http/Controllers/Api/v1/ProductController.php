@@ -200,6 +200,7 @@ class ProductController extends Controller
 
     public function  importProducts()
     {
+        dd(Product::query()->whereStatus(BaseStatusEnum::PUBLISHED)->count());
         $no_content = ProductTranslation::whereNull('content')->count();
         $no_desc = ProductTranslation::whereNull('description')->count();
         $no_price = Product::where('price' , 0)->orWhereNull('price')->count();

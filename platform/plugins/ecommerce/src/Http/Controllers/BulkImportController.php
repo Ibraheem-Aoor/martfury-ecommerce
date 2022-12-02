@@ -82,7 +82,7 @@ class BulkImportController extends BaseController
                 try{
                     $product_array_values = $this->trimProductData($product);
                     DB::beginTransaction();
-                    $this->updateProductPrice($product_array_values);
+                    $this->updateProduct($product_array_values);
                     DB::commit();
                     ++$i;
                 }catch(Throwable $ex){
@@ -166,14 +166,10 @@ class BulkImportController extends BaseController
             'name' => ($product_array_values[2]),
             'price' => $this->getProductBasePrice($product_array_values[3]),
             'description' => ($product_array_values[4]),
-            'content' => ($product_array_values[5]),
-            'weight' => $product_array_values[6] != ""  ? $product_array_values[6] :0,
-            'length' => $product_array_values[7] != "" ? $product_array_values[7] : 0,
-            'wide' => $product_array_values[8] != ""  ? $product_array_values[8] :0,
-            'height' => $product_array_values[9] != ""  ? $product_array_values[9] :0,
-            'image' => $product_array_values[10],
-            'images' => ($product_array_values[11]  != null  && $product_array_values[11] != "") ?  $this->getProductImages($product_array_values[11]) : json_encode(array($product_array_values[10])) ,
-            'brand_id' => $product_array_values[12] != null ? $this->getProductBrand($product_array_values[12]) : null,
+            'weight' => $product_array_values[5] != ""  ? $product_array_values[5] :0,
+            'image' => $product_array_values[6],
+            'images' => ($product_array_values[7]  != null  && $product_array_values[7] != "") ?  $this->getProductImages($product_array_values[7]) : json_encode(array($product_array_values[6])) ,
+            'brand_id' => $product_array_values[8] != null ? $this->getProductBrand($product_array_values[8]) : null,
             'quantity' => 50,
         ]);
         $product->save();
@@ -190,7 +186,6 @@ class BulkImportController extends BaseController
             $product->status = BaseStatusEnum::PUBLISHED;
         }
         $product->save();
-        return $product;
     }catch(Throwable $e)
     {
         dd($e);
@@ -282,27 +277,18 @@ class BulkImportController extends BaseController
             {
                 $target->update([
                 'name' =>  $tr->translate($product->name),
-                'description' => $tr->translate($product->description),
-                'content' => $tr->translate($product->content),
+                'description' => $tr->translate($product->description ?? ""),
+                'content' => $tr->translate($product->content ?? ""),
                 'ec_products_id' => $product->id ,
                 'lang_code' => $lang,
                 ]);
             }else{
                 ProductTranslation::create([
                     'name' =>  $tr->translate($product->name),
-                    'description' => $tr->translate($product->description),
-                    'content' => $tr->translate($product->content),
+                    'description' => $tr->translate($product->description ?? ""),
+                    'content' => $tr->translate($product->content ?? ""),
                     'ec_products_id' => $product->id ,
                     'lang_code' => $lang,
-                ]);
-            }
-
-            if($dist_lang == 'en')
-            {
-                $product->update([
-                    'name' => $tr->translate($product->name),
-                    'description' => $tr->translate($product->name),
-                    'content' => $tr->translate($product->name),
                 ]);
             }
         }catch(Throwable $e)
