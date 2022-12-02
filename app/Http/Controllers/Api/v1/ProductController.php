@@ -354,14 +354,16 @@ class ProductController extends Controller
         {
             @ini_set('max_execution_time', -1);
             @ini_set('memory_limit', -1);
-            Product::query()->whereNull('sku')->chunk(200, function ($products) {
+            Product::query()->whereNotNull('sku')->chunk(200, function ($products) {
                 foreach($products as $product)
                 {
-                    $product->sku = $this->generateBorvatCode();
+                    $new_sku = str_split($product->sku , 7);
+                    $product->sku = "BAC".$new_sku[1];
                     $product->save();
                 }
             });
-            dd('Done Successfully', Product::query()->whereNull('sku')->count());
+            dd(Product::query()->pluck('sku'));
+            // dd('Done Successfully', Product::query()->whereNull('sku')->count());
         }
 
     /**
