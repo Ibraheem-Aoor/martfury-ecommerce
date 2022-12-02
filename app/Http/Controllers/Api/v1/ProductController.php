@@ -364,12 +364,12 @@ class ProductController extends Controller
             dd('Done Successfully', Product::query()->whereNull('sku')->count());
         }
 
-        /**
+    /**
      * Generate Uique Borvat Code for each product
      */
     public function generateBorvatCode()
     {
-        $borvat_code = 'BORVAT-'.rand(1000 , 9000);
+        $borvat_code = 'BAC'.rand(1000 , 9000);
         if(Product::query()->where('sku' , $borvat_code)->exists())
         {
             return $this->generateBorvatCode();
