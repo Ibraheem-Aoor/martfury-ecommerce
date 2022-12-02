@@ -392,18 +392,20 @@ class OrderHelper
      */
     public function handleAddCart($product, $request)
     {
+
         $parentProduct = $product->original_product;
 
         $image = $product->image ?: $parentProduct->image;
-
+        $qty = $request->input('qty', 1);
+        $price = $product->pricePerQty != null ? $product->getProductPricePerQty($qty)   :   $product->original_price;
         /**
          * Add cart to session
          */
         Cart::instance('cart')->add(
             $product->id,
             clean($parentProduct->name),
-            $request->input('qty', 1),
-            $product->original_price,
+            $qty,
+            $price,
             [
                 'image'      => RvMedia::getImageUrl($image, 'thumb', false, RvMedia::getDefaultImage()),
                 'attributes' => $product->is_variation ? $product->variation_attributes : '',

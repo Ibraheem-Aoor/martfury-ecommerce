@@ -36,7 +36,7 @@ return [
         'image' => 'Images',
         'collections' => 'Product collections',
         'labels' => 'Labels',
-        'price_sale' => 'Price sale',
+        'price_sale' => 'Price rate',
         'price_per_qty' => 'Price per quantity',
         'product_type' => [
             'title' => 'Product type',

@@ -212,10 +212,14 @@ class PublicCartController extends Controller
                     $outOfQuantity = true;
                 } else {
                     Cart::instance('cart')->update($item['rowId'], Arr::get($item, 'values'));
+                    if($product->pricePerQty != null)
+                    {
+                        Cart::instance('cart')->update($item['rowId'], ['price' => $product->getProductPricePerQty($cartItem->qty)]);
+                    }
                 }
-
                 $product->quantity = $originalQuantity;
             }
+
         }
 
         if ($outOfQuantity) {

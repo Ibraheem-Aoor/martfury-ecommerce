@@ -30,7 +30,7 @@ function addNewRecored(i) {
         <input type="number" name="ppq[`+ i + `][sale_price]" class="form-control" onkeyup="calcSaleRate($(this));" required>
     </td>
     <td>
-        <input type="number" name="total" readonly class="form-control" onkeyup="calcSaleRate($(this));" required>
+        <input type="number" name="total" readonly class="form-control" required>
     </td>
     <td>
         <input type="number" name="ppq[`+ i + `][sale_rate]" class="form-control" placeholder="%" readonly required>

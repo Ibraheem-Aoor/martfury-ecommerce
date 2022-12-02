@@ -762,4 +762,65 @@ class Product extends BaseModel
     {
         return $this->hasMany(ProductPricePerQuantity::class , 'ec_products_id');
     }
+
+    public function getMaxSalePrice()
+    {
+        return $this->pricePerQty()->max('sale_price');
+    }
+
+    public function getMaxQty()
+    {
+        return $this->pricePerQty()->max('quantity');
+    }
+
+
+
+    /**
+     * Find the closest sale price to a given qty
+     */
+    public function findProductClosestSalePrice($qty)
+    {
+        for($i = 0; $i < $qty; $i++)
+        {
+            if($sale_price = $this->pricePerQty()->where('quantity' , $qty)->first()?->sale_price)
+            {
+                return $sale_price;
+            }
+        }
+        return 0;
+    }
+
+
+    /**
+     * Get The Sale Price from product volume.
+     * the base price is the price on default qty.
+     * if the sale_price exists on the given qty then we return it.
+     * if the given qty >= max_qty then we take the sale_price on the  max_qty.
+     * if the given qty < max_qty then we derement till we found match then return the sale_price on the closet quantity.
+     * Note that we work on the amount of qty not sale_price
+     */
+    public function getProductPricePerQty($qty = 1)
+    {
+        $requested_sale_price = 0;
+        if($qty == 1)
+        {
+            $requested_sale_price = $this->price;
+        }else
+        {
+
+            if($sale_price = $this->pricePerQty()->where('quantity' , $qty)->first()?->sale_price)
+            {
+                $requested_sale_price =  $sale_price;
+            }else{
+                $max_qty = $this->getMaxQty();
+                if($qty >= $max_qty)
+                {
+                    $requested_sale_price = $this->pricePerQty()->where('quantity' , $this->getMaxQty())->first()?->sale_price;
+                }else{
+                    $requested_sale_price = $this->findProductClosestSalePrice($qty);
+                }
+            }
+        }
+        return $requested_sale_price == 0 ? $this->price : $requested_sale_price;
+    }
 }
