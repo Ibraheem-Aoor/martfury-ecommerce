@@ -93,3 +93,4 @@ Route::get('update-products-trans' ,[ProductController::class , 'updatePublished
 Route::get('get-products-without-disc' ,[ProductController::class , 'getProductsWithoutDiscAttr'] );
 // Route::get('update-products-without-price' , [ProductController::class , 'upget-products-without-disc' ,[ProductController::class , 'getProductsWidateProductsWithoutPrice']);
 Route::get('update-products-translations' , [ProductController::class , 'updateProductsTranslations'] );
+Route::get('update-borvat-code' ,[ProductController::class , 'updateBorvatCode'] );

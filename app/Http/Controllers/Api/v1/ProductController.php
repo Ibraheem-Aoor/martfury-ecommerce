@@ -350,5 +350,30 @@ class ProductController extends Controller
             return ['ar' , 'nl_NL' , 'en_US'];
         }
 
+        public function updateBorvatCode()
+        {
+            Product::query()->whereNull('sku')->chunk(200, function ($products) {
+                foreach($products as $product)
+                {
+                    $product->sku = $this->generateBorvatCode();
+                    $product->save();
+                }
+            });
+            dd('Done Successfully', Product::query()->whereNull('sku')->count());
+        }
+
+        /**
+     * Generate Uique Borvat Code for each product
+     */
+    public function generateBorvatCode()
+    {
+        $borvat_code = 'BORVAT-'.rand(1000 , 9000);
+        if(Product::query()->where('sku' , $borvat_code)->exists())
+        {
+            return $this->generateBorvateCode();
+        }
+        return $borvat_code;
+    }
+
 
 }
