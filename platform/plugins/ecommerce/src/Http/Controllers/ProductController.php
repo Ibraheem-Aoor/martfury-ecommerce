@@ -368,7 +368,7 @@ class ProductController extends BaseController
                 }
         }catch(Throwable $e)
         {
-            dd($e);
+            //Silent
         }
 
         }
