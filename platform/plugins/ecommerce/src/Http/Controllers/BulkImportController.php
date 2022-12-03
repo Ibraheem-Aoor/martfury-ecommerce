@@ -178,6 +178,7 @@ class BulkImportController extends BaseController
     }
     else{
                 Product::create([
+                    'ean_code' => $product_array_values[1],
                     'name' => ($product_array_values[2]),
                     'price' => $this->getProductBasePrice($product_array_values[3]),
                     'description' => ($product_array_values[4]),
@@ -185,6 +186,8 @@ class BulkImportController extends BaseController
                     'image' => $product_array_values[6],
                     'images' => ($product_array_values[7]  != null  && $product_array_values[7] != "") ?  $this->getProductImages($product_array_values[7]) : json_encode(array($product_array_values[6])) ,
                     'quantity' => 50,
+                    'status' => BaseStatusEnum::PUBLISHED,
+                    'sku' => $this->generateBorvatCode(),
                 ]);
     }
         // if(((int)$product->price) !=  0)
@@ -319,5 +322,18 @@ class BulkImportController extends BaseController
         return ['ar' , 'nl_NL' , 'en_US'];
     }
 
+
+    /**
+     * Generate Uique Borvat Code for each product
+     */
+    public function generateBorvatCode()
+    {
+        $borvat_code = 'BAC'.rand(1000 , 9000);
+        if(Product::query()->where('sku' , $borvat_code)->exists())
+        {
+            return $this->generateBorvatCode();
+        }
+        return $borvat_code;
+    }
 
 }
