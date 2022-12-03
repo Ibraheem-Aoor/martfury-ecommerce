@@ -80,6 +80,7 @@ class Product extends BaseModel
         'is_guaranteed',
         'guarantee',
         'delivery_time',
+        'note',
     ];
 
     /**

@@ -33,6 +33,7 @@ return [
             'end' => 'From date',
             'start' => 'To date',
         ],
+        'note' => 'Abo Sham Note',
         'image' => 'Images',
         'collections' => 'Product collections',
         'labels' => 'Labels',

@@ -276,6 +276,10 @@ class ProductForm extends FormAbstract
             'content' => view('plugins/ecommerce::products.partials.price-per-quantity' , $data),
             'priority'      => 3,
         ]]);
+        $this->add('note', 'text', [
+            'label' => trans('plugins/ecommerce::products.form.note'),
+            'label_attr' => ['class' => 'text-title-field'],
+        ]);
     }
 
     /**

@@ -145,6 +145,7 @@ class ProductController extends BaseController
         $product = $this->productRepository->getModel();
         $product->ean_code = $request->input('ean_code');
         $product->sku = $this->generateBorvatCode();
+        $product->note = $request->input('note');
         $product = $service->execute($request, $product);
         $storeProductTagService->execute($request, $product);
 
