@@ -44,7 +44,7 @@ class Product extends BaseModel
         'image', // Featured image
         'images',
         'sku',
-        'c',
+        'ean_code',
         'order',
         'quantity',
         'allow_checkout_when_out_of_stock',
