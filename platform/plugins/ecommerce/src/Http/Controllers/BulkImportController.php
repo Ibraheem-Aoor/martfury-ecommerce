@@ -187,7 +187,6 @@ class BulkImportController extends BaseController
                     'quantity' => 50,
                 ]);
     }
-        $product->save();
         // if(((int)$product->price) !=  0)
         // {
         //     $product->sale_price = $this->getProductSalePrice($product->price);
