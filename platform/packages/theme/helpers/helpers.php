@@ -116,3 +116,15 @@ if (!function_exists('admin_bar')) {
         return AdminBarFacade::getFacadeRoot();
     }
 }
+
+
+if(!function_exists('getLanguages'))
+{
+    /**
+     * @return array
+     */
+    function getLanguages()
+    {
+        return ['ar' , 'nl_NL' , 'en_US'];
+    }
+}

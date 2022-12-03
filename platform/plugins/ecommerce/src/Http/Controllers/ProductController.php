@@ -13,6 +13,7 @@ use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\Ecommerce\Forms\ProductForm;
 use Botble\Ecommerce\Http\Requests\ProductRequest;
 use Botble\Ecommerce\Models\Product;
+use Botble\Ecommerce\Models\ProductTranslation;
 use Botble\Ecommerce\Repositories\Interfaces\GroupedProductInterface;
 use Botble\Ecommerce\Repositories\Interfaces\ProductVariationInterface;
 use Botble\Ecommerce\Repositories\Interfaces\ProductVariationItemInterface;
@@ -312,7 +313,7 @@ class ProductController extends BaseController
         }
 
         $this->productRepository->update([['id', 'IN', $relatedProductIds]], ['status' => $product->status]);
-
+        $this->updateProductTranslations($product);
         return $response
             ->setPreviousUrl(route('products.index'))
             ->setMessage(trans('core/base::notices.update_success_message'));
@@ -340,7 +341,37 @@ class ProductController extends BaseController
 
     public function updateProductTranslations(Product $product)
     {
-        dd($product);
+
+        $languages = getLanguages();
+        foreach($languages as $lang)
+        {
+            try{
+                $dist_lang = str_split($lang , 2)[0];
+                $tr = new GoogleTranslate($dist_lang);
+                if(($target = ProductTranslation::query()->where(['lang_code' => $lang , 'ec_products_id' => $product->id])->first()) != null)
+                {
+                    $target->update([
+                    'name' =>  $tr->translate($product->name),
+                    'description' => $tr->translate($product->description ?? ""),
+                    'content' => $tr->translate($product->content ?? ""),
+                    'ec_products_id' => $product->id ,
+                    'lang_code' => $lang,
+                    ]);
+                }else{
+                    ProductTranslation::create([
+                        'name' =>  $tr->translate($product->name),
+                        'description' => $tr->translate($product->description ?? ""),
+                        'content' => $tr->translate($product->content ?? ""),
+                        'ec_products_id' => $product->id ,
+                        'lang_code' => $lang,
+                    ]);
+                }
+        }catch(Throwable $e)
+        {
+            dd($e);
+        }
+
+        }
     }
 
     function  transTest()

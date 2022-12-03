@@ -105,6 +105,7 @@ class OrderController extends Controller
                 {
                     $payment->where('status' , PaymentStatusEnum::COMPLETED);
                 })
+                ->where('status' , '!=' ,  OrderStatusEnum::CANCELED)
                 ->with([
                     'shipment' ,
                     'products' ,
