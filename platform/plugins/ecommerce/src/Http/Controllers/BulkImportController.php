@@ -162,6 +162,9 @@ class BulkImportController extends BaseController
         try
         {
         $product = Product::where('ean_code' , $product_array_values[1])->first();
+        if($product)
+        {
+
         $product->update([
             'name' => ($product_array_values[2]),
             'price' => $this->getProductBasePrice($product_array_values[3]),
@@ -172,6 +175,18 @@ class BulkImportController extends BaseController
             'brand_id' => @$product_array_values[8] != null ? $this->getProductBrand($product_array_values[8]) : null,
             'quantity' => 50,
         ]);
+    }
+    else{
+                Product::create([
+                    'name' => ($product_array_values[2]),
+                    'price' => $this->getProductBasePrice($product_array_values[3]),
+                    'description' => ($product_array_values[4]),
+                    'weight' => $product_array_values[5] != ""  ? $product_array_values[5] :0,
+                    'image' => $product_array_values[6],
+                    'images' => ($product_array_values[7]  != null  && $product_array_values[7] != "") ?  $this->getProductImages($product_array_values[7]) : json_encode(array($product_array_values[6])) ,
+                    'quantity' => 50,
+                ]);
+    }
         $product->save();
         // if(((int)$product->price) !=  0)
         // {
