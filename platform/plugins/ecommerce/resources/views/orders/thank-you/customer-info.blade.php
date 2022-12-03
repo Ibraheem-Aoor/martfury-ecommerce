@@ -24,7 +24,7 @@
     </p>
     <p>
         <span class="d-inline-block">{{ __('Payment method') }}:</span>
-        <span class="order-customer-info-meta">{{ $order->payment->payment_channel->label() == "Stripe" ? "Credit Card" : $order->payment->payment_channel->label() }}</span>
+        <span class="order-customer-info-meta">{{ $order->payment->payment_channel->label() }}</span>
     </p>
     <p>
         <span class="d-inline-block">{{ __('Payment status') }}:</span>

@@ -204,7 +204,7 @@ class ProductController extends BaseController
                 }
             }
         }
-
+        $this->updateProductTranslations($product);
         return $response
             ->setPreviousUrl(route('products.index'))
             ->setNextUrl(route('products.edit', $product->id))
@@ -337,6 +337,11 @@ class ProductController extends BaseController
         return response()->json(['status' => true , 'is_unique' => true  ,'route' => (route('products.create') ) ] , 200);
     }
 
+
+    public function updateProductTranslations(Product $product)
+    {
+        dd($product);
+    }
 
     function  transTest()
     {

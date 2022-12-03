@@ -59,7 +59,6 @@ class StoreProductService
                 'weight',
             ]);
         }
-
         $product->fill($data);
 
         $images = [];
