@@ -169,23 +169,23 @@ class BulkImportController extends BaseController
             'weight' => $product_array_values[5] != ""  ? $product_array_values[5] :0,
             'image' => $product_array_values[6],
             'images' => ($product_array_values[7]  != null  && $product_array_values[7] != "") ?  $this->getProductImages($product_array_values[7]) : json_encode(array($product_array_values[6])) ,
-            'brand_id' => $product_array_values[8] != null ? $this->getProductBrand($product_array_values[8]) : null,
+            'brand_id' => @$product_array_values[8] != null ? $this->getProductBrand($product_array_values[8]) : null,
             'quantity' => 50,
         ]);
         $product->save();
-        if(((int)$product->price) !=  0)
-        {
-            $product->sale_price = $this->getProductSalePrice($product->price);
-            $product->save();
-        }
-        $this->updateProductTranslations($product);
-        if($product_array_values[0] == '*' || (int)$product->price == 0 || $product->weight == null || $product->weight == 0)
-        {
-            $product->status = BaseStatusEnum::PENDING;
-        }else{
-            $product->status = BaseStatusEnum::PUBLISHED;
-        }
-        $product->save();
+        // if(((int)$product->price) !=  0)
+        // {
+        //     $product->sale_price = $this->getProductSalePrice($product->price);
+        //     $product->save();
+        // }
+        // $this->updateProductTranslations($product);
+        // if($product_array_values[0] == '*' || (int)$product->price == 0 || $product->weight == null || $product->weight == 0)
+        // {
+        //     $product->status = BaseStatusEnum::PENDING;
+        // }else{
+        //     $product->status = BaseStatusEnum::PUBLISHED;
+        // }
+        // $product->save();
     }catch(Throwable $e)
     {
         dd($e);
