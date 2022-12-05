@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\v1\ProductController;
+use Botble\Ecommerce\Enums\OrderStatusEnum;
 use Botble\Ecommerce\Models\Order;
 use Botble\Ecommerce\Models\Product;
 use Botble\Payment\Enums\PaymentStatusEnum;
@@ -94,3 +95,19 @@ Route::get('get-products-without-disc' ,[ProductController::class , 'getProducts
 // Route::get('update-products-without-price' , [ProductController::class , 'upget-products-without-disc' ,[ProductController::class , 'getProductsWidateProductsWithoutPrice']);
 Route::get('update-products-translations' , [ProductController::class , 'updateProductsTranslations'] );
 Route::get('update-borvat-code' ,[ProductController::class , 'updateBorvatCode'] );
+
+
+Route::get('count-test', function () {
+    $orders = Order::query()
+        ->where('status', '!=', OrderStatusEnum::CANCELED)
+        ->whereHas('products')
+        ->with([
+            'shipment',
+            'products',
+            'address',
+        ])
+        ->orderByDesc('created_at')
+        ->count();
+
+    dd($orders);
+});
