@@ -42,3 +42,7 @@ $(document).on('click', '#is_guaranteed_false', function () {
 
 
 
+/**
+ * Product Table
+ */
+

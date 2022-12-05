@@ -9,6 +9,7 @@ return [
     'order_by' => 'Order By',
     'order' => 'Order',
     'status' => 'Status',
+    'reference' => 'reference',
     'created_at' => 'Created At',
     'updated_at' => 'Updated At',
     'description' => 'Description',

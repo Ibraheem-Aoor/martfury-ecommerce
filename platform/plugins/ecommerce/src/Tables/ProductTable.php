@@ -52,11 +52,17 @@ class ProductTable extends TableAbstract
     {
         $data = $this->table
             ->eloquent($this->query())
+            ->editColumn('reference', function ($item) {
+                if (Auth::user()->hasPermission('products.edit')) {
+                    return clean($item->note);
+                }
+                return "";
+            })
             ->editColumn('name', function ($item) {
                 if (!Auth::user()->hasPermission('products.edit')) {
                     return clean($item->name);
                 }
-                return Html::link(route('products.edit', $item->id), clean($item->name));
+                return Html::link($item->getSlug() , clean($item->name));
             })
             ->editColumn('ean_code' , function($item){
                 return $item->ean_code;
@@ -76,10 +82,12 @@ class ProductTable extends TableAbstract
                 return $this->getCheckbox($item->id);
             })
             ->editColumn('price', function ($item) {
-                return $item->price_in_table;
+                $flag = 'p';
+                return view('plugins/ecommerce::products.partials.price-quantty-in-table', compact('item', 'flag'))->render();
             })
             ->editColumn('quantity', function ($item) {
-                return $item->quantity;
+                $flag = 'q';
+                return view('plugins/ecommerce::products.partials.price-quantty-in-table', compact('item' , 'flag'))->render();
             })
             ->editColumn('sku', function ($item) {
                 return clean($item->sku ?: '&mdash;');
@@ -126,6 +134,7 @@ class ProductTable extends TableAbstract
                 'with_storehouse_management',
                 'stock_status',
                 'ean_code',
+                'note'
             ])
             ->where('is_variation', 0);
 
@@ -149,6 +158,11 @@ class ProductTable extends TableAbstract
             'id'           => [
                 'title' => trans('core/base::tables.id'),
                 'width' => '20px',
+            ],
+            'reference'       => [
+                'title' => trans('core/base::tables.reference'),
+                'width' => '100px',
+                'class' => 'text-center',
             ],
             'image'        => [
                 'name'  => 'images',

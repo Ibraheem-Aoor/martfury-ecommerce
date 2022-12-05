@@ -9,6 +9,7 @@ use Botble\Base\Events\UpdatedContentEvent;
 use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\Ecommerce\Enums\StockStatusEnum;
 use Botble\Ecommerce\Http\Requests\CreateProductWhenCreatingOrderRequest;
+use Botble\Ecommerce\Http\Requests\ProducttUpdatePriceInTableRequest;
 use Botble\Ecommerce\Http\Requests\ProductUpdateOrderByRequest;
 use Botble\Ecommerce\Http\Requests\ProductVersionRequest;
 use Botble\Ecommerce\Models\Product;
@@ -777,7 +778,26 @@ trait ProductActionsTrait
         $product = $this->productRepository->findOrFail($request->input('pk'));
         $product->order = $request->input('value', 0);
         $this->productRepository->createOrUpdate($product);
+        return $response->setMessage(trans('core/base::notices.update_success_message'));
+    }
 
+
+    /**
+      * @param ProducttUpdatePriceInTableRequest $request
+      * @param BaseHttpResponse $response
+      * @return BaseHttpResponse
+      */
+    public function postUpdatePriceQuantityInTable(ProducttUpdatePriceInTableRequest $request , $input ,  BaseHttpResponse $response)
+    {
+        $product = $this->productRepository->findOrFail($request->input('pk'));
+        if($input == 'p')
+        {
+            // update slae price if exists else update the base price
+            (int)$product->sale_price != 0 ? ($product->sale_price = $request->input('value', 0)) : ($product->price = $request->input('value', 0));
+        }else{
+            $product->quantity = $request->input('value', 0);
+        }
+        $this->productRepository->createOrUpdate($product);
         return $response->setMessage(trans('core/base::notices.update_success_message'));
     }
 

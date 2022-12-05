@@ -98,9 +98,18 @@ Route::group(['namespace' => 'Botble\Ecommerce\Http\Controllers', 'middleware' =
                 'permission' => 'products.index',
             ]);
 
+            /**
+             * Table update
+             */
             Route::post('update-order-by', [
                 'as'         => 'update-order-by',
                 'uses'       => 'ProductController@postUpdateOrderby',
+                'permission' => 'products.edit',
+            ]);
+
+            Route::post('update-price-quanttiy-in-table/{input}', [
+                'as'         => 'update-price-quanttiy-in-table',
+                'uses'       => 'ProductController@postUpdatePriceQuantityInTable',
                 'permission' => 'products.edit',
             ]);
         });
