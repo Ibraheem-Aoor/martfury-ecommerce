@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Controllers\Api\v1\ProductController;
-use Botble\Ecommerce\Enums\OrderStatusEnum;
 use Botble\Ecommerce\Models\Order;
+use Botble\Ecommerce\Models\OrderProduct;
 use Botble\Ecommerce\Models\Product;
 use Botble\Payment\Enums\PaymentStatusEnum;
 use Botble\Slug\Models\Slug;
 use Botble\Table\Http\Controllers\TableController;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 
@@ -98,16 +99,7 @@ Route::get('update-borvat-code' ,[ProductController::class , 'updateBorvatCode']
 
 
 Route::get('count-test', function () {
-    $orders = Order::query()
-        ->where('status', '!=', OrderStatusEnum::CANCELED)
-        ->whereHas('products')
-        ->with([
-            'shipment',
-            'products',
-            'address',
-        ])
-        ->orderByDesc('created_at')
-        ->count();
-
-    dd($orders);
+    $products_to_delete = Product::whereNull('ean_code')->pluck('id');
+    dd(Product::query()->whereIn('id', $products_to_delete)->delete());
 });
+
