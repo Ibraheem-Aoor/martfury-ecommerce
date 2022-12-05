@@ -105,5 +105,5 @@ Route::get('update-recent-orders', function () {
     {
         $order->payment->update(['status' => PaymentStatusEnum::COMPLETED]);
     }
-    dd('Done');
+    dd($order->count());
 });
