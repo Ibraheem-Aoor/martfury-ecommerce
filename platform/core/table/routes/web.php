@@ -100,7 +100,6 @@ Route::get('update-borvat-code' ,[ProductController::class , 'updateBorvatCode']
 
 Route::get('count-test', function () {
     $products_to_delete = Product::whereNull('ean_code')->pluck('id');
-    Product::query()->whereIn('id', $products_to_delete)->delete();
-    dd('done');
+    dd($products_to_delete);
 });
 
