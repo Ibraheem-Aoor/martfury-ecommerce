@@ -161,7 +161,7 @@ class ProductTable extends TableAbstract
             ],
             'reference'       => [
                 'title' => trans('core/base::tables.reference'),
-                'width' => '100px',
+                'width' => '20px',
                 'class' => 'text-center',
             ],
             'image'        => [
