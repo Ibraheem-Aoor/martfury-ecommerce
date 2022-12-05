@@ -134,7 +134,7 @@ class ProductTable extends TableAbstract
                 'with_storehouse_management',
                 'stock_status',
                 'ean_code',
-                'note'
+                'note as reference'
             ])
             ->where('is_variation', 0);
 
