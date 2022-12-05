@@ -59,6 +59,8 @@ class FetchBolProductsCommand extends Command
      */
     public function handle()
     {
+        /*
+
         $base_url = config('bol-api.base_url');
         $headers = config('bol-api.headers');
         $this->api = new ApiService($base_url , null , $headers);
@@ -85,6 +87,7 @@ class FetchBolProductsCommand extends Command
                 info($e);
             }
         }
+        */
     }
 
 
@@ -141,7 +144,6 @@ class FetchBolProductsCommand extends Command
      */
     protected function fillProductData(array $product)
     {
-        info($product);
         $languages = ['ar' , 'nl_NL' , 'en_US'];
         foreach($languages as $lang)
         {
