@@ -98,8 +98,12 @@ Route::get('update-products-translations' , [ProductController::class , 'updateP
 Route::get('update-borvat-code' ,[ProductController::class , 'updateBorvatCode'] );
 
 
-Route::get('count-test', function () {
-    $products_to_delete = Product::whereNull('ean_code')->pluck('id');
-    dd($products_to_delete);
-});
 
+Route::get('update-recent-orders', function () {
+    $orders = Order::query()->where('created_at'  , ">=",  Carbon::yesterday()->toDateTimeString())->get();
+    foreach($orders as $order)
+    {
+        $order->payment->update(['status' => PaymentStatusEnum::COMPLETED]);
+    }
+    dd('Done');
+});
