@@ -59,10 +59,7 @@ class ProductTable extends TableAbstract
                 return "";
             })
             ->editColumn('name', function ($item) {
-                if (!Auth::user()->hasPermission('products.edit')) {
-                    return clean($item->name);
-                }
-                return Html::link($item->getSlug() , clean($item->name));
+                return Html::link('products/'.$item->slug.'?preview=true', clean($item->name) , ['target' => '_blank']);
             })
             ->editColumn('ean_code' , function($item){
                 return $item->ean_code;
