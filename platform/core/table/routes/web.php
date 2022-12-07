@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\v1\ProductController;
+use App\Http\Controllers\FixerControlle;
 use Botble\Ecommerce\Models\Order;
 use Botble\Ecommerce\Models\OrderProduct;
 use Botble\Ecommerce\Models\Product;
@@ -130,3 +131,7 @@ Route::get('tttt', function () {
     $trs = ProductTranslation::query()->whereEcProductsId(8711528)->get();
     dd($trs);
 });
+
+
+
+    Route::get('products-without-trans-test',  [FixerControlle::class , 'getProductsWithoutTrans']);
