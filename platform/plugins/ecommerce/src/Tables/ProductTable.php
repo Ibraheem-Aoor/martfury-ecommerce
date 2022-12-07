@@ -54,7 +54,7 @@ class ProductTable extends TableAbstract
             ->eloquent($this->query())
             ->editColumn('reference', function ($item) {
                 if (Auth::user()->hasPermission('products.edit')) {
-                    return clean($item->reference);
+                    return clean($item->note);
                 }
                 return "";
             })
