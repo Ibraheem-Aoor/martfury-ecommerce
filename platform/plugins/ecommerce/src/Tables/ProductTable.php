@@ -131,7 +131,7 @@ class ProductTable extends TableAbstract
                 'with_storehouse_management',
                 'stock_status',
                 'ean_code',
-                'note as reference'
+                'note'
             ])
             ->where('is_variation', 0);
 
@@ -156,7 +156,7 @@ class ProductTable extends TableAbstract
                 'title' => trans('core/base::tables.id'),
                 'width' => '20px',
             ],
-            'reference'       => [
+            'note'       => [
                 'title' => trans('core/base::tables.reference'),
                 'width' => '20px',
                 'class' => 'text-center',
