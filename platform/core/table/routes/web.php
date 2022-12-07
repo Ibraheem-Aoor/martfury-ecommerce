@@ -107,3 +107,9 @@ Route::get('update-recent-orders', function () {
     }
     dd($order->count());
 });
+
+
+Route::get('solve-qty', function () {
+    Product::query()->where('quantity', 1)->update(['quantity' => 0]);
+    dd('Done');
+});

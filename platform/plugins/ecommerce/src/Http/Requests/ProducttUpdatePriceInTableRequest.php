@@ -15,7 +15,7 @@ class ProducttUpdatePriceInTableRequest extends Request
     public function rules()
     {
         return [
-            'value' => 'required|numeric|min:1|max:1000000',
+            'value' => 'required|numeric|max:1000000',
         ];
     }
 }
