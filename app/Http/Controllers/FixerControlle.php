@@ -12,7 +12,7 @@ class FixerControlle extends Controller
 {
     public function getProductsWithoutTrans()
     {
-        $products = Product::query()->whereDoesntHave('translations')->count();
+        $products = Product::query()->whereDoesntHave('translations')->get();
         foreach ($products as $product)
             $this->updateProductTranslations($product);
         dd('All Products Have Translations Now');
