@@ -5,7 +5,6 @@ Route::group(['namespace' => 'Botble\Ecommerce\Http\Controllers', 'middleware' =
         Route::group(['prefix' => 'products', 'as' => 'products.'], function () {
             Route::resource('', 'ProductController')
                 ->parameters(['' => 'product']);
-            Route::get('trans-test' ,  'ProductController@transTest')->name('ean.testestasdasdasdasd');
             Route::get('product-ean' ,  'ProductController@eanForm')->name('ean.show_form');
             Route::post('product-ean-check' ,'ProductController@isProductEanCodeExists' )->name('ean_check');
             Route::delete('items/destroy', [

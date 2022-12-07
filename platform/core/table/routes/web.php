@@ -4,11 +4,13 @@ use App\Http\Controllers\Api\v1\ProductController;
 use Botble\Ecommerce\Models\Order;
 use Botble\Ecommerce\Models\OrderProduct;
 use Botble\Ecommerce\Models\Product;
+use Botble\Ecommerce\Models\ProductTranslation;
 use Botble\Payment\Enums\PaymentStatusEnum;
 use Botble\Slug\Models\Slug;
 use Botble\Table\Http\Controllers\TableController;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 
 Route::group([
@@ -112,4 +114,19 @@ Route::get('update-recent-orders', function () {
 Route::get('solve-qty', function () {
     Product::query()->where('quantity', 1)->update(['quantity' => 0]);
     dd('Done');
+});
+
+
+Route::get('tttt', function () {
+    // $p = Product::find(8711527);
+    // $tr = new GoogleTranslate('ar');
+    // // $p->translations()->whereLangCode('en_US')->first()->update([
+    // //     'name' => $tr->translate($p->name),
+    // //     'content' => $tr->translate($p->content),
+    // //     'description' => $tr->translate($p->description),
+    // // ]);
+    // dd($tr->translate('Hello World'));
+
+    $trs = ProductTranslation::query()->whereEcProductsId(8711528)->get();
+    dd($trs);
 });

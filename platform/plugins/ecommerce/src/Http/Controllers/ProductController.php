@@ -348,21 +348,22 @@ class ProductController extends BaseController
         {
             try{
                 $dist_lang = str_split($lang , 2)[0];
-                $tr = new GoogleTranslate($dist_lang);
-                if(($target = ProductTranslation::query()->where(['lang_code' => $lang , 'ec_products_id' => $product->id])->first()) != null)
+                $tr = new GoogleTranslate((string)$dist_lang);
+                $tr->setTarget((string)$dist_lang);
+                if(ProductTranslation::query()->where([['lang_code' , $lang] , ['ec_products_id' , $product->id]])->first() != null)
                 {
-                    $target->update([
+                    ProductTranslation::query()->where([['lang_code', $lang], ['ec_products_id', $product->id]])->update([
                     'name' =>  $tr->translate($product->name),
-                    'description' => $tr->translate($product->description ?? ""),
-                    'content' => $tr->translate($product->content ?? ""),
+                    'description' => ($tr->translate(($product->description ?? ""))),
+                    'content' => ($tr->translate(($product->content ?? ""))),
                     'ec_products_id' => $product->id ,
                     'lang_code' => $lang,
                     ]);
                 }else{
                     ProductTranslation::create([
-                        'name' =>  $tr->translate($product->name),
-                        'description' => $tr->translate($product->description ?? ""),
-                        'content' => $tr->translate($product->content ?? ""),
+                        'name' =>  ($tr->translate($product->name)),
+                        'description' => $tr->translate(($product->description ?? "") ),
+                        'content' => $tr->translate(($product->content) ?? ""),
                         'ec_products_id' => $product->id ,
                         'lang_code' => $lang,
                     ]);
@@ -370,15 +371,10 @@ class ProductController extends BaseController
         }catch(Throwable $e)
         {
             //Silent
+                // dd($e);
         }
 
         }
     }
 
-    function  transTest()
-    {
-        dd(str_split('en_NL' , 2));
-        // $tr = new GoogleTranslate('en'); // Translates into English
-        // $tr->setSource('ar');
-    }
 }

@@ -24,7 +24,7 @@ class ProductRequest extends Request
             'start_date' => 'date|nullable|required_if:sale_type,1',
             'end_date'   => 'date|nullable|after:' . ($this->input('start_date') ?? now()->toDateTimeString()),
             'status'     => Rule::in(BaseStatusEnum::values()),
-            'quantity'   => 'numeric|sometimes|min:1|max:100000000',
+            'quantity'   => 'numeric|sometimes|min:0|max:100000000',
             'ean_code' => (Route::currentRouteName() != 'products.edit.update' &&  Route::currentRouteName() != 'marketplace.vendor.products.edit.update' ) ? 'required|digits:13' : 'nullable',
             'description' => 'nullable',
             'deliverables' => 'nullable',

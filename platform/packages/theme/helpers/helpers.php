@@ -125,6 +125,6 @@ if(!function_exists('getLanguages'))
      */
     function getLanguages()
     {
-        return ['ar' , 'nl_NL' , 'en_US'];
+        return ["ar" , "nl_NL" , "en_US"];
     }
 }
