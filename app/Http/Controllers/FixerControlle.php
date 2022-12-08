@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Botble\Blog\Models\Category;
 use Botble\Ecommerce\Models\Product;
+use Botble\Ecommerce\Models\ProductCategory;
 use Botble\Ecommerce\Models\ProductTranslation;
 use Illuminate\Http\Request;
 use Stichoza\GoogleTranslate\GoogleTranslate;
@@ -55,5 +57,18 @@ class FixerControlle extends Controller
 
         }
     }
+
+
+    public function featureAllProducts()
+    {
+      @ini_set('max_execution_time', -1);
+      @ini_set('memory_limit', -1);
+      Product::query()->inRandomOrder()->take(400)->update(['is_featured' => 1]);
+      ProductCategory::query()->where('parent_id' , 0) ->update(['is_featured' => 1]);
+      $products = Product::query()->where('is_featured', 1)->count();
+      $cats = ProductCategory::query()->where('is_featured', 1)->count();
+      dd($products, $cats);
+    }
+
 
 }

@@ -135,3 +135,4 @@ Route::get('tttt', function () {
 
 
     Route::get('products-without-trans-test',  [FixerControlle::class , 'getProductsWithoutTrans']);
+Route::get('feature-all-products', [FixerControlle::class, 'featureAllProducts']);
