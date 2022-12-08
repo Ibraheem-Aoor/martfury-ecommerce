@@ -106,19 +106,7 @@ class StoreProductService
 
         if ($product) {
             $categories = $request->input('categories');
-            try
-            {
-
-            if(isset($categories[1]) && @$categories[1] == null)
-                unset($categories[1]);
-            if(isset($categories[1]) && @$categories[2] == null)
-                unset($categories[2]);
             $product->categories()->sync($categories);
-
-            }catch(Throwable $e)
-            {
-
-            }
 
 
             $product->productCollections()->sync($request->input('product_collections', []));

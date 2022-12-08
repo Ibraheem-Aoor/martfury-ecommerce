@@ -139,9 +139,7 @@ class ProductController extends BaseController
         StoreAttributesOfProductService $storeAttributesOfProductService,
         StoreProductTagService $storeProductTagService
     ) {
-
         // add categories array to the request body
-        $request['categories'] = [$request->parent_id , $request->sub_1_id , $request->sub_2_id];
         $product = $this->productRepository->getModel();
         $product->ean_code = $request->input('ean_code');
         $product->sku = $this->generateBorvatCode();
@@ -235,7 +233,6 @@ class ProductController extends BaseController
         StoreProductTagService $storeProductTagService
     ) {
           // add categories array to the request body
-        $request['categories'] = [$request->parent_id , $request->sub_1_id , $request->sub_2_id];
         $product = $this->productRepository->findOrFail($id);
         $product = $service->execute($request, $product);
         $storeProductTagService->execute($request, $product);
