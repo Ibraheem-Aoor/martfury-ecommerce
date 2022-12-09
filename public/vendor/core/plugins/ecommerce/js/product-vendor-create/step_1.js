@@ -8,7 +8,7 @@ function getChildrenCategories(src) {
     data: { id: src.val() },
     success: function (response) {
       if (response.status && response.categories.length != 0) {
-        var html = `<select name="categories[]" onchange="(getChildrenCategories($(this)));" class="child-category form-control">`;
+        var html = `<select name="categories[]" onchange="(getChildrenCategories($(this)));" class="child-category form-control"> <option selected>--SELECT ONE--</option>`;
         $.each(response.categories, function (key, item) {
           html += `<option value="${item.id}">${item.name}</option>`;
         });
