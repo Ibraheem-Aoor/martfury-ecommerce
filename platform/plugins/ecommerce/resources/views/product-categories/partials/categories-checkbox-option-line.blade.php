@@ -33,9 +33,9 @@ if (isset($value)) {
 
 @auth('customer')
     @push('scripts')
-        <script src="{{ asset('vendor/core/plugins/ecommerce/js/product-vendor-create/step_1.js') }}"></script>
+        <script src="{{ asset('vendor/core/plugins/ecommerce/js/product-vendor-create/step_1.js?v=0.01') }}"></script>
     @endpush
 @endauth
 @push('footer')
-    <script src="{{ asset('vendor/core/plugins/ecommerce/js/product-vendor-create/step_1.js') }}"></script>
+    <script src="{{ asset('vendor/core/plugins/ecommerce/js/product-vendor-create/step_1.js?v=0.01') }}"></script>
 @endpush
