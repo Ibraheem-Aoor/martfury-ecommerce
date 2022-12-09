@@ -234,6 +234,7 @@ class ProductController extends BaseController
     ) {
           // add categories array to the request body
         $product = $this->productRepository->findOrFail($id);
+        $product->ean_code = $request->input('ean_code') != null ?  $request->input('ean_code') : $product->ean_code;
         $product = $service->execute($request, $product);
         $storeProductTagService->execute($request, $product);
 

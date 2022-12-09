@@ -2,25 +2,24 @@
     <input type="hidden" value="{{ old('sale_type', $product ? $product->sale_type : 0) }}" class="detect-schedule hidden"
         name="sale_type">
     <div class="col-md-4">
-            <div class="form-group  mb-3 @if ($errors->has('ean_code')) has-error @endif">
-                <label class="text-title-field">{{ trans('plugins/ecommerce::products.ean_code') }}</label>
-                {!! Form::text('ean_code', old('ean_code', $product ? $product->ean_code : null), [
-                    'class' => 'next-input',
-                    'id' => 'ean_code_input',
-                    'required' => 'required',
-                    'readonly' => 'readonly',
-                ]) !!}
-            </div>
-            @if (($isVariation && !$product) || ($product && $product->is_variation && !$product->sku))
-                <div class="form-group mb-3">
-                    <label class="text-title-field">
-                        <input type="hidden" name="auto_generate_sku" value="0">
-                        <input type="checkbox" name="auto_generate_sku" value="1">
-                        &nbsp;{{ trans('plugins/ecommerce::products.form.auto_generate_sku') }}
-                    </label>
-                </div>
-            @endif
+        <div class="form-group  mb-3 @if ($errors->has('ean_code')) has-error @endif">
+            <label class="text-title-field">{{ trans('plugins/ecommerce::products.ean_code') }}</label>
+            {!! Form::text('ean_code', old('ean_code', $product ? $product->ean_code : null), [
+                'class' => 'next-input',
+                'id' => 'ean_code_input',
+                'required' => 'required',
+            ]) !!}
         </div>
+        @if (($isVariation && !$product) || ($product && $product->is_variation && !$product->sku))
+            <div class="form-group mb-3">
+                <label class="text-title-field">
+                    <input type="hidden" name="auto_generate_sku" value="0">
+                    <input type="checkbox" name="auto_generate_sku" value="1">
+                    &nbsp;{{ trans('plugins/ecommerce::products.form.auto_generate_sku') }}
+                </label>
+            </div>
+        @endif
+    </div>
 
     {{-- <div class="col-md-4">
         <div class="form-group mb-3 @if ($errors->has('sku')) has-error @endif">
@@ -190,8 +189,14 @@
 
 
 
-
-@if (session()->has('checked_ean_code'))
+@if ($product)
+    <script>
+        $(document).ready(function() {
+            var ean_code = "{{$product->ean_code}}";
+            $('input[name="ean_code"]').val(ean_code);
+        });
+    </script>
+@elseif (session()->has('checked_ean_code'))
     <script>
         $(document).ready(function() {
             var ean_code = "{{ session()->get('checked_ean_code') }}";
