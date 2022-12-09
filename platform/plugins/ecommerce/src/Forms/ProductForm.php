@@ -96,7 +96,6 @@ class ProductForm extends FormAbstract
                 'label_attr' => ['class' => 'text-title-field required'],
                 'attr'       => [
                     'placeholder'  => trans('core/base::forms.name_placeholder'),
-                    'data-counter' => 120,
                 ],
             ])
             ->add('description', 'editor', [
