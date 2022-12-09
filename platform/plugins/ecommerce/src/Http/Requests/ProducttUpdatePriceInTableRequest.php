@@ -14,8 +14,13 @@ class ProducttUpdatePriceInTableRequest extends Request
      */
     public function rules()
     {
-        return [
-            'value' => 'required|numeric|max:1000000',
+        $update_rules = [
+            'value' => 'required|numeric',
         ];
+        if ($this->input == 'ean')
+        {
+            $update_rules['value'] .= '|digits:13';
+        }
+        return $update_rules;
     }
 }

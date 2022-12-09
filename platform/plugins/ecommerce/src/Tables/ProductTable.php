@@ -50,19 +50,21 @@ class ProductTable extends TableAbstract
      */
     public function ajax()
     {
-        $data = $this->table
+          $data = $this->table
             ->eloquent($this->query())
             ->editColumn('reference', function ($item) {
-                if (Auth::user()->hasPermission('products.edit')) {
-                    return clean($item->note);
-                }
-                return "";
+              if (Auth::user()->hasPermission('products.edit')) {
+                return clean($item->note);
+              }
+              return "";
             })
             ->editColumn('name', function ($item) {
-                return Html::link('products/'.$item->slug.'?preview=true', clean($item->name) , ['target' => '_blank']);
+              return Html::link('products/' . $item->slug . '?preview=true', clean($item->name), ['target' => '_blank']);
             })
-            ->editColumn('ean_code' , function($item){
-                return $item->ean_code;
+            ->editColumn('ean_code', function ($item) {
+              $flag = 'ean';
+              return view('plugins/ecommerce::products.partials.ean-code-in-table', compact('item', 'flag'))->render();
+
             })
             ->editColumn('image', function ($item) {
                 if ($this->request()->input('action') == 'csv') {

@@ -794,8 +794,10 @@ trait ProductActionsTrait
         {
             // update slae price if exists else update the base price
             (int)$product->sale_price != 0 ? ($product->sale_price = $request->input('value', 0)) : ($product->price = $request->input('value', 0));
-        }else{
+        }elseif($input == 'q'){
             $product->quantity = $request->input('value', 0);
+        }else{
+            $product->ean_code = $request->input('value' , $product->ean_code);
         }
         $this->productRepository->createOrUpdate($product);
         return $response->setMessage(trans('core/base::notices.update_success_message'));
