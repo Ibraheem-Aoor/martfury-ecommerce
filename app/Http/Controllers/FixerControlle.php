@@ -71,4 +71,15 @@ class FixerControlle extends Controller
     }
 
 
+
+
+    public function getEansDuplicates()
+    {
+    dd(Product::query()->whereEanCode('8436545098370')->get());
+        $results = Product::whereIn('ean_code', function ( $query ) {
+            $query->select('ean_code')->from('ec_products')->groupBy('id')->havingRaw('count(*) > 1');
+        })->get();
+    dd($results);
+    }
+
 }

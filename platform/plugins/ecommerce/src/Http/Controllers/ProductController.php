@@ -323,14 +323,9 @@ class ProductController extends BaseController
                 ['ean_code_check.required' => trans('plugins/ecommerce::products.ean_required') ,
                 'ean_code_check.digits' => trans('plugins/ecommerce::products.ean_not_valid')]);
                 $ean_code = $request->ean_code_check;
-        $product = Product::query()->where([['ean_code' , $ean_code] , ['created_by_id' , '!=' , Auth::id()]])->first();
+        $product = Product::query()->where('ean_code' , $ean_code)->first();
         if($product){
-            $new_product = $product->replicate();
-            $new_product->created_at = Carbon::now();
-            $new_product->created_by_id = Auth::id();
-            $new_product->created_by_type = User::class;
-            $new_product->save();
-            return response()->json(['status' => true , 'is_unique' => false  , 'route' => route('products.edit' , $new_product->id)] , 200);
+            return response()->json(['status' => true , 'is_unique' => false  , 'route' => route('products.edit' , $product->id)] , 200);
         }
         session()->put('checked_ean_code' , $ean_code);
         return response()->json(['status' => true , 'is_unique' => true  ,'route' => (route('products.create') ) ] , 200);

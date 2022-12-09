@@ -64,6 +64,9 @@ class ProductRequest extends Request
             'sale_price'             => trans('plugins/ecommerce::products.product_create_validate_sale_price'),
             'is_refunded.required' => trans('plugins/ecommerce::products.is_refunded'),
             'added_attributes.*'=> trans('plugins/ecommerce::products.form.no_attributes_selected'),
+            'ppq.*'=> trans('plugins/ecommerce::products.form.volume_error'),
+            'ppq.sometimes'=> trans('plugins/ecommerce::products.form.volume_error'),
+            'ppq.array'=> trans('plugins/ecommerce::products.form.volume_error'),
         ];
     }
 }

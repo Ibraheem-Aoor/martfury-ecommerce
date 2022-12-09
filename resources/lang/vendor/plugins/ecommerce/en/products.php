@@ -86,6 +86,7 @@ return [
         'write_some_tags' => 'Write some tags',
         'variation_existed' => 'This variation is existed.',
         'no_attributes_selected' => 'No attributes selected!',
+        'volume_error' => 'Volume Can\'t Be Empty',
         'added_variation_success' => 'Added variation successfully!',
         'quantity_change_success' => 'Quantity Chnaged successfully!',
         'updated_variation_success' => 'Updated variation successfully!',

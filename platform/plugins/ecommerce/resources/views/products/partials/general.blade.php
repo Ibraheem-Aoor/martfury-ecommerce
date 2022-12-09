@@ -1,15 +1,14 @@
 <div class="row price-group">
     <input type="hidden" value="{{ old('sale_type', $product ? $product->sale_type : 0) }}" class="detect-schedule hidden"
         name="sale_type">
-    <div class="col-md-4" style="visibility: hidden;">
+    <div class="col-md-4">
             <div class="form-group  mb-3 @if ($errors->has('ean_code')) has-error @endif">
-                {{-- <label class="text-title-field">{{ trans('plugins/ecommerce::products.ean_code') }}</label> --}}
+                <label class="text-title-field">{{ trans('plugins/ecommerce::products.ean_code') }}</label>
                 {!! Form::text('ean_code', old('ean_code', $product ? $product->ean_code : null), [
                     'class' => 'next-input',
                     'id' => 'ean_code_input',
                     'required' => 'required',
                     'readonly' => 'readonly',
-                    'hidden' => 'hidden'
                 ]) !!}
             </div>
             @if (($isVariation && !$product) || ($product && $product->is_variation && !$product->sku))
