@@ -76,8 +76,22 @@
                                     </p>
                                 @endif
 
-                               <div >
+                            <div >
                                 {!! clean($product->content) !!}
+                                <table class="table table-responsive">
+                                    <tr>
+                                        <th>{{trans('plugins/ecommerce::products.quantity')}}</th>
+                                        <th>{{trans('plugins/ecommerce::products.price')}}</th>
+                                        <th>{{trans('plugins/ecommerce::products.form.total') }}</th>
+                                    </tr>
+                                    @foreach ($product->pricePerQty()->orderBy('quantity')->get() as $ppq)
+                                        <tr>
+                                            <td>{{$ppq->quantity}}</td>
+                                            <td>{{$ppq->sale_price ." ". get_application_currency()->symbol}} </td>
+                                            <td>{{$ppq->sale_price * $ppq->quantity ." ".get_application_currency()->symbol}}</td>
+                                        </tr>
+                                    @endforeach
+                                </table>
                                 </div>
                             </div>
                             @php $flashSale = $product->latestFlashSales()->first(); @endphp
