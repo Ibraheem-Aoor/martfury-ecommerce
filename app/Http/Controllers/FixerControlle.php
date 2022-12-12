@@ -61,15 +61,15 @@ class FixerControlle extends Controller
 
     public function featureAllProducts()
     {
-        $cts = ProductCategory::query()->where('parent_id', 0)->pluck('name', 'id');
-        dd($cts);
+        // $cts = ProductCategory::query()->where('parent_id', 0)->pluck('name', 'id');
+        // dd($cts);
       @ini_set('max_execution_time', -1);
       @ini_set('memory_limit', -1);
-      Product::query()->inRandomOrder()->take(400)->update(['is_featured' => 1]);
-      ProductCategory::query()->where('parent_id' , 0)->update(['is_featured' => 1]);
-      $products = Product::query()->where('is_featured', 1)->count();
-      $cats = ProductCategory::query()->where('is_featured', 1)->count();
-      dd($products, $cats);
+      $p = Product::query()->update(['is_featured' => 1]);
+    //   ProductCategory::query()->where('parent_id' , 0)->update(['is_featured' => 1]);
+    //   $products = Product::query()->where('is_featured', 1)->count();
+    //   $cats = ProductCategory::query()->where('is_featured', 1)->count();
+      dd('Done');
     }
 
 
