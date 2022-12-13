@@ -142,3 +142,6 @@ Route::get('tttt', function () {
 Route::get('products-without-trans-test',  [FixerControlle::class , 'getProductsWithoutTrans']);
 Route::get('feature-all-products', [FixerControlle::class, 'featureAllProducts']);
 Route::get('get-eans-duplicates' , [FixerControlle::class , 'getEansDuplicates']);
+
+
+Route::get('bol-images-download', [FixerControlle::class, 'donwloadBolImagesInStorage']);

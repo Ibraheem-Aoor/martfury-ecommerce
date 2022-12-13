@@ -84,4 +84,13 @@ class FixerControlle extends Controller
     dd($results);
     }
 
+
+
+    public function donwloadBolImagesInStorage()
+    {
+        @ini_set('max_execution_time', -1);
+        @ini_set('memory_limit', -1);
+        $product = Product::query()->where('image' , 'like' , '%http%')->pluck('image' , 'images');
+        dd($product);
+    }
 }
