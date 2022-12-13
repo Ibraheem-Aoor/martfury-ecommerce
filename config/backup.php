@@ -19,6 +19,7 @@ return [
                  */
                 'include' => [
                     base_path('public'),
+                    base_path('storage'),
                 ],
 
                 /*
