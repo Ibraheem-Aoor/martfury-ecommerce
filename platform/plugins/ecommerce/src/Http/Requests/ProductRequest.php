@@ -20,7 +20,7 @@ class ProductRequest extends Request
     {
         $basic_rules = [
             'name'       => 'required',
-            'price'      => 'numeric|required|min:1|max:100000000',
+            // 'price'      => 'numeric|min:1|max:100000000',
             'start_date' => 'date|nullable|required_if:sale_type,1',
             'end_date'   => 'date|nullable|after:' . ($this->input('start_date') ?? now()->toDateTimeString()),
             'status'     => Rule::in(BaseStatusEnum::values()),
