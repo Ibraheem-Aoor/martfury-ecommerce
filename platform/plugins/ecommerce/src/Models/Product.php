@@ -22,6 +22,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Botble\Slug\Facades\SlugHelperFacade;
+use Throwable;
 
 class Product extends BaseModel
 {
@@ -823,5 +826,21 @@ class Product extends BaseModel
             }
         }
         return $requested_sale_price == 0 ? $this->price : $requested_sale_price;
+    }
+
+
+    public function createSlug()
+    {
+            try
+            {
+                Slug::create([
+                    'reference_type' => Self::class,
+                    'reference_id'   => $this->id,
+                    'key'            => Str::slug(Str::limit(time().$this->name , 20 , '...')),
+                    'prefix'         => SlugHelperFacade::getPrefix(Self::class),
+            ]);
+            }catch(Throwable $ex){
+                dd($ex);
+            }
     }
 }

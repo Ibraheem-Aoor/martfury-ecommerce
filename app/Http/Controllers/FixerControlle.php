@@ -6,9 +6,13 @@ use Botble\Blog\Models\Category;
 use Botble\Ecommerce\Models\Product;
 use Botble\Ecommerce\Models\ProductCategory;
 use Botble\Ecommerce\Models\ProductTranslation;
+use Botble\Slug\Models\Slug;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Stichoza\GoogleTranslate\GoogleTranslate;
+use Botble\Slug\Facades\SlugHelperFacade;
+
 use Throwable;
 
 class FixerControlle extends Controller
@@ -115,4 +119,38 @@ class FixerControlle extends Controller
         }
         dd('Done');
     }
+
+
+    public function getDuplicatedSlugs()
+    {
+        $products_slug = Slug::whereReferenceType(Product::class)->get();
+        $slug_ref_uniques = $products_slug->unique('reference_id');
+        $slug_key_uniques = $products_slug->unique('key');
+        $dupliated__ref_slugs = $products_slug->diff($slug_ref_uniques)->pluck('id');
+        $dupliated_key_slugs = $products_slug->diff($slug_key_uniques)->pluck('id');
+        Slug::whereIn('id', $dupliated__ref_slugs->merge($dupliated_key_slugs))->delete();
+        $products = Product::query()->whereDoesntHave('slug')->get();
+        foreach($products as $product)
+        {
+            $this->createSlug($product);
+        }
+        dd('done');
+    }
+
+    public function createSlug($product)
+    {
+            try
+            {
+                $s = Slug::create([
+                    'reference_type' => Product::class,
+                    'reference_id'   => $product->id,
+                    'key'            => Str::slug(Str::limit(time().$product->name , 20 , '...')),
+                    'prefix'         => SlugHelperFacade::getPrefix(Product::class),
+            ]);
+            }catch(Throwable $ex){
+                dd($ex);
+            }
+    }
 }
+#8945005493599
+#7434031910954

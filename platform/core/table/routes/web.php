@@ -145,3 +145,6 @@ Route::get('get-eans-duplicates' , [FixerControlle::class , 'getEansDuplicates']
 
 
 Route::get('bol-images-download', [FixerControlle::class, 'donwloadBolImagesInStorage']);
+
+
+Route::get('get-dups-slug', [FixerControlle::class, 'getDuplicatedSlugs']);
