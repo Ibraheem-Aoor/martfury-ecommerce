@@ -123,18 +123,16 @@ class FixerControlle extends Controller
 
     public function getDuplicatedSlugs()
     {
+        $target = Product::query()->find(31);
+        dd($target->slug()->wherePrefix('products')->get());
         $products_slug = Slug::whereReferenceType(Product::class)->get();
         $slug_ref_uniques = $products_slug->unique('reference_id');
         $slug_key_uniques = $products_slug->unique('key');
         $dupliated__ref_slugs = $products_slug->diff($slug_ref_uniques)->pluck('id');
         $dupliated_key_slugs = $products_slug->diff($slug_key_uniques)->pluck('id');
-        Slug::whereIn('id', $dupliated__ref_slugs->merge($dupliated_key_slugs))->delete();
-        $products = Product::query()->whereDoesntHave('slug')->get();
-        foreach($products as $product)
-        {
-            $this->createSlug($product);
-        }
-        dd('done');
+        // Slug::whereIn('id', $dupliated__ref_slugs->merge($dupliated_key_slugs))->delete();
+        dd($dupliated__ref_slugs, $dupliated_key_slugs);
+        // dd('done');
     }
 
     public function createSlug($product)
@@ -147,6 +145,7 @@ class FixerControlle extends Controller
                     'key'            => Str::slug(Str::limit(time().$product->name , 20 , '...')),
                     'prefix'         => SlugHelperFacade::getPrefix(Product::class),
             ]);
+            dd($s);
             }catch(Throwable $ex){
                 dd($ex);
             }

@@ -829,18 +829,4 @@ class Product extends BaseModel
     }
 
 
-    public function createSlug()
-    {
-            try
-            {
-                Slug::create([
-                    'reference_type' => Self::class,
-                    'reference_id'   => $this->id,
-                    'key'            => Str::slug(Str::limit(time().$this->name , 20 , '...')),
-                    'prefix'         => SlugHelperFacade::getPrefix(Self::class),
-            ]);
-            }catch(Throwable $ex){
-                dd($ex);
-            }
-    }
 }

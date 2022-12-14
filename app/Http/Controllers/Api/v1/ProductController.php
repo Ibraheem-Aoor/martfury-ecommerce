@@ -240,7 +240,7 @@ class ProductController extends Controller
              Slug::create([
                 'reference_type' => Product::class,
                 'reference_id'   => $created_product->id,
-                'key'            => Str::slug(Str::limit($created_product->name , 20 , '...')),
+                'key'            => Str::slug($created_product->id.Str::limit($created_product->name , 30 , '...')),
                 'prefix'         => SlugHelperFacade::getPrefix(Product::class),
         ]);
         }catch(Throwable $ex){
