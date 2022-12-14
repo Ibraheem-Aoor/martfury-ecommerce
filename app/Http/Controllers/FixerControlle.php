@@ -7,6 +7,7 @@ use Botble\Ecommerce\Models\Product;
 use Botble\Ecommerce\Models\ProductCategory;
 use Botble\Ecommerce\Models\ProductTranslation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 use Throwable;
 
@@ -90,11 +91,28 @@ class FixerControlle extends Controller
     {
         @ini_set('max_execution_time', -1);
         @ini_set('memory_limit', -1);
-        $product = Product::query()->where('image' , 'like' , '%http%')->pluck('image' , 'images');
-        foreach($product as $images => $image)
+        $products = Product::query()->where('image' , 'like' , '%http%')->get();
+        foreach($products as $product)
         {
-            
+            $featured_image = Storage::files('bol-images/' . $product->id . '/');
+            $product->image = $featured_image[0] ?? $product->image;
+            $product->save();
+            // foreach($product->images as $image)
+            // {
+            //     try{
+            //     // product featured image
+            //     $image_content = file_get_contents($image);
+            //     $name = substr($image, strrpos($image, '/') + 1);
+            //     $name = time() . '-' . $name;
+            //     Storage::put('bol-images/'.$product->id.'/images'.'/'.$name, $image_content);
+            //     }catch(Throwable $e)
+            //     {
+            //         $txt_file_content = file_get_contents(__DIR__ . '/products_without_images.txt');
+            //         file_put_contents(__DIR__ . '/products_without_images.txt' ,  $txt_file_content."\n". "ID: ".$product->id."\t"."EAN: ".$product->ean_code);
+            //     }
+            // }
+
         }
-        dd($product);
+        dd('Done');
     }
 }
