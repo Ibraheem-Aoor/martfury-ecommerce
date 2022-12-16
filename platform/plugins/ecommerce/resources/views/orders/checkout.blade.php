@@ -280,7 +280,8 @@
                                         <button type="submit" @if (EcommerceHelper::getMinimumOrderAmount() > Cart::instance('cart')->rawSubTotal()) disabled @endif
                                             class="btn payment-checkout-btn payment-checkout-btn-step float-end"
                                             data-processing-text="{{ __('Processing. Please wait...') }}"
-                                            data-error-header="{{ __('Error') }}" id="checkout-btn-custom">
+                                            data-error-header="{{ __('Error') }}"
+                                            id="checkout-btn-custom">
                                             {{ __('Checkout') }}
                                         </button>
                                     </div>
@@ -320,60 +321,5 @@
 
 
 
-    <script>
-        window.addEventListener('load', function() {
 
-
-            paypal.Marks({
-                fundingSource: paypal.FUNDING.IDEAL
-            }).render('#ideal-mark');
-            paypal.PaymentFields({
-                    fundingSource: paypal.FUNDING.IDEAL,
-                    style: {
-                        // style object (optional)
-                    },
-                })
-                .render("#ideal-container");
-
-            paypal.Buttons({
-                fundingSource: paypal.FUNDING.IDEAL,
-                style: {
-                    label: "pay",
-                },
-                createOrder(data, actions) {
-                    return actions.order.create({
-                        purchase_units: [{
-                            amount: {
-                                currency: 'EUR',
-                                value: "{{ (float) $total_amount }}",
-                            }
-                        }]
-                    });
-                },
-                onApprove(data, actions) {
-                    return actions.order.capture().then(function(orderData) {
-                        $('input[type="radio"][name="payment_method"]').val('iDEAL');
-                        $('#checkout-btn-custom').click();
-                    });
-                },
-                onCancel(data, actions) {
-                    // console.log(`Order Canceled - ID: ${data.orderID}`);
-                    toastr.error("{{ __('Payment failed!') }}");
-                },
-                onError(err) {
-                    toastr.error("{{ __('Payment failed!') }}");
-                }
-            }).render("#ideal-btn");
-            let buttons;
-
-            function renderButtons() {
-                if (buttons && buttons.close) {
-                    buttons.close();
-                }
-                // buttons = window.paypal.Buttons();
-                buttons.render('#ideal-btn');
-            }
-            renderButtons();
-        });
-    </script>
 @stop
