@@ -323,7 +323,7 @@
             $('#checkout-btn-custom').hide();
         });
         $(document).on('click', '#payment_paypal', function() {
-            $('#checkout-btn-custom').hide();
+            $('#checkout-btn-custom').show();
         });
     </script>
 
