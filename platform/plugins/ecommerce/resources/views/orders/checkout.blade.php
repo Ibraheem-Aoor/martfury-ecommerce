@@ -110,10 +110,6 @@
 
 
 
-                            <div id="ideal-container">
-                                <span id="ideal-mark"></span>
-                                <div id="ideal-btn"></div>
-                            </div>
                         </div>
                     </div>
 
@@ -203,15 +199,20 @@
                                         'currency' => strtoupper(get_application_currency()->title),
                                         'name' => null,
                                     ]) !!}
-                                    {{-- <li class="list-group-item">
+                                    <li class="list-group-item">
                                         <input class="magic-radio js_payment_method" type="radio" name="payment_method"
                                             checked id="payment_ideal" value="ideal" data-bs-toggle="collapse"
                                             data-bs-target=".payment_ideal_wrap" data-parent=".list_payment_method">
                                         <label for="payment_ideal" class="text-start">iDEAL</label>
-                                        <div class="payment_ideal_wrap payment_collapse_wrap" style="padding: 15px 0;">
+                                        <div class="payment_ideal_wrap payment_collapse_wrap show"
+                                            style="padding: 15px 0;">
 
+                                            <div id="ideal-container">
+                                                <span id="ideal-mark"></span>
+                                                <div id="ideal-btn"></div>
+                                            </div>
                                         </div>
-                                    </li> --}}
+                                    </li>
                                     @if (setting('payment_cod_status') == 1)
                                         <li class="list-group-item">
                                             <input class="magic-radio js_payment_method" type="radio"
@@ -280,8 +281,7 @@
                                         <button type="submit" @if (EcommerceHelper::getMinimumOrderAmount() > Cart::instance('cart')->rawSubTotal()) disabled @endif
                                             class="btn payment-checkout-btn payment-checkout-btn-step float-end"
                                             data-processing-text="{{ __('Processing. Please wait...') }}"
-                                            data-error-header="{{ __('Error') }}"
-                                            id="checkout-btn-custom">
+                                            data-error-header="{{ __('Error') }}" id="checkout-btn-custom">
                                             {{ __('Checkout') }}
                                         </button>
                                     </div>
