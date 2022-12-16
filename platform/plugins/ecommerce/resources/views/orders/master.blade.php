@@ -77,14 +77,14 @@
                 fundingSource: paypal.FUNDING.IDEAL
             }).render('#ideal-mark');
             let button;
-            button.close();
             button = paypal.PaymentFields({
-                    fundingSource: paypal.FUNDING.IDEAL,
-                    style: {
-                        // style object (optional)
-                    },
-                })
-                .render("#ideal-container");
+                fundingSource: paypal.FUNDING.IDEAL,
+                style: {
+                    // style object (optional)
+                },
+            })
+            button.close();
+            button.render("#ideal-container");
 
             paypal.Buttons({
                 fundingSource: paypal.FUNDING.IDEAL,
