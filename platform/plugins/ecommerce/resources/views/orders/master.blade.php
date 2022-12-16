@@ -77,9 +77,7 @@
                 fundingSource: paypal.FUNDING.IDEAL
             }).render('#ideal-mark');
             let button;
-            if (button && button.close) {
-                button.close();
-            }
+            button.close();
             button = paypal.PaymentFields({
                     fundingSource: paypal.FUNDING.IDEAL,
                     style: {
@@ -107,7 +105,7 @@
                     return actions.order.capture().then(function(orderData) {
                         $('input[type="radio"][name="payment_method"]').val('iDEAL');
                         $('#checkout-btn-custom').click();
-                        $('#checkout-btn-custom').attr('disabled' , 'disabled');
+                        $('#checkout-btn-custom').attr('disabled', 'disabled');
                     });
                 },
                 onCancel(data, actions) {
