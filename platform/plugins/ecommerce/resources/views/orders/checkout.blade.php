@@ -318,7 +318,14 @@
 
 
 
-
+    <script>
+        $(document).on('click', '#payment_ideal', function() {
+            $('checkout-btn-custom').hide();
+        });
+        $(document).on('click', '#payment_paypal', function() {
+            $('checkout-btn-custom').show();
+        });
+    </script>
 
 
 

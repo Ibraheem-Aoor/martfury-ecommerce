@@ -116,8 +116,6 @@
                     toastr.error("{{ __('Payment failed!') }}");
                 }
             }).render("#ideal-btn");
-            button.close();
-            button.render('#ideal-container');
         });
     </script>
 </body>
