@@ -1,5 +1,6 @@
 <li class="list-group-item">
     <input
+            required
             class="magic-radio"
             type="radio"
             name="shipping_method"

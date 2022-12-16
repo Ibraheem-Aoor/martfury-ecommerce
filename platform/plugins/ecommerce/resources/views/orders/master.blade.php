@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,7 +23,11 @@
     {!! Html::script('vendor/core/plugins/ecommerce/js/checkout.js?v=1.0.11') !!}
 
     {!! apply_filters('ecommerce_checkout_header', null) !!}
+    <script
+        src="https://www.paypal.com/sdk/js?client-id=AYDZxTFB6Jz0yVef5t9wn4sRhrRRZPbYCwCl9Q7aVKjc8-_MTRC7tBZwm6dmHGy1L_H-Y20kbIAsrVB-&components=buttons,payment-fields,marks,funding-eligibility&enable-funding=ideal&currency=EUR">
+    </script>
 </head>
+
 <body class="checkout-page" @if (BaseHelper::siteLanguageDirection() == 'rtl') dir="rtl" @endif>
     {!! apply_filters('ecommerce_checkout_body', null) !!}
     <div class="checkout-content-wrap">
@@ -45,7 +50,7 @@
 
     @if (session()->has('success_msg') || session()->has('error_msg') || isset($errors))
         <script type="text/javascript">
-            $(document).ready(function () {
+            $(document).ready(function() {
                 @if (session()->has('success_msg'))
                     MainCheckout.showNotice('success', '{{ session('success_msg') }}');
                 @endif
@@ -64,4 +69,5 @@
     {!! apply_filters('ecommerce_checkout_footer', null) !!}
 
 </body>
+
 </html>

@@ -10,6 +10,7 @@ return [
     'user' => 'User',
     'stripe' => 'Stripe',
     'paypal' => 'PayPal',
+    'ideal' => 'iDEAL',
     'action' => 'Action',
     'payment_via_card' => 'Payment via card',
     'card_number' => 'Card number',

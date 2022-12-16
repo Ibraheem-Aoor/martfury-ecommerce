@@ -25,8 +25,10 @@ use Botble\Ecommerce\Services\HandleRemoveCouponService;
 use Botble\Ecommerce\Services\HandleShippingFeeService;
 use Botble\Payment\Enums\PaymentMethodEnum;
 use Botble\Payment\Http\Requests\PayPalPaymentCallbackRequest;
+use Botble\Payment\Models\Payment;
 use Botble\Payment\Services\Gateways\BankTransferPaymentService;
 use Botble\Payment\Services\Gateways\CodPaymentService;
+use Botble\Payment\Services\Gateways\IdealPaymentService;
 use Botble\Payment\Services\Gateways\PayPalPaymentService;
 use Botble\Payment\Services\Gateways\StripePaymentService;
 use Botble\Payment\Supports\PaymentHelper;
@@ -575,6 +577,7 @@ class PublicCheckoutController
         PayPalPaymentService $payPalService,
         StripePaymentService $stripePaymentService,
         CodPaymentService $codPaymentService,
+        IdealPaymentService $idealPaymentService,
         BankTransferPaymentService $bankTransferPaymentService,
         BaseHttpResponse $response,
         HandleShippingFeeService $shippingFeeService,
@@ -689,6 +692,7 @@ class PublicCheckoutController
             'is_finished'     => true,
             'token'           => $token,
         ]);
+
 
         $order = $this->orderRepository->getFirstBy(compact('token'));
 
@@ -817,13 +821,16 @@ class PublicCheckoutController
                 case PaymentMethodEnum::BANK_TRANSFER:
                     $paymentData['charge_id'] = $bankTransferPaymentService->execute($request);
                     break;
+                case PaymentMethodEnum::IDEAL:
+                    $paymentData['charge_id'] = $idealPaymentService->execute($request);
+                    break;
                 default:
                     $paymentData = apply_filters(PAYMENT_FILTER_AFTER_POST_CHECKOUT, $paymentData, $request);
                     break;
             }
 
             $redirectURL = PaymentHelper::getRedirectURL($token);
-
+            dd($redirectURL);
             if ($paymentData['error'] || !$paymentData['charge_id']) {
                 return $response
                     ->setError()
@@ -858,7 +865,11 @@ class PublicCheckoutController
         if (!$order) {
             abort(404);
         }
-
+        if(!$order->payment_id)
+        {
+            $order->payment_id = Payment::query()->whereOrderId($order->id)->first()?->id;
+            $order->save();
+        }
         if (!$order->payment_id) {
             return $response
                 ->setError()
@@ -1167,5 +1178,11 @@ class PublicCheckoutController
             'sessionCheckoutData',
             'products'
         ));
+    }
+
+
+    public function validateCheckoutForm(CheckoutRequest $request)
+    {
+        return response()->json(['status' => true], 200);
     }
 }
