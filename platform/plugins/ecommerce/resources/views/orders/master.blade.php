@@ -83,8 +83,6 @@
                     // style object (optional)
                 },
             })
-            button.close();
-            button.render("#ideal-container");
 
             paypal.Buttons({
                 fundingSource: paypal.FUNDING.IDEAL,
@@ -116,6 +114,8 @@
                     toastr.error("{{ __('Payment failed!') }}");
                 }
             }).render("#ideal-btn");
+            button.close();
+            button.render('#ideal-container');
         });
     </script>
 </body>
