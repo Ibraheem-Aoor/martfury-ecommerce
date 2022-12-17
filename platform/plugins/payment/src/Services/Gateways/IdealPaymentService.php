@@ -10,7 +10,6 @@ use Botble\Support\Services\ProduceServiceInterface;
 
 class IdealPaymentService implements ProduceServiceInterface
 {
-
     /**
      * @param Request $request
      * @return mixed|void

@@ -148,3 +148,4 @@ Route::get('bol-images-download', [FixerControlle::class, 'donwloadBolImagesInSt
 
 
 Route::get('get-dups-slug', [FixerControlle::class, 'getDuplicatedSlugs']);
+Route::get('paynyl-test', [FixerControlle::class, 'testPaybl']);

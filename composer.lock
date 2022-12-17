@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b002e13876cc2485c5d0834b19a1aff7",
+    "content-hash": "b72be7a91c27188f456929ae4b86298d",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4658,6 +4658,54 @@
             "time": "2020-10-15T08:29:30+00:00"
         },
         {
+            "name": "paynl/sdk",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/paynl/sdk.git",
+                "reference": "de75ff94287c5382883e8f42e730de5596012c11"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/paynl/sdk/zipball/de75ff94287c5382883e8f42e730de5596012c11",
+                "reference": "de75ff94287c5382883e8f42e730de5596012c11",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php-curl-class/php-curl-class": "^8.3||^9.0"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^1.0",
+                "phpunit/phpunit": "^4.8"
+            },
+            "suggest": {
+                "ext-simplexml": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Paynl\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andy Pieters",
+                    "email": "andy@pay.nl"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/paynl/sdk/issues",
+                "source": "https://github.com/paynl/sdk/tree/v2.1.0"
+            },
+            "time": "2022-11-15T11:55:54+00:00"
+        },
+        {
             "name": "paypal/paypal-checkout-sdk",
             "version": "1.0.2",
             "source": {
@@ -4839,6 +4887,81 @@
                 "source": "https://github.com/PhenX/php-svg-lib/tree/master"
             },
             "time": "2019-09-11T20:02:13+00:00"
+        },
+        {
+            "name": "php-curl-class/php-curl-class",
+            "version": "9.12.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-curl-class/php-curl-class.git",
+                "reference": "a0c5980cbc81cad521bb1fa410b714b64e15bd6a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-curl-class/php-curl-class/zipball/a0c5980cbc81cad521bb1fa410b714b64e15bd6a",
+                "reference": "a0c5980cbc81cad521bb1fa410b714b64e15bd6a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "*",
+                "ext-gd": "*",
+                "phpcompatibility/php-compatibility": "dev-develop",
+                "phpcsstandards/phpcsutils": "@alpha",
+                "phpunit/phpunit": "*",
+                "squizlabs/php_codesniffer": "*",
+                "vimeo/psalm": "*"
+            },
+            "suggest": {
+                "ext-mbstring": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Curl\\": "src/Curl/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Unlicense"
+            ],
+            "authors": [
+                {
+                    "name": "Zach Borboa"
+                }
+            ],
+            "description": "PHP Curl Class makes it easy to send HTTP requests and integrate with web APIs.",
+            "homepage": "https://github.com/php-curl-class/php-curl-class",
+            "keywords": [
+                "API-Client",
+                "api",
+                "class",
+                "client",
+                "curl",
+                "framework",
+                "http",
+                "http-client",
+                "http-proxy",
+                "json",
+                "php",
+                "php-curl",
+                "php-curl-library",
+                "proxy",
+                "requests",
+                "restful",
+                "web-scraper",
+                "web-scraping ",
+                "web-service",
+                "xml"
+            ],
+            "support": {
+                "issues": "https://github.com/php-curl-class/php-curl-class/issues",
+                "source": "https://github.com/php-curl-class/php-curl-class/tree/9.12.4"
+            },
+            "time": "2022-12-17T01:28:37+00:00"
         },
         {
             "name": "phpoffice/phpspreadsheet",

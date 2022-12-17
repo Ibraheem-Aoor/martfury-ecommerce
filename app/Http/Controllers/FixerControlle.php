@@ -6,6 +6,7 @@ use Botble\Blog\Models\Category;
 use Botble\Ecommerce\Models\Product;
 use Botble\Ecommerce\Models\ProductCategory;
 use Botble\Ecommerce\Models\ProductTranslation;
+use Botble\Payment\Services\Gateways\PaynlPaymentService;
 use Botble\Slug\Models\Slug;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -149,6 +150,14 @@ class FixerControlle extends Controller
             }catch(Throwable $ex){
                 dd($ex);
             }
+    }
+
+
+
+    public function testPaybl()
+    {
+        $s = new PaynlPaymentService();
+        dd($s->getPaymentMethods());
     }
 }
 #8945005493599
