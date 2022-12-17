@@ -199,7 +199,7 @@
                                         'currency' => strtoupper(get_application_currency()->title),
                                         'name' => null,
                                     ]) !!}
-                                    @include('plugins/ecommerce::orders.paynl-payment-method')
+                                    @include('plugins/ecommerce::orders.paynl-payment-method' . ['paynl_payment_methods' => $paynl_payment_methods])
                                     @if (setting('payment_cod_status') == 1)
                                         <li class="list-group-item">
                                             <input class="magic-radio js_payment_method" type="radio"
