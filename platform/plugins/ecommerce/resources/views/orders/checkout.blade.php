@@ -199,20 +199,7 @@
                                         'currency' => strtoupper(get_application_currency()->title),
                                         'name' => null,
                                     ]) !!}
-                                    <li class="list-group-item">
-                                        <input class="magic-radio js_payment_method" type="radio" name="payment_method"
-                                            id="payment_ideal" value="ideal" data-bs-toggle="collapse"
-                                            data-bs-target=".payment_ideal_wrap" data-parent=".list_payment_method">
-                                        <label for="payment_ideal" class="text-start">iDEAL</label>
-                                        <div class="payment_ideal_wrap payment_collapse_wrap show"
-                                            style="padding: 15px 0;">
-
-                                            <div id="ideal-container">
-                                                <span id="ideal-mark"></span>
-                                                <div id="ideal-btn"></div>
-                                            </div>
-                                        </div>
-                                    </li>
+                                    @include('plugins/ecommerce::orders.ideal-payment-method')
                                     @if (setting('payment_cod_status') == 1)
                                         <li class="list-group-item">
                                             <input class="magic-radio js_payment_method" type="radio"
@@ -317,56 +304,19 @@
     @endif
 
 
-
+    <script id="jsToAppend">
+        var total_amount = "{{ (float) $total_amount }}"
+    </script>
     <script>
-        window.addEventListener('load', function() {
-
-            // Loop over each funding source/payment method
-
-            paypal.Marks({
-                fundingSource: paypal.FUNDING.IDEAL
-            }).render('#ideal-mark');
-            let button;
-            button = paypal.PaymentFields({
-                fundingSource: paypal.FUNDING.IDEAL,
-                style: {
-                    // style object (optional)
-                },
-            })
-
-            paypal.Buttons({
-                fundingSource: paypal.FUNDING.IDEAL,
-                style: {
-                    label: "pay",
-                },
-                createOrder(data, actions) {
-                    return actions.order.create({
-                        purchase_units: [{
-                            amount: {
-                                currency: 'EUR',
-                                value: "{{ (float) $total_amount }}",
-                            }
-                        }]
-                    });
-                },
-                onApprove(data, actions) {
-                    return actions.order.capture().then(function(orderData) {
-                        $('input[type="radio"][name="payment_method"]').val('iDEAL');
-                        $('#checkout-btn-custom').click();
-                        $('#checkout-btn-custom').attr('disabled', 'disabled');
-                    });
-                },
-                onCancel(data, actions) {
-                    // console.log(`Order Canceled - ID: ${data.orderID}`);
-                    toastr.error("{{ __('Payment failed!') }}");
-                },
-                onError(err) {
-                    toastr.error("{{ __('Payment failed!') }}");
-                }
-            }).render("#ideal-btn");
-            button.close();
-            button.render('#ideal-container');
-        });
+            const script = document.createElement("script");
+            const script_2 = document.createElement("script");
+            script.src =
+                "https://www.paypal.com/sdk/js?client-id=AYDZxTFB6Jz0yVef5t9wn4sRhrRRZPbYCwCl9Q7aVKjc8-_MTRC7tBZwm6dmHGy1L_H-Y20kbIAsrVB-&components=buttons,payment-fields,marks,funding-eligibility&enable-funding=ideal&currency=EUR";
+            script_2.src = "{{ asset('vendor/core/plugins/ecommerce/js/ideal-payment.js') }}"
+            script.addEventListener("load", () => this.loaded = false);
+            document.body.appendChild(script);
+            script_2.addEventListener("load", () => this.loaded = false);
+            document.body.appendChild(script_2);
     </script>
     <script>
         $(document).on('click', '#payment_ideal', function() {
@@ -375,7 +325,12 @@
         $(document).on('click', '#payment_paypal', function() {
             $('#checkout-btn-custom').show();
         });
+        $(document).on('change', 'select[name="address[country]"]', function() {
+            window.location.reload();
+        });
+
     </script>
+
 
 
 

@@ -254,6 +254,7 @@ class PublicCheckoutController
             }
         }
 
+        $reload_flag = true;
         return view('plugins/ecommerce::orders.checkout', compact(
             'token',
             'shipping',
@@ -264,7 +265,8 @@ class PublicCheckoutController
             'couponDiscountAmount',
             'sessionCheckoutData',
             'products',
-        ));
+            'reload_flag'
+        ))->render();
     }
 
     /**
@@ -1166,7 +1168,7 @@ class PublicCheckoutController
                 $shippingAmount = Arr::get($sessionCheckoutData, 'is_free_shipping') ? 0 : $shippingAmount;
             }
         }
-
+        $reload_flag = true;
         return view('plugins/ecommerce::orders.checkout', compact(
             'token',
             'shipping',
@@ -1176,8 +1178,9 @@ class PublicCheckoutController
             'promotionDiscountAmount',
             'couponDiscountAmount',
             'sessionCheckoutData',
-            'products'
-        ));
+            'products',
+            'reload_flag'
+        ))->render();
     }
 
 
