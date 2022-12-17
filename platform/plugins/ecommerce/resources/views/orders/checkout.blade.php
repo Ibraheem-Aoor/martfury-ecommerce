@@ -308,27 +308,12 @@
         var total_amount = "{{ (float) $total_amount }}"
     </script>
     <script>
-            const script = document.createElement("script");
-            const script_2 = document.createElement("script");
-            script.src =
-                "https://www.paypal.com/sdk/js?client-id=AYDZxTFB6Jz0yVef5t9wn4sRhrRRZPbYCwCl9Q7aVKjc8-_MTRC7tBZwm6dmHGy1L_H-Y20kbIAsrVB-&components=buttons,payment-fields,marks,funding-eligibility&enable-funding=ideal&currency=EUR";
-            script_2.src = "{{ asset('vendor/core/plugins/ecommerce/js/ideal-payment.js') }}"
-            script.addEventListener("load", () => this.loaded = false);
-            document.body.appendChild(script);
-            script_2.addEventListener("load", () => this.loaded = false);
-            document.body.appendChild(script_2);
-    </script>
-    <script>
         $(document).on('click', '#payment_ideal', function() {
             $('#checkout-btn-custom').hide();
         });
         $(document).on('click', '#payment_paypal', function() {
             $('#checkout-btn-custom').show();
         });
-        $(document).on('change', 'select[name="address[country]"]', function() {
-            window.location.reload();
-        });
-
     </script>
 
 

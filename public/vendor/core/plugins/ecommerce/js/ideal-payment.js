@@ -1,4 +1,3 @@
-window.addEventListener('load', function () {
     // Loop over each funding source/payment method
     paypal.Marks({
         fundingSource: paypal.FUNDING.IDEAL
@@ -40,12 +39,3 @@ window.addEventListener('load', function () {
             toastr.error("{{ __('Payment failed!') }}");
         }
     }).render("#ideal-btn");
-    window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
-        console.log(errorMsg, url, lineNumber);
-        // const script = document.createElement("script");
-        // script.src =
-        //     "https://www.paypal.com/sdk/js?client-id=AYDZxTFB6Jz0yVef5t9wn4sRhrRRZPbYCwCl9Q7aVKjc8-_MTRC7tBZwm6dmHGy1L_H-Y20kbIAsrVB-&components=buttons,payment-fields,marks,funding-eligibility&enable-funding=ideal&currency=EUR";
-        // document.body.appendChild(script);
-
-    }
-});
