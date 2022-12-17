@@ -29,6 +29,7 @@ use Botble\Payment\Models\Payment;
 use Botble\Payment\Services\Gateways\BankTransferPaymentService;
 use Botble\Payment\Services\Gateways\CodPaymentService;
 use Botble\Payment\Services\Gateways\IdealPaymentService;
+use Botble\Payment\Services\Gateways\PaynlPaymentService;
 use Botble\Payment\Services\Gateways\PayPalPaymentService;
 use Botble\Payment\Services\Gateways\StripePaymentService;
 use Botble\Payment\Supports\PaymentHelper;
@@ -98,6 +99,11 @@ class PublicCheckoutController
     protected $discountRepository;
 
     /**
+     * @var paynl_payment_methods
+     */
+    public $paynl_payment_methods;
+
+    /**
      * PublicCheckoutController constructor.
      * @param TaxInterface $taxRepository
      * @param OrderInterface $orderRepository
@@ -132,6 +138,7 @@ class PublicCheckoutController
         $this->orderHistoryRepository = $orderHistoryRepository;
         $this->productRepository = $productRepository;
         $this->discountRepository = $discountRepository;
+        $this->paynl_payment_methods = (new PaynlPaymentService())->getPaymentMethods();
     }
 
     /**
@@ -254,7 +261,7 @@ class PublicCheckoutController
             }
         }
 
-        $reload_flag = true;
+        $paynl_payment_methods = $this->paynl_payment_methods;
         return view('plugins/ecommerce::orders.checkout', compact(
             'token',
             'shipping',
@@ -265,7 +272,8 @@ class PublicCheckoutController
             'couponDiscountAmount',
             'sessionCheckoutData',
             'products',
-            'reload_flag'
+            'reload_flag',
+            'paynl_payment_methods',
         ))->render();
     }
 
@@ -1168,7 +1176,7 @@ class PublicCheckoutController
                 $shippingAmount = Arr::get($sessionCheckoutData, 'is_free_shipping') ? 0 : $shippingAmount;
             }
         }
-        $reload_flag = true;
+        $paynl_payment_methods = $this->paynl_payment_methods;
         return view('plugins/ecommerce::orders.checkout', compact(
             'token',
             'shipping',
@@ -1179,7 +1187,8 @@ class PublicCheckoutController
             'couponDiscountAmount',
             'sessionCheckoutData',
             'products',
-            'reload_flag'
+            'reload_flag',
+            'paynl_payment_methods'
         ))->render();
     }
 
