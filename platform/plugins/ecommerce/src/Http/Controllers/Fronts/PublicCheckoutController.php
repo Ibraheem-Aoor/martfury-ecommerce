@@ -272,7 +272,6 @@ class PublicCheckoutController
             'couponDiscountAmount',
             'sessionCheckoutData',
             'products',
-            'reload_flag',
             'paynl_payment_methods',
         ))->render();
     }
@@ -1187,7 +1186,6 @@ class PublicCheckoutController
             'couponDiscountAmount',
             'sessionCheckoutData',
             'products',
-            'reload_flag',
             'paynl_payment_methods'
         ))->render();
     }
