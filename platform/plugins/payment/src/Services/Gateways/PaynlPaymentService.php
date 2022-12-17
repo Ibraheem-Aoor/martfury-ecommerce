@@ -18,7 +18,7 @@ class  PaynlPaymentService
         Config::setTokenCode("AT-0080-9493");
         Config::setApiToken('74f7899f27950f48adc53b2d8fca1183f7733e2b');
         Config::setServiceId('SL-7712-3492');
-        $paymentMethods = Paymentmethods::getBanks();
+        $paymentMethods = Paymentmethods::getList();
         return $paymentMethods;
     }
 }
