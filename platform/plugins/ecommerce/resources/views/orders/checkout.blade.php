@@ -207,7 +207,7 @@
                                         <label class="text-start">
                                             <img src="{{ asset('payment-images-master/' . @$method['brand']['image']) }}" width="100" alt="">
                                             {{ @$method['brand']['name'] }}</label>
-                                        <div class="payment_{{@$method['brand']['id'] }}_wrap payment_collapse_wrap show" style="padding: 15px 0;" id="ideal-root">
+                                        <div class="payment_{{@$method['brand']['id'] }}_wrap payment_collapse_wrap show" style="padding: 15px 0;" >
                                             <p>
                                                 {{ @$method['brand']['public_description'] }}
                                             </p>
@@ -327,17 +327,6 @@
     @endif
 
 
-    <script id="jsToAppend">
-        var total_amount = "{{ (float) $total_amount }}"
-    </script>
-    <script>
-        $(document).on('click', '#payment_ideal', function() {
-            $('#checkout-btn-custom').hide();
-        });
-        $(document).on('click', '#payment_paypal', function() {
-            $('#checkout-btn-custom').show();
-        });
-    </script>
 
 
 
