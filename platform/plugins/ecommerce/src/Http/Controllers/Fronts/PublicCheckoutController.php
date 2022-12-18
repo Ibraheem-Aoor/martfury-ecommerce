@@ -832,7 +832,7 @@ class PublicCheckoutController
                     break;
                 default:
                     $checkoutUrl = $paynlPaymentService->makePayment($request);
-                    if ($checkoutUrl) {
+                    if ($checkoutUrl != null) {
                         dd('GG from default case');
                         dd($checkoutUrl);
                         return redirect($checkoutUrl);
