@@ -58,7 +58,6 @@ class  PaynlPaymentService
 
     public function makePayment(Request $request)
     {
-        dd('Welcome from paynl service class' , $request);
         $result = Transaction::start(array(
             # Required
                 'amount' => 10.00,
@@ -125,5 +124,6 @@ class  PaynlPaymentService
 
         # Redirect the customer to this url to complete the payment
         $redirect = $result->getRedirectUrl();
+        dd($transactionId, $redirect);
     }
 }
