@@ -594,7 +594,6 @@ class PublicCheckoutController
         HandleRemoveCouponService $removeCouponService,
         HandleApplyPromotionsService $handleApplyPromotionsService
     ) {
-        dd($request);
         if (!EcommerceHelper::isCartEnabled()) {
             abort(404);
         }
