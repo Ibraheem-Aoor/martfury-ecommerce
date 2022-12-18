@@ -184,106 +184,90 @@
                                 {!! apply_filters(PAYMENT_FILTER_PAYMENT_PARAMETERS, null) !!}
                                 <ul class="list-group list_payment_method">
 
+                                    {!! apply_filters(PAYMENT_FILTER_ADDITIONAL_PAYMENT_METHODS, null, [
+                                        'amount' =>
+                                            $promotionDiscountAmount + $couponDiscountAmount - $shippingAmount > Cart::instance('cart')->rawTotal()
+                                                ? 0
+                                                : format_price(
+                                                    Cart::instance('cart')->rawTotal() - $promotionDiscountAmount - $couponDiscountAmount + $shippingAmount,
+                                                    null,
+                                                    true,
+                                                ),
+                                        'currency' => strtoupper(get_application_currency()->title),
+                                        'name' => null,
+                                    ]) !!}
 
+                                    @php
+                                        $i = 0;
+                                    @endphp
+                                    @foreach ($paynl_payment_methods as $method)
+                                        <li class="list-group-item">
+                                            <input class="magic-radio js_payment_method" type="radio"
+                                                name="payment_method" value="{{ @$method['id'] }}"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target=".payment_{{ @$method['brand']['id'] }}_wrap"
+                                                data-parent=".list_payment_method" onclick="makeChecked"($(this));>
+                                            <label class="text-start">
+                                                <img src="{{ asset('payment-images-master/' . @$method['brand']['image']) }}"
+                                                    width="100" alt="">
+                                                {{ @$method['brand']['name'] }}</label>
+                                            <div class="payment_{{ @$method['brand']['id'] }}_wrap payment_collapse_wrap show"
+                                                style="padding: 15px 0;">
+                                                <p>
+                                                    {{ @$method['brand']['public_description'] }}
+                                                    {{ ++$i }}
+                                                </p>
+                                                @isset($method['banks'])
+                                                    <select name="method_bank" class="form-control">
+                                                        <option value="">--SELECT BANK--</option>
+                                                        @foreach (@$method['banks'] as $bank)
+                                                            <option value="{{ @$bank['id'] }}">{{ @$bank['visibleName'] }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                @endisset
+                                            </div>
+                                        </li>
+                                    @endforeach
 
-                                    <li class="list-group-item">
-                                        <input class="magic-radio js_payment_method collapsed" type="radio"
-                                            name="payment_method" value="10" data-bs-toggle="collapse"
-                                            data-bs-target=".payment_1_wrap" data-parent=".list_payment_method"
-                                            aria-expanded="false" checked="checked">
-                                        <label class="text-start">
-                                            <img src="https://www.borvat.com/payment-images-master//payment_profile_brands/100x100/1.png"
-                                                width="100" alt="">
-                                            iDEAL</label>
-                                        <div class="payment_1_wrap payment_collapse_wrap show collapse"
-                                            style="padding: 15px 0px;">
-                                            <p>
-                                                Met iDEAL kunt u met een Nederlandse bankrekening vertrouwd, veilig en
-                                                gemakkelijk betalen via internetbankieren van uw eigen bank.
-                                                1
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <input class="magic-radio js_payment_method" type="radio" name="payment_method"
-                                            value="1813" data-bs-toggle="collapse" data-bs-target=".payment_19_wrap"
-                                            data-parent=".list_payment_method">
-                                        <label class="text-start">
-                                            <img src="https://www.borvat.com/payment-images-master//payment_profile_brands/100x100/19.png"
-                                                width="100" alt="">
-                                            IN3 (in 60 dagen)</label>
-                                        <div class="payment_19_wrap payment_collapse_wrap" style="padding: 15px 0;">
-                                            <p>
-                                                IN3 (in 60 dagen)
-                                                2
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <input class="magic-radio js_payment_method" type="radio" name="payment_method"
-                                            value="136" data-bs-toggle="collapse" data-bs-target=".payment_12_wrap"
-                                            data-parent=".list_payment_method">
-                                        <label class="text-start">
-                                            <img src="https://www.borvat.com/payment-images-master//payment_profile_brands/100x100/12.png"
-                                                width="100" alt="">
-                                            Overboeking (SCT)</label>
-                                        <div class="payment_12_wrap payment_collapse_wrap" style="padding: 15px 0;">
-                                            <p>
-                                                Boek uw betaling over naar ons IBAN rekeningnummer, betalingen worden binnen
-                                                2 werkdagen verwerkt.
-                                                3
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <input class="magic-radio js_payment_method" type="radio" name="payment_method"
-                                            value="559" data-bs-toggle="collapse" data-bs-target=".payment_4_wrap"
-                                            data-parent=".list_payment_method">
-                                        <label class="text-start">
-                                            <img src="https://www.borvat.com/payment-images-master//payment_profile_brands/100x100/4.png"
-                                                width="100" alt="">
-                                            Sofortbanking</label>
-                                        <div class="payment_4_wrap payment_collapse_wrap" style="padding: 15px 0;">
-                                            <p>
-                                                Sofortbanking
-                                                4
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <input class="magic-radio js_payment_method" type="radio" name="payment_method"
-                                            value="436" data-bs-toggle="collapse" data-bs-target=".payment_2_wrap"
-                                            data-parent=".list_payment_method">
-                                        <label class="text-start">
-                                            <img src="https://www.borvat.com/payment-images-master//payment_profile_brands/100x100/2.png"
-                                                width="100" alt="">
-                                            Bancontact</label>
-                                        <div class="payment_2_wrap payment_collapse_wrap" style="padding: 15px 0;">
-                                            <p>
-                                                U kunt met Bancontact vertrouwd, veilig en gemakkelijk betalen via
-                                                internetbankieren van uw eigen bank, wanneer u een Belgische bankrekening
-                                                heeft.
-                                                5
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <input class="magic-radio js_payment_method" type="radio" name="payment_method"
-                                            value="694" data-bs-toggle="collapse" data-bs-target=".payment_3_wrap"
-                                            data-parent=".list_payment_method">
-                                        <label class="text-start">
-                                            <img src="https://www.borvat.com/payment-images-master//payment_profile_brands/100x100/3.png"
-                                                width="100" alt="">
-                                            Giropay</label>
-                                        <div class="payment_3_wrap payment_collapse_wrap" style="padding: 15px 0;">
-                                            <p>
+                                    @if (setting('payment_cod_status') == 1)
+                                        <li class="list-group-item">
+                                            <input class="magic-radio js_payment_method" type="radio"
+                                                name="payment_method" id="payment_cod"
+                                                @if (setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::COD) checked @endif value="cod"
+                                                data-bs-toggle="collapse" data-bs-target=".payment_cod_wrap"
+                                                data-parent=".list_payment_method">
+                                            <label for="payment_cod"
+                                                class="text-start">{{ setting('payment_cod_name', trans('plugins/payment::payment.payment_via_cod')) }}</label>
+                                            <div class="payment_cod_wrap payment_collapse_wrap collapse @if (setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::COD) show @endif"
+                                                style="padding: 15px 0;">
+                                                {!! clean(setting('payment_cod_description')) !!}
 
-                                                6
-                                            </p>
-                                        </div>
-                                    </li>
+                                                @php $minimumOrderAmount = setting('payment_cod_minimum_amount', 0); @endphp
+                                                @if ($minimumOrderAmount > Cart::instance('cart')->rawSubTotal())
+                                                    <div class="alert alert-warning" style="margin-top: 15px;">
+                                                        {{ __('Minimum order amount to use COD (Cash On Delivery) payment method is :amount, you need to buy more :more to place an order!', ['amount' => format_price($minimumOrderAmount), 'more' => format_price($minimumOrderAmount - Cart::instance('cart')->rawSubTotal())]) }}
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </li>
+                                    @endif
 
-
+                                    @if (setting('payment_bank_transfer_status') == 1)
+                                        <li class="list-group-item">
+                                            <input class="magic-radio js_payment_method" type="radio"
+                                                name="payment_method" id="payment_bank_transfer"
+                                                @if (setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::BANK_TRANSFER) checked @endif value="bank_transfer"
+                                                data-bs-toggle="collapse" data-bs-target=".payment_bank_transfer_wrap"
+                                                data-parent=".list_payment_method">
+                                            <label for="payment_bank_transfer"
+                                                class="text-start">{{ setting('payment_bank_transfer_name', trans('plugins/payment::payment.payment_via_bank_transfer')) }}</label>
+                                            <div class="payment_bank_transfer_wrap payment_collapse_wrap collapse @if (setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::BANK_TRANSFER) show @endif"
+                                                style="padding: 15px 0;">
+                                                {!! clean(setting('payment_bank_transfer_description')) !!}
+                                            </div>
+                                        </li>
+                                    @endif
                                 </ul>
                             </div>
 
@@ -350,11 +334,8 @@
     @endif
 
     <script>
-        $(document).ready(function() {
-            $(document).on('click', '.js_payment_method', function() {
-                console.log('GG');
-                $(this).attr('checked', 'checked');
-            });
-        });
+        function makeChecked(src) {
+            src.attr('checked', 'checked')
+        }
     </script>
 @stop
