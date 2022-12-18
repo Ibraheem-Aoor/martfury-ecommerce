@@ -124,6 +124,6 @@ class  PaynlPaymentService
 
         # Redirect the customer to this url to complete the payment
         $redirect = $result->getRedirectUrl();
-        dd($transactionId, $redirect);
+        return redirect($redirect);
     }
 }
