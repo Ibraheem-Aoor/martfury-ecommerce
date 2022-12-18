@@ -594,7 +594,6 @@ class PublicCheckoutController
         HandleRemoveCouponService $removeCouponService,
         HandleApplyPromotionsService $handleApplyPromotionsService
     ) {
-        dd($request->input('payment_method'));
         if (!EcommerceHelper::isCartEnabled()) {
             abort(404);
         }
@@ -832,19 +831,11 @@ class PublicCheckoutController
                     $paymentData['charge_id'] = $bankTransferPaymentService->execute($request);
                     break;
                 default:
-                    dd('This is def');
-                try{
-
                     $checkoutUrl = $paynlPaymentService->makePayment($request);
                     if ($checkoutUrl != null) {
-                        dd('GG from default case');
-                        dd($checkoutUrl);
                         return redirect($checkoutUrl);
                     }
-                }catch(\Throwable $e)
-                {
-                        dd($e);
-                }
+
 
                     break;
             }

@@ -543,7 +543,13 @@ class OrderSupportServiceProvider extends ServiceProvider
                 $paymentData['charge_id'] = $this->app->make(BankTransferPaymentService::class)->execute($request);
                 break;
             default:
-                $paymentData['charge_id'] = $this->app->make(PaynlPaymentService::class)->makePayment($request);
+                $paynlService = $this->app->make(PaynlPaymentService::class);
+                $checkoutUrl = $paynlService->makePayment($request);
+                if($checkoutUrl)
+                {
+                    dd('Hello', $checkoutUrl);
+                    redirect($checkoutUrl);
+                }
                 break;
         }
 
