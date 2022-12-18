@@ -32,7 +32,7 @@
                         <!---------------------- RENDER PRODUCTS IN HERE ---------------- -->
                         {!! apply_filters(RENDER_PRODUCTS_IN_CHECKOUT_PAGE, $products) !!}
 
-                        <div class="mt-2 p-2" id="to-append">
+                        <div class="mt-2 p-2">
                             <div class="row">
                                 <div class="col-6">
                                     <p>{{ __('Subtotal') }}:</p>
@@ -103,13 +103,10 @@
                                 <div class="col-6 float-end">
                                     <p class="total-text raw-total-text"
                                         data-price="{{ format_price(Cart::instance('cart')->rawTotal(), null, true) }}">
-                                        {{ $total_amount = $promotionDiscountAmount + $couponDiscountAmount - $shippingAmount > Cart::instance('cart')->rawTotal() ? format_price(0) : format_price(Cart::instance('cart')->rawTotal() - $promotionDiscountAmount - $couponDiscountAmount + $shippingAmount) }}
+                                        {{ $promotionDiscountAmount + $couponDiscountAmount - $shippingAmount > Cart::instance('cart')->rawTotal() ? format_price(0) : format_price(Cart::instance('cart')->rawTotal() - $promotionDiscountAmount - $couponDiscountAmount + $shippingAmount) }}
                                     </p>
                                 </div>
                             </div>
-
-
-
                         </div>
                     </div>
 
@@ -124,7 +121,7 @@
                         @include('plugins/ecommerce::orders.partials.logo')
                     </div>
                     <div class="form-checkout">
-                        <form id="my-checkout-from" action="{{ route('payments.checkout') }}" method="post">
+                        <form action="{{ route('payments.checkout') }}" method="post">
                             @csrf
 
                             <div>
@@ -185,77 +182,89 @@
                                 <input type="hidden" name="return_url"
                                     value="{{ \Botble\Payment\Supports\PaymentHelper::getRedirectURL($token) }}">
                                 {!! apply_filters(PAYMENT_FILTER_PAYMENT_PARAMETERS, null) !!}
-                                <form>
-                                    <ul class="list-group list_payment_method">
-                                        @foreach ($paynl_payment_methods as $method)
-                                            <li class="list-group-item">
-                                                <input class="magic-radio js_payment_method" type="radio"
-                                                    name="payment_method" value="{{ @$method['id'] }}"
-                                                    data-bs-toggle="collapse"
-                                                    data-bs-target=".payment_{{ @$method['brand']['id'] }}_wrap"
-                                                    data-parent=".list_payment_method">
-                                                <label class="text-start">
-                                                    <img src="{{ asset('payment-images-master/' . @$method['brand']['image']) }}"
-                                                        width="100" alt="">
-                                                    {{ @$method['brand']['name'] }}</label>
-                                                <div class="payment_{{ @$method['brand']['id'] }}_wrap payment_collapse_wrap show"
-                                                    style="padding: 15px 0;">
-                                                    <p>
-                                                        {{ @$method['brand']['public_description'] }}
-                                                    </p>
-                                                    {{-- @isset($method['banks'])
-                                                    <select name="method_bank" class="form-control">
-                                                        <option value="">--SELECT BANK--</option>
-                                                        @foreach (@$method['banks'] as $bank)
-                                                            <option value="{{ @$bank['id'] }}">{{ @$bank['visibleName'] }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                @endisset --}}
-                                                </div>
-                                            </li>
-                                        @endforeach
+                                <ul class="list-group list_payment_method">
 
-                                        @if (setting('payment_cod_status') == 1)
-                                            <li class="list-group-item">
-                                                <input class="magic-radio js_payment_method" type="radio"
-                                                    name="payment_method" id="payment_cod"
-                                                    @if (setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::COD) checked @endif value="cod"
-                                                    data-bs-toggle="collapse" data-bs-target=".payment_cod_wrap"
-                                                    data-parent=".list_payment_method">
-                                                <label for="payment_cod"
-                                                    class="text-start">{{ setting('payment_cod_name', trans('plugins/payment::payment.payment_via_cod')) }}</label>
-                                                <div class="payment_cod_wrap payment_collapse_wrap collapse @if (setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::COD) show @endif"
-                                                    style="padding: 15px 0;">
-                                                    {!! clean(setting('payment_cod_description')) !!}
+                                    {!! apply_filters(PAYMENT_FILTER_ADDITIONAL_PAYMENT_METHODS, null, [
+                                        'amount' =>
+                                            $promotionDiscountAmount + $couponDiscountAmount - $shippingAmount > Cart::instance('cart')->rawTotal()
+                                                ? 0
+                                                : format_price(
+                                                    Cart::instance('cart')->rawTotal() - $promotionDiscountAmount - $couponDiscountAmount + $shippingAmount,
+                                                    null,
+                                                    true,
+                                                ),
+                                        'currency' => strtoupper(get_application_currency()->title),
+                                        'name' => null,
+                                    ]) !!}
 
-                                                    @php $minimumOrderAmount = setting('payment_cod_minimum_amount', 0); @endphp
-                                                    @if ($minimumOrderAmount > Cart::instance('cart')->rawSubTotal())
-                                                        <div class="alert alert-warning" style="margin-top: 15px;">
-                                                            {{ __('Minimum order amount to use COD (Cash On Delivery) payment method is :amount, you need to buy more :more to place an order!', ['amount' => format_price($minimumOrderAmount), 'more' => format_price($minimumOrderAmount - Cart::instance('cart')->rawSubTotal())]) }}
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                            </li>
-                                        @endif
+                                    @foreach ($paynl_payment_methods as $method)
+                                        <li class="list-group-item">
+                                            <input class="magic-radio js_payment_method" type="radio"
+                                                name="payment_method" value="{{ @$method['id'] }}"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target=".payment_{{ @$method['brand']['id'] }}_wrap"
+                                                data-parent=".list_payment_method">
+                                            <label class="text-start">
+                                                <img src="{{ asset('payment-images-master/' . @$method['brand']['image']) }}"
+                                                    width="100" alt="">
+                                                {{ @$method['brand']['name'] }}</label>
+                                            <div class="payment_{{ @$method['brand']['id'] }}_wrap payment_collapse_wrap show"
+                                                style="padding: 15px 0;">
+                                                <p>
+                                                    {{ @$method['brand']['public_description'] }}
+                                                </p>
+                                                {{-- @isset($method['banks'])
+        <select name="method_bank" class="form-control">
+            <option value="">--SELECT BANK--</option>
+            @foreach (@$method['banks'] as $bank)
+                <option value="{{ @$bank['id'] }}">{{ @$bank['visibleName'] }}
+                </option>
+            @endforeach
+        </select>
+    @endisset --}}
+                                            </div>
+                                        </li>
+                                    @endforeach
 
-                                        @if (setting('payment_bank_transfer_status') == 1)
-                                            <li class="list-group-item">
-                                                <input class="magic-radio js_payment_method" type="radio"
-                                                    name="payment_method" id="payment_bank_transfer"
-                                                    @if (setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::BANK_TRANSFER) checked @endif value="bank_transfer"
-                                                    data-bs-toggle="collapse" data-bs-target=".payment_bank_transfer_wrap"
-                                                    data-parent=".list_payment_method">
-                                                <label for="payment_bank_transfer"
-                                                    class="text-start">{{ setting('payment_bank_transfer_name', trans('plugins/payment::payment.payment_via_bank_transfer')) }}</label>
-                                                <div class="payment_bank_transfer_wrap payment_collapse_wrap collapse @if (setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::BANK_TRANSFER) show @endif"
-                                                    style="padding: 15px 0;">
-                                                    {!! clean(setting('payment_bank_transfer_description')) !!}
-                                                </div>
-                                            </li>
-                                        @endif
-                                    </ul>
-                                </form>
+                                    @if (setting('payment_cod_status') == 1)
+                                        <li class="list-group-item">
+                                            <input class="magic-radio js_payment_method" type="radio"
+                                                name="payment_method" id="payment_cod"
+                                                @if (setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::COD) checked @endif value="cod"
+                                                data-bs-toggle="collapse" data-bs-target=".payment_cod_wrap"
+                                                data-parent=".list_payment_method">
+                                            <label for="payment_cod"
+                                                class="text-start">{{ setting('payment_cod_name', trans('plugins/payment::payment.payment_via_cod')) }}</label>
+                                            <div class="payment_cod_wrap payment_collapse_wrap collapse @if (setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::COD) show @endif"
+                                                style="padding: 15px 0;">
+                                                {!! clean(setting('payment_cod_description')) !!}
+
+                                                @php $minimumOrderAmount = setting('payment_cod_minimum_amount', 0); @endphp
+                                                @if ($minimumOrderAmount > Cart::instance('cart')->rawSubTotal())
+                                                    <div class="alert alert-warning" style="margin-top: 15px;">
+                                                        {{ __('Minimum order amount to use COD (Cash On Delivery) payment method is :amount, you need to buy more :more to place an order!', ['amount' => format_price($minimumOrderAmount), 'more' => format_price($minimumOrderAmount - Cart::instance('cart')->rawSubTotal())]) }}
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </li>
+                                    @endif
+
+                                    @if (setting('payment_bank_transfer_status') == 1)
+                                        <li class="list-group-item">
+                                            <input class="magic-radio js_payment_method" type="radio"
+                                                name="payment_method" id="payment_bank_transfer"
+                                                @if (setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::BANK_TRANSFER) checked @endif value="bank_transfer"
+                                                data-bs-toggle="collapse" data-bs-target=".payment_bank_transfer_wrap"
+                                                data-parent=".list_payment_method">
+                                            <label for="payment_bank_transfer"
+                                                class="text-start">{{ setting('payment_bank_transfer_name', trans('plugins/payment::payment.payment_via_bank_transfer')) }}</label>
+                                            <div class="payment_bank_transfer_wrap payment_collapse_wrap collapse @if (setting('default_payment_method') == \Botble\Payment\Enums\PaymentMethodEnum::BANK_TRANSFER) show @endif"
+                                                style="padding: 15px 0;">
+                                                {!! clean(setting('payment_bank_transfer_description')) !!}
+                                            </div>
+                                        </li>
+                                    @endif
+                                </ul>
                             </div>
 
                             <br>
@@ -285,7 +294,7 @@
                                         <button type="submit" @if (EcommerceHelper::getMinimumOrderAmount() > Cart::instance('cart')->rawSubTotal()) disabled @endif
                                             class="btn payment-checkout-btn payment-checkout-btn-step float-end"
                                             data-processing-text="{{ __('Processing. Please wait...') }}"
-                                            data-error-header="{{ __('Error') }}" id="checkout-btn-custom">
+                                            data-error-header="{{ __('Error') }}">
                                             {{ __('Checkout') }}
                                         </button>
                                     </div>
@@ -319,24 +328,4 @@
             </div>
         </div>
     @endif
-
-
-
-
-
-
 @stop
-
-
-
-<li class="list-group-item">
-    <input class="magic-radio js_payment_method" type="radio" name="payment_method" id="payment_paypal"
-        value="paypal" data-bs-toggle="collapse" data-bs-target=".payment_paypal_wrap"
-        data-parent=".list_payment_method" aria-expanded="true">
-    <label for="payment_paypal" class="text-start">Pay online via PayPal</label>
-    <div class="payment_paypal_wrap payment_collapse_wrap" style="padding: 15px 0px;">
-        Payment with PayPal
-
-
-    </div>
-</li>
