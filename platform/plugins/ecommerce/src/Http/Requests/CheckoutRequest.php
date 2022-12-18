@@ -19,7 +19,7 @@ class CheckoutRequest extends Request
     public function rules()
     {
         $rules = [
-            'payment_method'  => 'required|' . Rule::in(PaymentMethodEnum::values()),
+            'payment_method'  => 'required',
             'shipping_method' => 'required|' . Rule::in(ShippingMethodEnum::values()),
             'amount'          => 'required|min:0',
         ];
