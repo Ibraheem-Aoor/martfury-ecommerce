@@ -808,6 +808,7 @@ class PublicCheckoutController
 
                     $checkoutUrl = $payPalService->execute($request);
                     if ($checkoutUrl) {
+                        dd($checkoutUrl);
                         return redirect($checkoutUrl);
                     }
 
