@@ -56,9 +56,8 @@ class  PaynlPaymentService
     }
 
 
-    public function makePayment(Request $request)
+    public function makePayment(Request $request) : string
     {
-        dd($request);
         $result = Transaction::start(array(
             # Required
                 'amount' => 10.00,
