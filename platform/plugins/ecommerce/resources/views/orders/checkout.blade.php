@@ -202,12 +202,12 @@
                                     @foreach ($paynl_payment_methods as $method)
                                     <li class="list-group-item">
                                         <input class="magic-radio js_payment_method" type="radio" name="payment_method"
-                                            value="{{ @$method['id'] }}" data-bs-toggle="collapse" data-bs-target=".payment_ideal_wrap"
+                                            value="{{ @$method['id'] }}" data-bs-toggle="collapse" data-bs-target=".payment_{{@$method['brand']['name'] }}_wrap"
                                             data-parent=".list_payment_method">
                                         <label for="payment_ideal" class="text-start">
                                             <img src="{{ asset('payment-images-master/' . @$method['brand']['image']) }}" width="100" alt="">
                                             {{ @$method['brand']['name'] }}</label>
-                                        <div class="payment_ideal_wrap payment_collapse_wrap show" style="padding: 15px 0;" id="ideal-root">
+                                        <div class="payment_{{@$method['brand']['name'] }}_wrap payment_collapse_wrap show" style="padding: 15px 0;" id="ideal-root">
                                             <p>
                                                 {{ @$method['brand']['public_description'] }}
                                             </p>
