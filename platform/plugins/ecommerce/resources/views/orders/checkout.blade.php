@@ -335,7 +335,7 @@
 
     <script>
         function makeChecked(src) {
-            src.attr('checked', 'checked')
+            src.prop("checked");
         }
     </script>
 @stop
