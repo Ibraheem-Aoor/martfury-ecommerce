@@ -866,6 +866,7 @@ class PublicCheckoutController
     public function getCheckoutSuccess($token, BaseHttpResponse $response)
     {
 
+        dd('GG');
         if (!EcommerceHelper::isCartEnabled()) {
             abort(404);
         }
