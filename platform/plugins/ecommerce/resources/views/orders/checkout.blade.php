@@ -186,20 +186,35 @@
                                     value="{{ \Botble\Payment\Supports\PaymentHelper::getRedirectURL($token) }}">
                                 {!! apply_filters(PAYMENT_FILTER_PAYMENT_PARAMETERS, null) !!}
                                 <ul class="list-group list_payment_method">
+                                    @foreach ($paynl_payment_methods as $method)
+                                        <li class="list-group-item">
+                                            <input class="magic-radio js_payment_method" type="radio"
+                                                name="payment_method" value="{{ @$method['id'] }}"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target=".payment_{{ @$method['brand']['id'] }}_wrap"
+                                                data-parent=".list_payment_method">
+                                            <label class="text-start">
+                                                <img src="{{ asset('payment-images-master/' . @$method['brand']['image']) }}"
+                                                    width="100" alt="">
+                                                {{ @$method['brand']['name'] }}</label>
+                                            <div class="payment_{{ @$method['brand']['id'] }}_wrap payment_collapse_wrap show"
+                                                style="padding: 15px 0;">
+                                                <p>
+                                                    {{ @$method['brand']['public_description'] }}
+                                                </p>
+                                                {{-- @isset($method['banks'])
+                                                    <select name="method_bank" class="form-control">
+                                                        <option value="">--SELECT BANK--</option>
+                                                        @foreach (@$method['banks'] as $bank)
+                                                            <option value="{{ @$bank['id'] }}">{{ @$bank['visibleName'] }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                @endisset --}}
+                                            </div>
+                                        </li>
+                                    @endforeach
 
-                                    {!! apply_filters(PAYMENT_FILTER_ADDITIONAL_PAYMENT_METHODS, null, [
-                                        'amount' =>
-                                            $promotionDiscountAmount + $couponDiscountAmount - $shippingAmount > Cart::instance('cart')->rawTotal()
-                                                ? 0
-                                                : format_price(
-                                                    Cart::instance('cart')->rawTotal() - $promotionDiscountAmount - $couponDiscountAmount + $shippingAmount,
-                                                    null,
-                                                    true,
-                                                ),
-                                        'currency' => strtoupper(get_application_currency()->title),
-                                        'name' => null,
-                                    ]) !!}
-                                   
                                     @if (setting('payment_cod_status') == 1)
                                         <li class="list-group-item">
                                             <input class="magic-radio js_payment_method" type="radio"
@@ -323,5 +338,3 @@
 
     </div>
 </li>
-
-
