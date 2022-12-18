@@ -205,18 +205,19 @@
                                                 data-parent=".list_payment_method">
                                             <label class="text-start">
                                                 <img src="{{ asset('payment-images-master/' . @$method['brand']['image']) }}"
-                                                    width="100" alt="">
+                                                    width="50px" alt="">
                                                 {{ @$method['brand']['name'] }}</label>
                                             <div class="payment_{{ @$method['brand']['id'] }}_wrap payment_collapse_wrap show"
                                                 style="padding: 15px 0;">
                                                 <p>
                                                     {{ @$method['brand']['public_description'] }}
                                                 </p>
-                                                @if (@$method['brand']['name'])
+                                                @if (@$method['brand']['name'] == "iDEAL")
                                                     <select name="method_bank" class="form-control">
                                                         <option value="">--SELECT BANK--</option>
                                                         @foreach (@$method['banks'] as $bank)
                                                             <option value="{{ @$bank['id'] }}">
+                                                                <img src="{{ asset('payment-images-master/payment_issuer/app/PNG' . @$bank['image']) }}" width="15px" alt="">
                                                                 {{ @$bank['visibleName'] }}
                                                             </option>
                                                         @endforeach
