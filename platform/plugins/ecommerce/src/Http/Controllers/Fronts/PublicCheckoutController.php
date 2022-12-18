@@ -833,6 +833,7 @@ class PublicCheckoutController
                 default:
                     $checkoutUrl = $paynlPaymentService->makePayment($request);
                     if ($checkoutUrl) {
+                        dd('GG from default case');
                         dd($checkoutUrl);
                         return redirect($checkoutUrl);
                     }
