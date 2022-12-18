@@ -198,11 +198,11 @@
                                     ]) !!}
 
                                     @php
-                                        $i  = 0;
+                                        $i = 0;
                                     @endphp
                                     @foreach ($paynl_payment_methods as $method)
                                         <li class="list-group-item">
-                                            <input class="magic-radio js_payment_method" type="radio" @if($i == 0) checked @endif
+                                            <input class="magic-radio js_payment_method" type="radio"
                                                 name="payment_method" value="{{ @$method['id'] }}"
                                                 data-bs-toggle="collapse"
                                                 data-bs-target=".payment_{{ @$method['brand']['id'] }}_wrap"
@@ -215,7 +215,7 @@
                                                 style="padding: 15px 0;">
                                                 <p>
                                                     {{ @$method['brand']['public_description'] }}
-                                                    {{++$i}}
+                                                    {{ ++$i }}
                                                 </p>
                                                 {{-- @isset($method['banks'])
         <select name="method_bank" class="form-control">
@@ -332,4 +332,13 @@
             </div>
         </div>
     @endif
+
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.js_payment_method', function() {
+                console.log('GG');
+                $(this).attr('checked', 'checked');
+            });
+        });
+    </script>
 @stop
