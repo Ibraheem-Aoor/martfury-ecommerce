@@ -212,12 +212,12 @@
                                                 <p>
                                                     {{ @$method['brand']['public_description'] }}
                                                 </p>
-                                                @if (@$method['brand']['name'] == "iDEAL")
+                                                @if (@$method['brand']['name'] == 'iDEAL')
                                                     <select name="method_bank" class="form-control">
                                                         <option value="">--SELECT BANK--</option>
                                                         @foreach (@$method['banks'] as $bank)
                                                             <option value="{{ @$bank['id'] }}">
-                                                                <img src="{{ asset('payment-images-master/payment_issuer/app/PNG' . @$bank['image']) }}" width="15px" alt="">
+
                                                                 {{ @$bank['visibleName'] }}
                                                             </option>
                                                         @endforeach

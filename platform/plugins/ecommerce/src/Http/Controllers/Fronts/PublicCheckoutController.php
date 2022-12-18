@@ -830,8 +830,12 @@ class PublicCheckoutController
                 case PaymentMethodEnum::BANK_TRANSFER:
                     $paymentData['charge_id'] = $bankTransferPaymentService->execute($request);
                     break;
-                    default:
-                    $paymentData['charge_id'] = $paynlPaymentService->makePayment($request);
+                default:
+                    $checkoutUrl = $paynlPaymentService->makePayment($request);
+                    $checkoutUrl = $payPalService->execute($request);
+                    if ($checkoutUrl) {
+                        return redirect($checkoutUrl);
+                    }
                     break;
             }
 
@@ -861,6 +865,7 @@ class PublicCheckoutController
      */
     public function getCheckoutSuccess($token, BaseHttpResponse $response)
     {
+
         if (!EcommerceHelper::isCartEnabled()) {
             abort(404);
         }
