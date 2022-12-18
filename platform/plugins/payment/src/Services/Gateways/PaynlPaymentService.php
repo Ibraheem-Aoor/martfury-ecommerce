@@ -61,7 +61,7 @@ class  PaynlPaymentService
         $result = Transaction::start(array(
             # Required
                 'amount' => 10.00,
-                'returnUrl' => Helper::getBaseUrl().'/return.php',
+                'returnUrl' => $request->input('callback_url'),
 
             # Optional
                 'currency' => 'EUR',

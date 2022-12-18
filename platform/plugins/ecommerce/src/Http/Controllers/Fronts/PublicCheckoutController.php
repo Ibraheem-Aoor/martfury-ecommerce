@@ -1004,10 +1004,11 @@ class PublicCheckoutController
      * @return BaseHttpResponse
      */
     public function getPayPalStatus(
-        PayPalPaymentCallbackRequest $request,
+        Request $request,
         PayPalPaymentService $payPalPaymentService,
         BaseHttpResponse $response
     ) {
+        dd($request);
         if (!EcommerceHelper::isCartEnabled()) {
             abort(404);
         }
