@@ -547,7 +547,6 @@ class OrderSupportServiceProvider extends ServiceProvider
                 $checkoutUrl = $paynlService->makePayment($request);
                 if($checkoutUrl)
                 {
-                    dd('Hello', $checkoutUrl);
                     redirect($checkoutUrl);
                 }
                 break;
