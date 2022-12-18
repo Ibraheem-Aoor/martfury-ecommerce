@@ -199,9 +199,9 @@
                                         'currency' => strtoupper(get_application_currency()->title),
                                         'name' => null,
                                     ]) !!}
-                                    @foreach ($paynl_payment_methods as $metohd)
+                                    @foreach ($paynl_payment_methods as $method)
                                     <li class="list-group-item">
-                                        <input class="magic-radio js_payment_method" type="radio" name="payment_method" id="payment_ideal"
+                                        <input class="magic-radio js_payment_method" type="radio" name="payment_method"
                                             value="{{ @$method['id'] }}" data-bs-toggle="collapse" data-bs-target=".payment_ideal_wrap"
                                             data-parent=".list_payment_method">
                                         <label for="payment_ideal" class="text-start">
