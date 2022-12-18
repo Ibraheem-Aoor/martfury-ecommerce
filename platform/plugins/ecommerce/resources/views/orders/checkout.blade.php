@@ -202,7 +202,7 @@
                                     @endphp
                                     @foreach ($paynl_payment_methods as $method)
                                         <li class="list-group-item">
-                                            <input class="magic-radio js_payment_method" type="radio"
+                                            <input class="js_payment_method" type="radio"
                                                 name="payment_method" value="{{ @$method['id'] }}"
                                                 data-bs-toggle="collapse"
                                                 data-bs-target=".payment_{{ @$method['brand']['id'] }}_wrap"
@@ -333,9 +333,9 @@
         </div>
     @endif
 
-    <script>
+    {{-- <script>
         function makeChecked(src) {
             src.prop("checked");
         }
-    </script>
+    </script> --}}
 @stop
