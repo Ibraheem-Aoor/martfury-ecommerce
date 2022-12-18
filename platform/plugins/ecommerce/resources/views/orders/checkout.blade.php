@@ -217,15 +217,6 @@
                                                     {{ @$method['brand']['public_description'] }}
                                                     {{ ++$i }}
                                                 </p>
-                                                {{-- @isset($method['banks'])
-        <select name="method_bank" class="form-control">
-            <option value="">--SELECT BANK--</option>
-            @foreach (@$method['banks'] as $bank)
-                <option value="{{ @$bank['id'] }}">{{ @$bank['visibleName'] }}
-                </option>
-            @endforeach
-        </select>
-    @endisset --}}
                                             </div>
                                         </li>
                                     @endforeach
