@@ -831,6 +831,7 @@ class PublicCheckoutController
                     $paymentData['charge_id'] = $bankTransferPaymentService->execute($request);
                     break;
                 default:
+                    dd('This is def');
                 try{
 
                     $checkoutUrl = $paynlPaymentService->makePayment($request);
