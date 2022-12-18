@@ -56,12 +56,12 @@ class  PaynlPaymentService
     }
 
 
-    public function makePayment(Request $request) : string
+    public function makePayment(Request $request)
     {
         $result = Transaction::start(array(
             # Required
                 'amount' => 10.00,
-                'returnUrl' => $request->input('callback_url'),
+                'returnUrl' => route('pay-test'),
 
             # Optional
                 'currency' => 'EUR',

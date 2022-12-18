@@ -831,12 +831,19 @@ class PublicCheckoutController
                     $paymentData['charge_id'] = $bankTransferPaymentService->execute($request);
                     break;
                 default:
+                try{
+
                     $checkoutUrl = $paynlPaymentService->makePayment($request);
                     if ($checkoutUrl != null) {
                         dd('GG from default case');
                         dd($checkoutUrl);
                         return redirect($checkoutUrl);
                     }
+                }catch(\Throwable $e)
+                {
+                        dd($e);
+                }
+
                     break;
             }
 
