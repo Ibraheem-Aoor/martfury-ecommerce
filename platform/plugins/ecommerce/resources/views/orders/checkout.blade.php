@@ -200,7 +200,6 @@
                                         'name' => null,
                                     ]) !!}
                                    
-
                                     @if (setting('payment_cod_status') == 1)
                                         <li class="list-group-item">
                                             <input class="magic-radio js_payment_method" type="radio"
