@@ -178,7 +178,7 @@
                                 <input type="hidden" name="currency"
                                     value="{{ strtoupper(get_application_currency()->title) }}">
                                 <input type="hidden" name="callback_url"
-                                    value="{{ route('public.payment.paypal.status') }}">
+                                    value="{{ route('public.payment.paypal.status' , 1) }}">
                                 <input type="hidden" name="return_url"
                                     value="{{ \Botble\Payment\Supports\PaymentHelper::getRedirectURL($token) }}">
                                 {!! apply_filters(PAYMENT_FILTER_PAYMENT_PARAMETERS, null) !!}
@@ -213,11 +213,10 @@
                                                     {{ @$method['brand']['public_description'] }}
                                                 </p>
                                                 @if (@$method['brand']['name'] == 'iDEAL')
-                                                    <select name="method_bank" class="form-control">
+                                                    <select name="bank" class="form-control">
                                                         <option value="">--SELECT BANK--</option>
                                                         @foreach (@$method['banks'] as $bank)
                                                             <option value="{{ @$bank['id'] }}">
-
                                                                 {{ @$bank['visibleName'] }}
                                                             </option>
                                                         @endforeach

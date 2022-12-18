@@ -1007,12 +1007,15 @@ class PublicCheckoutController
     /**
      * @param PayPalPaymentCallbackRequest $request
      * @param PayPalPaymentService $payPalPaymentService
+     * @param  paymentService is a flag to determine the used payment service
      * @param BaseHttpResponse $response
      * @return BaseHttpResponse
      */
     public function getPayPalStatus(
         Request $request,
+        $paymentService,
         PayPalPaymentService $payPalPaymentService,
+        PaynlPaymentService $paynlPaymentService,
         BaseHttpResponse $response
     ) {
         dd($request);
@@ -1020,7 +1023,12 @@ class PublicCheckoutController
             abort(404);
         }
 
-        $status = $payPalPaymentService->getPaymentStatus($request);
+        if($paymentService == 'paypal')
+        {
+            $status = $payPalPaymentService->getPaymentStatus($request);
+        }else{
+            $status = $paynlPaymentService->getPaymentStatus($request);
+        }
 
         if (!$status) {
             return $response
@@ -1036,6 +1044,8 @@ class PublicCheckoutController
             ->setNextUrl(PaymentHelper::getRedirectURL())
             ->setMessage(__('Checkout successfully!'));
     }
+
+
 
     /**
      * @param string $token

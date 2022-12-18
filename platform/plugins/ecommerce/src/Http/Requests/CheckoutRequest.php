@@ -23,7 +23,10 @@ class CheckoutRequest extends Request
             'shipping_method' => 'required|' . Rule::in(ShippingMethodEnum::values()),
             'amount'          => 'required|min:0',
         ];
-
+        if($this->input('payment_method') == 10)
+        {
+            $rules['bank'] = 'required';
+        }
         $rules['address.address_id'] = 'required_without:address.name';
         if (!$this->has('address.address_id') || $this->input('address.address_id') === 'new') {
             $rules['address.name'] = 'required|min:3|max:120';
@@ -47,6 +50,7 @@ class CheckoutRequest extends Request
             $rules['address.email'] = 'required|max:60|min:6|email|unique:ec_customers,email';
             $rules['address.name'] = 'required|min:3|max:120';
         }
+
 
         $rules = apply_filters(PROCESS_CHECOUT_RULES_REQUEST_ECOMMERCE, $rules);
 
