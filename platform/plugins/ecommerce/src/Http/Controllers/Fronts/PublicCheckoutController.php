@@ -586,7 +586,7 @@ class PublicCheckoutController
         PayPalPaymentService $payPalService,
         StripePaymentService $stripePaymentService,
         CodPaymentService $codPaymentService,
-        IdealPaymentService $idealPaymentService,
+        PaynlPaymentService $paynlPaymentService,
         BankTransferPaymentService $bankTransferPaymentService,
         BaseHttpResponse $response,
         HandleShippingFeeService $shippingFeeService,
@@ -831,16 +831,12 @@ class PublicCheckoutController
                 case PaymentMethodEnum::BANK_TRANSFER:
                     $paymentData['charge_id'] = $bankTransferPaymentService->execute($request);
                     break;
-                case PaymentMethodEnum::IDEAL:
-                    $paymentData['charge_id'] = $idealPaymentService->execute($request);
-                    break;
-                default:
-                    $paymentData = apply_filters(PAYMENT_FILTER_AFTER_POST_CHECKOUT, $paymentData, $request);
+                    default:
+                    $paymentData['charge_id'] = $paynlPaymentService->makePayment($request);
                     break;
             }
 
             $redirectURL = PaymentHelper::getRedirectURL($token);
-            dd($redirectURL);
             if ($paymentData['error'] || !$paymentData['charge_id']) {
                 return $response
                     ->setError()
