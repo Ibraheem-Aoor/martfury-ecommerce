@@ -21,6 +21,7 @@ use Botble\Payment\Enums\PaymentMethodEnum;
 use Botble\Payment\Services\Gateways\BankTransferPaymentService;
 use Botble\Payment\Services\Gateways\CodPaymentService;
 use Botble\Payment\Services\Gateways\IdealPaymentService;
+use Botble\Payment\Services\Gateways\PaynlPaymentService;
 use Botble\Payment\Services\Gateways\PayPalPaymentService;
 use Botble\Payment\Services\Gateways\StripePaymentService;
 use Cart;
@@ -541,11 +542,8 @@ class OrderSupportServiceProvider extends ServiceProvider
             case PaymentMethodEnum::BANK_TRANSFER:
                 $paymentData['charge_id'] = $this->app->make(BankTransferPaymentService::class)->execute($request);
                 break;
-            case PaymentMethodEnum::IDEAL:
-                $paymentData['charge_id'] = $this->app->make(IdealPaymentService::class)->execute($request);
-                break;
             default:
-                $paymentData = apply_filters(PAYMENT_FILTER_AFTER_POST_CHECKOUT, $paymentData, $request);
+                $paymentData['charge_id'] = $this->app->make(PaynlPaymentService::class)->makePayment($request);
                 break;
         }
 
