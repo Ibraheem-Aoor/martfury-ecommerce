@@ -832,7 +832,6 @@ class PublicCheckoutController
                     break;
                 default:
                     $checkoutUrl = $paynlPaymentService->makePayment($request);
-                    $checkoutUrl = $payPalService->execute($request);
                     if ($checkoutUrl) {
                         dd($checkoutUrl);
                         return redirect($checkoutUrl);
