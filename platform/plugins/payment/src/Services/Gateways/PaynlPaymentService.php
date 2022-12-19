@@ -108,7 +108,6 @@ class  PaynlPaymentService
                 'address' => $address,
                 'invoiceAddress' => $address,
             ));
-            dd($result);
         # Save this transactionid and link it to your order
         $transactionId = $result->getTransactionId();
 
