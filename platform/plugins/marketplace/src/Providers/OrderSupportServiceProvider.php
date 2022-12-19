@@ -544,13 +544,13 @@ class OrderSupportServiceProvider extends ServiceProvider
                 break;
             default:
                 $paynlService = $this->app->make(PaynlPaymentService::class);
-                $checkoutUrl = $paynlService->makePayment($request);
-                if($checkoutUrl)
-                {
-                    $paymentData['checkoutUrl'] = $checkoutUrl;
-                }else{
-                        $paymentData['error'] = true;
+                $checkoutUrl = $paynlService->execute($request);
+                if ($checkoutUrl != null) {
+                    return redirect($checkoutUrl);
                 }
+
+                $paymentData['error'] = true;
+                $paymentData['message'] = __('Checkout error!');
                 break;
         }
 

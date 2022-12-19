@@ -831,12 +831,13 @@ class PublicCheckoutController
                     $paymentData['charge_id'] = $bankTransferPaymentService->execute($request);
                     break;
                 default:
-                    $checkoutUrl = $paynlPaymentService->makePayment($request);
+                    $checkoutUrl = $paynlPaymentService->execute($request);
                     if ($checkoutUrl != null) {
                         return redirect($checkoutUrl);
                     }
 
-
+                    $paymentData['error'] = true;
+                    $paymentData['message'] = __('Checkout error!');
                     break;
             }
 
@@ -867,7 +868,6 @@ class PublicCheckoutController
     public function getCheckoutSuccess($token, BaseHttpResponse $response)
     {
 
-        dd('GG');
         if (!EcommerceHelper::isCartEnabled()) {
             abort(404);
         }
@@ -1027,16 +1027,17 @@ class PublicCheckoutController
         {
             $status = $payPalPaymentService->getPaymentStatus($request);
         }else{
-            $status = $paynlPaymentService->getPaymentStatus($request);
+            $status_response = $paynlPaymentService->getPaymentStatus($request);
         }
 
-        if (!$status) {
+        if (!$status_response['status']) {
             return $response
                 ->setError()
                 ->setNextUrl(PaymentHelper::getCancelURL(OrderHelper::getOrderSessionToken()))
                 ->withInput()
                 ->setMessage(__('Payment failed!'));
         }
+        $paynlPaymentService->finsihPayment($request);
 
         // $payPalPaymentService->afterMakePayment($request);
 

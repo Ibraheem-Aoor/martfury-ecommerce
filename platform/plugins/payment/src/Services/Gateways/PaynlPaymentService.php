@@ -39,26 +39,15 @@ class  PaynlPaymentService
     }
 
 
-
-
-
-    /**
-     *
-     * @return array $paymentMethods
-     */
-    public function getPaymentMethods()
+    public function execute(Request $request)
     {
-        try{
-            if(!Cache::get('paynl_payment_methods'))
-            {
-                $paymentMethods = Paymentmethods::getList();
-                Cache::put('paynl_payment_methods', $paymentMethods, Carbon::now()->addDay());
-                return $paymentMethods;
-            }
-            return Cache::get('paynl_payment_methods');
-        }catch(Throwable $e)
+        try
         {
-            info($e);
+            return $this->makePayment($request);
+        }catch(Throwable $ex)
+        {
+            info('PAY_NL_EXCEPTON: ' . $ex);
+            return false;
         }
     }
 
@@ -68,8 +57,12 @@ class  PaynlPaymentService
 
 
 
-    public function makePayment(Request $request)
+
+
+
+    protected function makePayment(Request $request)
     {
+        session()->put('payment_method_name', $this->getPaymentMethodName($request->input('payment_method')));
         $amount = round((float) $request->input('amount'),  2);
         $bank = $request->input('bank');
         $customer_id = $request->input('customer_id') ;
@@ -160,16 +153,76 @@ class  PaynlPaymentService
 
     public function getPaymentStatus(Request $request)
     {
-        dd($request);
-        $transactionId = $request->order_id;
+        $transactionId = $request->orderId;
 
         $transaction = Transaction::status($transactionId);
 
         # Manual transfer transactions are always pending when the user is returned
-        if( $transaction->isPaid() || $transaction->isPending()) {
-        # Redirect to thank you page
-        } elseif($transaction->isCanceled()) {
-        # Redirect back to checkout
+        if( $transaction->isPaid() || $transaction->isPending())
+            return ['status' => true, 'transactionId' => $transactionId];
+        return ['status' => false  , 'transactionId' => $transactionId];
+
+    }
+
+
+    public function finsihPayment($request)
+    {
+        $status = PaymentStatusEnum::COMPLETED;
+
+        $chargeId = $request->orderId;
+
+        $orderIds = (array)$request->input('order_id', []);
+
+        do_action(PAYMENT_ACTION_PAYMENT_PROCESSED, [
+            'amount'          => $request->input('amount'),
+            'currency'        => $request->input('currency'),
+            'charge_id'       => $chargeId,
+            'order_id'        => $orderIds,
+            'customer_id'     => $request->input('customer_id'),
+            'customer_type'   => $request->input('customer_type'),
+            'payment_channel' => session()->get('payment_method_name') ?? 'BORVAT SECURE PAYMENT',
+            'status'          => $status,
+        ]);
+
+        session()->forget('paypal_payment_id');
+
+        return $chargeId;
+    }
+
+
+    /**
+     *
+     * @return array $paymentMethods
+     */
+    public function getPaymentMethods()
+    {
+        try{
+            if(!Cache::get('paynl_payment_methods'))
+            {
+                $paymentMethods = Paymentmethods::getList();
+                Cache::put('paynl_payment_methods', $paymentMethods, Carbon::now()->addDay());
+                return $paymentMethods;
+            }
+            return Cache::get('paynl_payment_methods');
+        }catch(Throwable $e)
+        {
+            info($e);
+        }
+    }
+
+
+    /**
+     * @return string
+     */
+    protected function getPaymentMethodName($method_id)
+    {
+        $methods = $this->getPaymentMethods();
+        foreach($methods as $method)
+        {
+            if($method['id'] == $method_id)
+            {
+                return @$method['brand']['name'];
+            }
         }
     }
 }
