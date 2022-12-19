@@ -883,6 +883,7 @@ class PublicCheckoutController
             $order->save();
         }
         if (!$order->payment_id) {
+            dd('no payment_id');
             return $response
                 ->setError()
                 ->setNextUrl(PaymentHelper::getCancelURL())
