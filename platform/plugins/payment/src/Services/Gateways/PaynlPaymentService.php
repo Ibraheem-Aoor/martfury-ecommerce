@@ -167,8 +167,8 @@ class  PaynlPaymentService
         $transaction = Transaction::status($transactionId);
 
         # Manual transfer transactions are always pending when the user is returned
-        if( $transaction->isPaid() || $transaction->isPending())
-            return ['status' => true, 'transactionId' => $transactionId];
+        if( $transaction->isPaid() || $transaction->isPending() ||  $transaction->isAuthorized())
+            return ['status' => true, 'transactionId' => $transactionId , 'transaction' => $transaction];
         return ['status' => false  , 'transactionId' => $transactionId];
 
     }
@@ -181,6 +181,26 @@ class  PaynlPaymentService
         $chargeId = $request->orderId;
 
         $orderIds = (array)$request->input('order_id', []);
+
+        $transactionId = $request->orderId;
+
+        $transaction = Transaction::status($transactionId);
+
+        $orders = Order::query()->whereIn('id', $orderIds)->get();
+        if(!$transaction->isPaid() && !$transaction->isCanceled())
+        {
+            foreach($orders as $order)
+            {
+                $order->payment()->update(['status' => PaymentStatusEnum::PENDING]);
+            }
+        }elseif($transaction->isCanceled())
+        {
+            foreach ($orders as $order)
+            {
+                $order->payment()->update(['status' => PaymentStatusEnum::FAILED]);
+            }
+        }
+
 
         do_action(PAYMENT_ACTION_PAYMENT_PROCESSED, [
             'amount'          => $request->input('amount'),
