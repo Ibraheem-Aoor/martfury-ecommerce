@@ -2,6 +2,8 @@
 
 namespace Botble\Payment\Services\Gateways;
 
+use Botble\Ecommerce\Models\Customer;
+use Botble\Ecommerce\Models\Order;
 use Botble\Payment\Enums\PaymentMethodEnum;
 use Botble\Payment\Services\Abstracts\PaynlPaymentAbstract;
 use Illuminate\Http\Request;
@@ -20,7 +22,6 @@ use Throwable;
 class  PaynlPaymentService
 {
 
-    protected $paymentCurrency;
     public function __construct()
     {
         $this->setConfigs();
@@ -35,7 +36,6 @@ class  PaynlPaymentService
         Config::setTokenCode("AT-0080-9493");
         Config::setApiToken('74f7899f27950f48adc53b2d8fca1183f7733e2b');
         Config::setServiceId('SL-7712-3492');
-        $this->paymentCurrency = config('plugins.payment.payment.currency');
     }
 
 
@@ -70,9 +70,24 @@ class  PaynlPaymentService
 
     public function makePayment(Request $request)
     {
-        dd($request);
         $amount = round((float) $request->input('amount'),  2);
         $bank = $request->input('bank');
+        $customer_id = $request->input('customer_id') ;
+        $customer_data = [];
+        if($customer_id && $request->input('customer_type') == Customer::class)
+        {
+            $customer_data = $this->getCutomerData($customer_id);
+        }
+        $order_id = is_array( $request->input('order_id') ) ? $request->input('order_id')[0]  : $request->input('order_id');
+        $order = Order::query()->findOrFail($order_id);
+        $address = [
+            'streetName' => $request->input('address'),
+            'houseNumber' => $request->input('house_no'),
+            'zipCode' => $request->input('zip_code'),
+            'city' =>  $request->input('city'),
+            'country' => $request->input('country'),
+        ];
+        $products = $this->getOrderProducts($order);
         $result = Transaction::start(array(
             # Required
                 'amount' => $amount,
@@ -82,55 +97,16 @@ class  PaynlPaymentService
                 'currency' => 'EUR',
                 'paymentMethod' => $request->input('payment_method'),
                 'bank' => $bank,
-                'description' => '',
+                'description' => 'Borvat Order '. get_order_code($order->id),
                 'testmode' => 1,
-                'extra1' => 'ext1',
-                'extra2' => 'ext2',
-                'extra3' => 'ext3',
-                'products' => array(
-                    array(
-                        'id' => 1,
-                        'name' => 'een product',
-                        'price' => 5.00,
-                        'tax' => 0.87,
-                        'qty' => 1,
-                    ),
-                    array(
-                        'id' => 2,
-                        'name' => 'ander product',
-                        'price' => 5.00,
-                        'tax' => 0.87,
-                        'qty' => 1,
-                    )
-                ),
+                'products' => $products,
                 'language' => 'EN',
                 'ipaddress' => '127.0.0.1',
                 'invoiceDate' => Carbon::today()->toDateString(),
                 'deliveryDate' => Carbon::today()->toDateString() , // in case of tickets for an event, use the event date here
-                'enduser' => array(
-                    'initials' => 'T',
-                    'lastName' => 'Test',
-                    'gender' => 'M',
-                    'birthDate' => new DateTime('1990-01-10'),
-                    'phoneNumber' => '0612345678',
-                    'emailAddress' => 'test@test.nl',
-                ),
-                'address' => array(
-                    'streetName' => 'Test',
-                    'houseNumber' => '10',
-                    'zipCode' => '1234AB',
-                    'city' => 'Test',
-                    'country' => 'NL',
-                ),
-                'invoiceAddress' => array(
-                    'initials' => 'IT',
-                    'lastName' => 'ITEST',
-                    'streetName' => 'Istreet',
-                    'houseNumber' => '70',
-                    'zipCode' => '5678CD',
-                    'city' => 'ITest',
-                    'country' => 'NL',
-                ),
+                'enduser' => $customer_data ,
+                'address' => $address,
+                'invoiceAddress' => $address,
             ));
 
         # Save this transactionid and link it to your order
@@ -142,6 +118,46 @@ class  PaynlPaymentService
     }
 
 
+    /**
+       * Get the Payer Custoemr Data For Billing
+       * @param int customer_id
+       * @return array
+       */
+    public function getCutomerData($customer_id)
+    {
+        $customer = Customer::query()->findOrFail($customer_id);
+        $full_name = explode(' ', $customer->name);
+        return  [
+            'initials' => $full_name[0], //first_name
+            'lastName' => count($full_name) >  1 ? implode(' ' , array_slice($full_name , 1)) : null,
+            'phoneNumber' => $customer->phone,
+            'emailAddress' => $customer->email,
+        ];
+    }
+
+
+    /**
+      * get products for paynl
+      * @param Order::class $products
+      * @return array $products
+      */
+    protected function getOrderProducts($order)
+    {
+        $products = [];
+        $order_products = $order->products;
+        foreach($order_products as $product)
+        {
+            $single_product = [
+                'id' => $product->id,
+                'name' => $product->product_name,
+                'price' => $product->price,
+                'tax' => $product->tax_amount,
+                'qty' => $product->qty,
+            ];
+            array_push($products ,  $single_product);
+        }
+        return $products;
+    }
 
     public function getPaymentStatus(Request $request)
     {

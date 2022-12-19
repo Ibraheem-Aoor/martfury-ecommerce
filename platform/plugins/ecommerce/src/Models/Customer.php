@@ -183,4 +183,7 @@ class Customer extends Authenticatable
             })
             ->where('product_quantity', 1);
     }
+
+
+
 }
