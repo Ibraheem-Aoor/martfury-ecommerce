@@ -1038,7 +1038,7 @@ class PublicCheckoutController
                 ->setMessage(__('Payment failed!'));
         }
 
-        $payPalPaymentService->afterMakePayment($request);
+        // $payPalPaymentService->afterMakePayment($request);
 
         return $response
             ->setNextUrl(PaymentHelper::getRedirectURL())
