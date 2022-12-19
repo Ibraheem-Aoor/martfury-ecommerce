@@ -9,6 +9,7 @@ use Botble\Payment\Services\Abstracts\PaynlPaymentAbstract;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Botble\Payment\Enums\PaymentStatusEnum;
+use Botble\Payment\Models\Payment;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Support\Facades\Cache;
@@ -169,7 +170,27 @@ class  PaynlPaymentService
         # Manual transfer transactions are always pending when the user is returned
         if( $transaction->isPaid() || $transaction->isPending() ||  $transaction->isAuthorized())
             return ['status' => true, 'transactionId' => $transactionId , 'transaction' => $transaction];
-        return ['status' => false  , 'transactionId' => $transactionId];
+        else
+        {
+            $orderIds = (array)$request->input('order_id', []);
+            $orders = Order::query()->whereIn('id', $orderIds)->get();
+            $payment_data = [
+                'amount' => $request->input('amount'),
+                'currency' => $request->input('currency'),
+                'charge_id' => $transactionId,
+                'customer_id' => $request->input('customer_id'),
+                'customer_type' => $request->input('customer_type'),
+                'payment_channel' => $request->input('type'),
+                'status' =>  PaymentStatusEnum::FAILED,
+            ];
+            foreach ($orders as $order)
+            {
+                $payment_data['order_id'] = $order->id;
+                Payment::query()->updateOrCreate(['order_id' => $order->id , 'customer_id' => $payment_data['customer_id'] , 'charge_id' =>  $payment_data['charge_id']] ,
+                    $payment_data);
+            }
+            return ['status' => false  , 'transactionId' => $transactionId];
+        }
 
     }
 
@@ -186,19 +207,16 @@ class  PaynlPaymentService
 
         $transaction = Transaction::status($transactionId);
 
-        $orders = Order::query()->whereIn('id', $orderIds)->get();
         if(!$transaction->isPaid() && !$transaction->isCanceled())
         {
-            foreach($orders as $order)
-            {
-                $order->payment()->update(['status' => PaymentStatusEnum::PENDING]);
-            }
+            $status = PaymentStatusEnum::PENDING;
         }elseif($transaction->isCanceled())
         {
-            foreach ($orders as $order)
-            {
-                $order->payment()->update(['status' => PaymentStatusEnum::FAILED]);
-            }
+            $status = PaymentStatusEnum::FAILED;
+
+        }else{
+            $status = PaymentStatusEnum::COMPLETED;
+
         }
 
 
