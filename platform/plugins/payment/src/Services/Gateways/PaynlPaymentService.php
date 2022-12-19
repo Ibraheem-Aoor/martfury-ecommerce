@@ -61,7 +61,6 @@ class  PaynlPaymentService
 
     protected function makePayment(Request $request)
     {
-        session()->put('payment_method_name', $this->getPaymentMethodName($request->input('payment_method')));
         $amount = round((float) $request->input('amount'),  2);
         $bank = $request->input('bank');
         $customer_id = $request->input('customer_id') ;
@@ -80,10 +79,18 @@ class  PaynlPaymentService
             'country' => $request->input('country'),
         ];
         $products = $this->getOrderProducts($order);
+        $currency = $request->input('currency', config('plugins.payment.payment.currency'));
+        $currency = strtoupper($currency);
+        $queryParams = [
+            'type'     => $this->getPaymentMethodName($request->input('payment_method')),
+            'amount'   => $amount,
+            'currency' => $currency,
+            'order_id' => $request->input('order_id'),
+        ];
         $result = Transaction::start(array(
             # Required
                 'amount' => $amount,
-                'returnUrl' => route('public.payment.paypal.status' , 1),
+                'returnUrl' => $request->input('callback_url') . '?' . http_build_query($queryParams),
 
             # Optional
                 'currency' => 'EUR',
@@ -166,6 +173,7 @@ class  PaynlPaymentService
 
     public function finsihPayment($request)
     {
+        dd($request);
         $status = PaymentStatusEnum::COMPLETED;
 
         $chargeId = $request->orderId;
@@ -179,7 +187,7 @@ class  PaynlPaymentService
             'order_id'        => $orderIds,
             'customer_id'     => $request->input('customer_id'),
             'customer_type'   => $request->input('customer_type'),
-            'payment_channel' => session()->get('payment_method_name') ?? 'BORVAT SECURE PAYMENT',
+            'payment_channel' => $request->input('type'),
             'status'          => $status,
         ]);
 

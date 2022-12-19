@@ -1037,6 +1037,7 @@ class PublicCheckoutController
                 ->withInput()
                 ->setMessage(__('Payment failed!'));
         }
+        
         $paynlPaymentService->finsihPayment($request);
 
         // $payPalPaymentService->afterMakePayment($request);
