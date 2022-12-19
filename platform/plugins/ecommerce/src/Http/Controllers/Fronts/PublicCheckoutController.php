@@ -1018,7 +1018,6 @@ class PublicCheckoutController
         PaynlPaymentService $paynlPaymentService,
         BaseHttpResponse $response
     ) {
-        dd($request);
         if (!EcommerceHelper::isCartEnabled()) {
             abort(404);
         }

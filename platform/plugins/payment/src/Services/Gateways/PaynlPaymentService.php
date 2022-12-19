@@ -59,7 +59,6 @@ class  PaynlPaymentService
 
 
 
-
     protected function makePayment(Request $request)
     {
         session()->put('payment_method_name', $this->getPaymentMethodName($request->input('payment_method')));
