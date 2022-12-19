@@ -545,7 +545,7 @@ class OrderSupportServiceProvider extends ServiceProvider
             default:
                 $paynlService = $this->app->make(PaynlPaymentService::class);
                 $checkoutUrl = $paynlService->execute($request);
-                if ($checkoutUrl != null) {
+                if ($checkoutUrl) {
                     return redirect($checkoutUrl);
                 }
 
