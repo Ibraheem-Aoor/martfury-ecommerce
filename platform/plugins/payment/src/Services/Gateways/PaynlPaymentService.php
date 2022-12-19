@@ -100,7 +100,7 @@ class  PaynlPaymentService
                 'paymentMethod' => $request->input('payment_method'),
                 'bank' => $bank,
                 'description' => 'Borvat Order '. get_order_code($order->id),
-                'testmode' => 1,
+                'testmode' => 0,
                 'products' => $products,
                 'language' => 'EN',
                 'ipaddress' => '127.0.0.1',
