@@ -78,6 +78,7 @@ class  PaynlPaymentService
             'city' =>  $request->input('city'),
             'country' => $request->input('country'),
         ];
+        dd($address);
         $products = $this->getOrderProducts($order);
         $currency = $request->input('currency', config('plugins.payment.payment.currency'));
         $currency = strtoupper($currency);
