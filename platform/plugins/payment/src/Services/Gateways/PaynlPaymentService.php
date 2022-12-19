@@ -175,7 +175,6 @@ class  PaynlPaymentService
 
     public function finsihPayment($request)
     {
-        dd($request);
         $status = PaymentStatusEnum::COMPLETED;
 
         $chargeId = $request->orderId;
