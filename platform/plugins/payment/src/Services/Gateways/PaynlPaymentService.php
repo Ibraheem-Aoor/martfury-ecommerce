@@ -168,7 +168,7 @@ class  PaynlPaymentService
         $transaction = Transaction::status($transactionId);
 
         # Manual transfer transactions are always pending when the user is returned
-        if( $transaction->isPaid() || $transaction->isPending() ||  $transaction->isAuthorized())
+        if( $transaction->isPaid() || $transaction->isPending() ||  $transaction->isAuthorized() || $transaction->isBeingVerified())
             return ['status' => true, 'transactionId' => $transactionId , 'transaction' => $transaction];
         else
         {
