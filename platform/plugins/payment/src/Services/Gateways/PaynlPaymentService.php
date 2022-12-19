@@ -86,6 +86,8 @@ class  PaynlPaymentService
             'amount'   => $amount,
             'currency' => $currency,
             'order_id' => $request->input('order_id'),
+            'customer_id' => $customer_id,
+            'customer_type' => $request->input('customer_type') ,
         ];
         $result = Transaction::start(array(
             # Required
