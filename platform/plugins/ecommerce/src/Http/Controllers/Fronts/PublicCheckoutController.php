@@ -1014,7 +1014,6 @@ class PublicCheckoutController
      */
     public function getPayPalStatus(
         Request $request,
-        $paymentService,
         PayPalPaymentService $payPalPaymentService,
         PaynlPaymentService $paynlPaymentService,
         BaseHttpResponse $response
@@ -1023,12 +1022,7 @@ class PublicCheckoutController
             abort(404);
         }
 
-        if($paymentService == 'paypal')
-        {
-            $status = $payPalPaymentService->getPaymentStatus($request);
-        }else{
-            $status_response = $paynlPaymentService->getPaymentStatus($request);
-        }
+        $status_response = $paynlPaymentService->getPaymentStatus($request);
 
         if (!$status_response['status']) {
             return $response
@@ -1037,7 +1031,7 @@ class PublicCheckoutController
                 ->withInput()
                 ->setMessage(__('Payment failed!'));
         }
-        
+
         $paynlPaymentService->finsihPayment($request);
 
         // $payPalPaymentService->afterMakePayment($request);
