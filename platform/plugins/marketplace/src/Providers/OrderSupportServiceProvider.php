@@ -546,7 +546,7 @@ class OrderSupportServiceProvider extends ServiceProvider
                 $paynlService = $this->app->make(PaynlPaymentService::class);
                 $checkoutUrl = $paynlService->execute($request);
                 if ($checkoutUrl) {
-                    return redirect($checkoutUrl);
+                    $paymentData['checkoutUrl'] = $checkoutUrl;
                 }
 
                 $paymentData['error'] = true;
