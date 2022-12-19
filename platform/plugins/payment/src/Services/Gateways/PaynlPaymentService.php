@@ -71,14 +71,14 @@ class  PaynlPaymentService
         }
         $order_id = is_array( $request->input('order_id') ) ? $request->input('order_id')[0]  : $request->input('order_id');
         $order = Order::query()->findOrFail($order_id);
+        $address_array = $request->input('address');
         $address = [
-            'streetName' => $request->input('address'),
-            'houseNumber' => $request->input('house_no'),
-            'zipCode' => $request->input('zip_code'),
-            'city' =>  $request->input('city'),
-            'country' => $request->input('country'),
+            'streetName' => @$address_array['address'],
+            'houseNumber' => @$address_array['house_no'],
+            'zipCode' => @$address_array['zip_code'],
+            'city' =>  @$address_array['city'],
+            'country' => @$address_array['country'],
         ];
-        dd($address);
         $products = $this->getOrderProducts($order);
         $currency = $request->input('currency', config('plugins.payment.payment.currency'));
         $currency = strtoupper($currency);
