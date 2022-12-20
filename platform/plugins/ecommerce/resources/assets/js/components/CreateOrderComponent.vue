@@ -397,7 +397,7 @@
                                                     :selected="parseInt(address_item.id) === parseInt(customer_address.email)">
                                                 {{ address_item.address + ', ' + address_item.city + ', ' +
                                                 address_item.state + ', ' +
-                                                address_item.country + (zip_code_enabled ? ', ' +
+                                                address_item.country + ',' + address_item.house_no + (zip_code_enabled ? ', ' +
                                             address_item.zip_code : '') }}
                                             </option>
                                         </select>
@@ -417,6 +417,7 @@
                                 <div>{{ child_customer_address.city }}</div>
                                 <div>{{ child_customer_address.state }}</div>
                                 <div>{{ child_customer_address.country }}</div>
+                                <div>{{ child_customer_address.house_no }}</div>
                                 <div v-if="zip_code_enabled">{{ child_customer_address.zip_code }}</div>
                                 <div>
                                     <a target="_blank" class="hover-underline"
@@ -523,6 +524,12 @@
                     <div class="next-form-grid-cell">
                         <label class="text-title-field">{{ __('order.zip_code') }}</label>
                         <input type="text" class="next-input" v-model="child_customer_address.zip_code">
+                    </div>
+                </div>
+                <div class="next-form-grid" v-if="zip_code_enabled">
+                    <div class="next-form-grid-cell">
+                        <label class="text-title-field">{{ __('order.house_no') }}</label>
+                        <input type="text" class="next-input" v-model="child_customer_address.house_no">
                     </div>
                 </div>
             </div>
@@ -703,6 +710,13 @@
                                v-model="child_customer_address.zip_code">
                     </div>
                 </div>
+                <div class="next-form-grid">
+                    <div class="next-form-grid-cell">
+                        <label class="text-title-field">{{ __('order.house_no')}}</label>
+                        <input type="text" class="next-input customer-address-house-no"
+                               v-model="child_customer_address.house_no">
+                    </div>
+                </div>
             </div>
         </b-modal>
 
@@ -786,6 +800,7 @@
                     state: null,
                     city: null,
                     zip_code: null,
+                    house_no: null,
                 }),
             },
             customer_order_numbers: {
@@ -1017,6 +1032,7 @@
                     state: null,
                     city: null,
                     zip_code: null,
+                    house_no: null,
                 };
                 this.child_customer_order_numbers = 0;
             },
@@ -1188,6 +1204,7 @@
                     this.child_customer_address.state = $modal.find('.customer-address-state').val();
                     this.child_customer_address.country = $modal.find('.customer-address-country').val();
                     this.child_customer_address.zip_code = $modal.find('.customer-address-zip-code').val();
+                    this.child_customer_address.house_no = $modal.find('.customer-address-house-no').val();
 
                     let context = this;
 
@@ -1214,6 +1231,7 @@
                         state: context.child_customer_address.state,
                         city: context.child_customer_address.city,
                         zip_code: context.child_customer_address.zip_code,
+                        house_no: context.child_customer_address.house_no,
                     })
                     .then(res => {
                         if (res.data.error) {

@@ -1,1 +1,50 @@
-$((function(){var e=!1;$(document).on("click",".btn-export-data",(function(t){if(t.preventDefault(),!e){var n=$(t.currentTarget),o=n.html();$.ajax({url:n.attr("href"),method:"POST",xhrFields:{responseType:"blob"},beforeSend:function(){n.html(n.data("loading-text")),n.attr("disabled","true"),e=!0},success:function(e){var t=document.createElement("a"),o=window.URL.createObjectURL(e);t.href=o,t.download=n.data("filename"),document.body.append(t),t.click(),t.remove(),window.URL.revokeObjectURL(o)},error:function(e){Botble.handleError(e)},complete:function(){setTimeout((function(){n.html(o),n.removeAttr("disabled"),e=!1}),2e3)}})}}))}));
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!******************************************************************!*\
+  !*** ./platform/plugins/ecommerce/resources/assets/js/export.js ***!
+  \******************************************************************/
+$(function () {
+  var isExporting = false;
+  $(document).on('click', '.btn-export-data', function (event) {
+    event.preventDefault();
+    if (isExporting) {
+      return;
+    }
+    var $this = $(event.currentTarget);
+    var $content = $this.html();
+    $.ajax({
+      url: $this.attr('href'),
+      method: 'POST',
+      xhrFields: {
+        responseType: 'blob'
+      },
+      beforeSend: function beforeSend() {
+        $this.html($this.data('loading-text'));
+        $this.attr('disabled', 'true');
+        isExporting = true;
+      },
+      success: function success(data) {
+        var a = document.createElement('a');
+        var url = window.URL.createObjectURL(data);
+        a.href = url;
+        a.download = $this.data('filename');
+        document.body.append(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      },
+      error: function error(data) {
+        Botble.handleError(data);
+      },
+      complete: function complete() {
+        setTimeout(function () {
+          $this.html($content);
+          $this.removeAttr('disabled');
+          isExporting = false;
+        }, 2000);
+      }
+    });
+  });
+});
+/******/ })()
+;

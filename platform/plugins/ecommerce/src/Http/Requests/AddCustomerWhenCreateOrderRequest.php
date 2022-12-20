@@ -22,6 +22,8 @@ class AddCustomerWhenCreateOrderRequest extends Request
             'city'       => 'required|max:120',
             'address'    => 'required|max:120',
             'is_default' => 'integer|min:0|max:1',
+            'house_no'   => 'required',
+            'zip_code'   => 'required',
         ];
     }
 }

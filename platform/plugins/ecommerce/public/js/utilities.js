@@ -1,1 +1,53 @@
-$(document).ready((function(){$.fn.datepicker&&$("#date_of_birth").datepicker({format:"yyyy-mm-dd",orientation:"bottom"}),$("#avatar").on("change",(function(e){var t=e.currentTarget;if(t.files&&t.files[0]){var a=new FileReader;a.onload=function(e){$(".userpic-avatar").attr("src",e.target.result)},a.readAsDataURL(t.files[0])}})),$(document).on("click",".btn-trigger-delete-address",(function(e){e.preventDefault(),$(".btn-confirm-delete").data("url",$(this).data("url")),$("#confirm-delete-modal").modal("show")})),$(document).on("click",".btn-confirm-delete",(function(e){e.preventDefault();var t=$(this);t.addClass("button-loading"),$.ajax({url:t.data("url"),type:"GET",success:function(e){t.closest(".modal").modal("hide"),t.removeClass("button-loading"),e.error?window.showAlert("alert-danger",e.message):(window.showAlert("alert-success",e.message),$('.btn-trigger-delete-address[data-url="'+t.data("url")+'"]').closest(".dashboard-address-item").remove())},error:function(e){handleError(e),t.removeClass("button-loading")}})}))}));
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!*********************************************************************!*\
+  !*** ./platform/plugins/ecommerce/resources/assets/js/utilities.js ***!
+  \*********************************************************************/
+$(document).ready(function () {
+  if ($.fn.datepicker) {
+    $('#date_of_birth').datepicker({
+      format: 'yyyy-mm-dd',
+      orientation: 'bottom'
+    });
+  }
+  $('#avatar').on('change', function (event) {
+    var input = event.currentTarget;
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        $('.userpic-avatar').attr('src', e.target.result);
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  });
+  $(document).on('click', '.btn-trigger-delete-address', function (event) {
+    event.preventDefault();
+    $('.btn-confirm-delete').data('url', $(this).data('url'));
+    $('#confirm-delete-modal').modal('show');
+  });
+  $(document).on('click', '.btn-confirm-delete', function (event) {
+    event.preventDefault();
+    var $current = $(this);
+    $current.addClass('button-loading');
+    $.ajax({
+      url: $current.data('url'),
+      type: 'GET',
+      success: function success(data) {
+        $current.closest('.modal').modal('hide');
+        $current.removeClass('button-loading');
+        if (data.error) {
+          window.showAlert('alert-danger', data.message);
+        } else {
+          window.showAlert('alert-success', data.message);
+          $('.btn-trigger-delete-address[data-url="' + $current.data('url') + '"]').closest('.dashboard-address-item').remove();
+        }
+      },
+      error: function error(data) {
+        handleError(data);
+        $current.removeClass('button-loading');
+      }
+    });
+  });
+});
+/******/ })()
+;

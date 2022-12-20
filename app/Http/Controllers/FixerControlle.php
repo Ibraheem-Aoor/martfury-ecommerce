@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Botble\Blog\Models\Category;
+use Botble\Ecommerce\Models\Customer;
 use Botble\Ecommerce\Models\Product;
 use Botble\Ecommerce\Models\ProductCategory;
 use Botble\Ecommerce\Models\ProductTranslation;
@@ -158,6 +159,12 @@ class FixerControlle extends Controller
     {
         $s = new PaynlPaymentService();
         dd($s->getPaymentMethods());
+    }
+
+
+    public function getCstomr()
+    {
+        dd(Customer::find(21)->addresses );
     }
 }
 #8945005493599

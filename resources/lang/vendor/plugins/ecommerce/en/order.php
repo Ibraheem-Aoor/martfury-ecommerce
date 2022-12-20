@@ -178,6 +178,7 @@ return [
     'state' => 'State',
     'city' => 'City',
     'zip_code' => 'Zip code',
+    'house_no' => 'House No',
     'discount_based_on' => 'Discount based on',
     'or_coupon_code' => 'Or coupon code',
     'description' => 'Description',

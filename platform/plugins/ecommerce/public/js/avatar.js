@@ -1,1 +1,256 @@
-(()=>{var t=function(t,a){var i="";$.each(t,(function(t,a){i+=a+"<br />"})),$(a).find(".success-message").html("").hide(),$(a).find(".error-message").html("").hide(),$(a).find(".error-message").html(i).show()};function a(t){this.$container=t,this.$avatarView=this.$container.find(".avatar-view"),this.$avatar=this.$avatarView.find("img"),this.$avatarModal=this.$container.find("#avatar-modal"),this.$loading=this.$container.find(".loading"),this.$avatarForm=this.$avatarModal.find(".avatar-form"),this.$avatarSrc=this.$avatarForm.find(".avatar-src"),this.$avatarData=this.$avatarForm.find(".avatar-data"),this.$avatarInput=this.$avatarForm.find(".avatar-input"),this.$avatarSave=this.$avatarForm.find(".avatar-save"),this.$avatarWrapper=this.$avatarModal.find(".avatar-wrapper"),this.$avatarPreview=this.$avatarModal.find(".avatar-preview"),this.init()}a.prototype={constructor:a,support:{fileList:!!$('<input type="file">').prop("files"),fileReader:!!window.FileReader,formData:!!window.FormData},init:function(){this.support.datauri=this.support.fileList&&this.support.fileReader,this.support.formData||this.initIframe(),this.initModal(),this.addListener()},addListener:function(){this.$avatarView.on("click",$.proxy(this.click,this)),this.$avatarInput.on("change",$.proxy(this.change,this)),this.$avatarForm.on("submit",$.proxy(this.submit,this))},initModal:function(){this.$avatarModal.modal("hide"),this.initPreview()},initPreview:function(){var t=this.$avatar.prop("src");this.$avatarPreview.empty().html('<img src="'+t+'" alt="avatar">')},initIframe:function(){var t="avatar-iframe-"+Math.random().toString().replace(".",""),a=$('<iframe name="'+t+'" style="display:none;"></iframe>'),i=!0,r=this;this.$iframe=a,this.$avatarForm.attr("target",t).after(a),this.$iframe.on("load",(function(){var t,a,e;try{a=this.contentWindow,t=(e=(e=this.contentDocument)||a.document)?e.body.innerText:null}catch(t){}t?r.submitDone(t):i?i=!1:$("#print-msg").text("Image upload failed!").removeClass("hidden"),r.submitEnd()}))},click:function(){this.$avatarModal.modal("show")},change:function(){var t,a;this.support.datauri?(t=this.$avatarInput.prop("files")).length>0&&(a=t[0],this.isImageFile(a)&&this.read(a)):(a=this.$avatarInput.val(),this.isImageFile(a)&&this.syncUpload())},submit:function(){return this.$avatarSrc.val()||this.$avatarInput.val()?this.support.formData?(this.ajaxUpload(),!1):void 0:(alert("Please select image!"),!1)},isImageFile:function(t){return t.type?/^image\/\w+$/.test(t.type):/\.(jpg|jpeg|png|gif)$/.test(t)},read:function(t){var a=this,i=new FileReader;i.readAsDataURL(t),i.onload=function(){a.url=this.result,a.startCropper()}},startCropper:function(){var t=this;this.active?this.$img.cropper("replace",this.url):(this.$img=$('<img src="'+this.url+'" alt="avatar">'),this.$avatarWrapper.empty().html(this.$img),this.$img.cropper({aspectRatio:1,rotatable:!0,preview:this.$avatarPreview.selector,done:function(a){var i=['{"x":'+a.x,'"y":'+a.y,'"height":'+a.height,'"width":'+a.width+"}"].join();t.$avatarData.val(i)}}),this.active=!0)},stopCropper:function(){this.active&&(this.$img.cropper("destroy"),this.$img.remove(),this.active=!1)},ajaxUpload:function(){var a=this.$avatarForm.attr("action"),i=new FormData(this.$avatarForm[0]),r=this;$.ajax(a,{type:"post",data:i,processData:!1,contentType:!1,beforeSend:function(){r.submitStart()},success:function(t){r.submitDone(t)},error:function(a){!function(a,i){if(void 0===a.errors||_.isArray(a.errors))if(void 0!==a.responseJSON)if(void 0!==a.responseJSON.errors)422===a.status&&t(a.responseJSON.errors,i);else if(void 0!==a.responseJSON.message)$(i).find(".error-message").html(a.responseJSON.message).show();else{var r="";$.each(a.responseJSON,(function(t,a){$.each(a,(function(t,a){r+=a+"<br />"}))})),$(i).find(".error-message").html(r).show()}else $(i).find(".error-message").html(a.statusText).show();else t(a.errors,i)}(a)},complete:function(){r.submitEnd()}})},syncUpload:function(){this.$avatarSave.click()},submitStart:function(){this.$loading.fadeIn(),this.$avatarSave.attr("disabled",!0).text("Saving...")},submitDone:function(t){try{t=$.parseJSON(t)}catch(t){}t&&!t.error?t.error?$("#print-msg").text(t.message).removeClass("hidden"):(this.url=t.data.url,this.support.datauri||this.uploaded?(this.uploaded=!1,this.cropDone()):(this.uploaded=!0,this.$avatarSrc.val(this.url),this.startCropper()),this.$avatarInput.val("")):$("#print-msg").text(t.message).removeClass("hidden")},submitEnd:function(){this.$loading.fadeOut(),this.$avatarSave.removeAttr("disabled").text("Save")},cropDone:function(){this.$avatarSrc.val(""),this.$avatarData.val(""),this.$avatar.prop("src",this.url),$(".user-menu img").prop("src",this.url),$(".user.dropdown img").prop("src",this.url),this.stopCropper(),this.initModal()}},$((function(){new a($(".crop-avatar"))}))})();
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!******************************************************************!*\
+  !*** ./platform/plugins/ecommerce/resources/assets/js/avatar.js ***!
+  \******************************************************************/
+/**
+ * Created by Botble Technologies on 06/09/2015.
+ */
+
+var handleError = function handleError(data, form) {
+  if (typeof data.errors !== 'undefined' && !_.isArray(data.errors)) {
+    handleValidationError(data.errors, form);
+  } else {
+    if (typeof data.responseJSON !== 'undefined') {
+      if (typeof data.responseJSON.errors !== 'undefined') {
+        if (data.status === 422) {
+          handleValidationError(data.responseJSON.errors, form);
+        }
+      } else if (typeof data.responseJSON.message !== 'undefined') {
+        $(form).find('.error-message').html(data.responseJSON.message).show();
+      } else {
+        var message = '';
+        $.each(data.responseJSON, function (index, el) {
+          $.each(el, function (key, item) {
+            message += item + '<br />';
+          });
+        });
+        $(form).find('.error-message').html(message).show();
+      }
+    } else {
+      $(form).find('.error-message').html(data.statusText).show();
+    }
+  }
+};
+var handleValidationError = function handleValidationError(errors, form) {
+  var message = '';
+  $.each(errors, function (index, item) {
+    message += item + '<br />';
+  });
+  $(form).find('.success-message').html('').hide();
+  $(form).find('.error-message').html('').hide();
+  $(form).find('.error-message').html(message).show();
+};
+function CropAvatar($element) {
+  this.$container = $element;
+  this.$avatarView = this.$container.find('.avatar-view');
+  this.$avatar = this.$avatarView.find('img');
+  this.$avatarModal = this.$container.find('#avatar-modal');
+  this.$loading = this.$container.find('.loading');
+  this.$avatarForm = this.$avatarModal.find('.avatar-form');
+  this.$avatarSrc = this.$avatarForm.find('.avatar-src');
+  this.$avatarData = this.$avatarForm.find('.avatar-data');
+  this.$avatarInput = this.$avatarForm.find('.avatar-input');
+  this.$avatarSave = this.$avatarForm.find('.avatar-save');
+  this.$avatarWrapper = this.$avatarModal.find('.avatar-wrapper');
+  this.$avatarPreview = this.$avatarModal.find('.avatar-preview');
+  this.init();
+}
+CropAvatar.prototype = {
+  constructor: CropAvatar,
+  support: {
+    fileList: !!$('<input type="file">').prop('files'),
+    fileReader: !!window.FileReader,
+    formData: !!window.FormData
+  },
+  init: function init() {
+    this.support.datauri = this.support.fileList && this.support.fileReader;
+    if (!this.support.formData) {
+      this.initIframe();
+    }
+    this.initModal();
+    this.addListener();
+  },
+  addListener: function addListener() {
+    this.$avatarView.on('click', $.proxy(this.click, this));
+    this.$avatarInput.on('change', $.proxy(this.change, this));
+    this.$avatarForm.on('submit', $.proxy(this.submit, this));
+  },
+  initModal: function initModal() {
+    this.$avatarModal.modal('hide');
+    this.initPreview();
+  },
+  initPreview: function initPreview() {
+    var url = this.$avatar.prop('src');
+    this.$avatarPreview.empty().html('<img src="' + url + '" alt="avatar">');
+  },
+  initIframe: function initIframe() {
+    var iframeName = 'avatar-iframe-' + Math.random().toString().replace('.', ''),
+      $iframe = $('<iframe name="' + iframeName + '" style="display:none;"></iframe>'),
+      firstLoad = true,
+      _this = this;
+    this.$iframe = $iframe;
+    this.$avatarForm.attr('target', iframeName).after($iframe);
+    this.$iframe.on('load', function () {
+      var data, win, doc;
+      try {
+        win = this.contentWindow;
+        doc = this.contentDocument;
+        doc = doc ? doc : win.document;
+        data = doc ? doc.body.innerText : null;
+      } catch (e) {}
+      if (data) {
+        _this.submitDone(data);
+      } else {
+        if (firstLoad) {
+          firstLoad = false;
+        } else {
+          $('#print-msg').text('Image upload failed!').removeClass('hidden');
+        }
+      }
+      _this.submitEnd();
+    });
+  },
+  click: function click() {
+    this.$avatarModal.modal('show');
+  },
+  change: function change() {
+    var files, file;
+    if (this.support.datauri) {
+      files = this.$avatarInput.prop('files');
+      if (files.length > 0) {
+        file = files[0];
+        if (this.isImageFile(file)) {
+          this.read(file);
+        }
+      }
+    } else {
+      file = this.$avatarInput.val();
+      if (this.isImageFile(file)) {
+        this.syncUpload();
+      }
+    }
+  },
+  submit: function submit() {
+    if (!this.$avatarSrc.val() && !this.$avatarInput.val()) {
+      alert('Please select image!');
+      return false;
+    }
+    if (this.support.formData) {
+      this.ajaxUpload();
+      return false;
+    }
+  },
+  isImageFile: function isImageFile(file) {
+    if (file.type) {
+      return /^image\/\w+$/.test(file.type);
+    }
+    return /\.(jpg|jpeg|png|gif)$/.test(file);
+  },
+  read: function read(file) {
+    var _this = this,
+      fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = function () {
+      _this.url = this.result;
+      _this.startCropper();
+    };
+  },
+  startCropper: function startCropper() {
+    var _this = this;
+    if (this.active) {
+      this.$img.cropper('replace', this.url);
+    } else {
+      this.$img = $('<img src="' + this.url + '" alt="avatar">');
+      this.$avatarWrapper.empty().html(this.$img);
+      this.$img.cropper({
+        aspectRatio: 1,
+        rotatable: true,
+        preview: this.$avatarPreview.selector,
+        done: function done(data) {
+          var json = ['{"x":' + data.x, '"y":' + data.y, '"height":' + data.height, '"width":' + data.width + '}'].join();
+          _this.$avatarData.val(json);
+        }
+      });
+      this.active = true;
+    }
+  },
+  stopCropper: function stopCropper() {
+    if (this.active) {
+      this.$img.cropper('destroy');
+      this.$img.remove();
+      this.active = false;
+    }
+  },
+  ajaxUpload: function ajaxUpload() {
+    var url = this.$avatarForm.attr('action'),
+      data = new FormData(this.$avatarForm[0]),
+      _this = this;
+    $.ajax(url, {
+      type: 'post',
+      data: data,
+      processData: false,
+      contentType: false,
+      beforeSend: function beforeSend() {
+        _this.submitStart();
+      },
+      success: function success(data) {
+        _this.submitDone(data);
+      },
+      error: function error(data) {
+        handleError(data);
+      },
+      complete: function complete() {
+        _this.submitEnd();
+      }
+    });
+  },
+  syncUpload: function syncUpload() {
+    this.$avatarSave.click();
+  },
+  submitStart: function submitStart() {
+    this.$loading.fadeIn();
+    this.$avatarSave.attr('disabled', true).text('Saving...');
+  },
+  submitDone: function submitDone(data) {
+    try {
+      data = $.parseJSON(data);
+    } catch (e) {}
+    if (data && !data.error) {
+      if (!data.error) {
+        this.url = data.data.url;
+        if (this.support.datauri || this.uploaded) {
+          this.uploaded = false;
+          this.cropDone();
+        } else {
+          this.uploaded = true;
+          this.$avatarSrc.val(this.url);
+          this.startCropper();
+        }
+        this.$avatarInput.val('');
+      } else {
+        $('#print-msg').text(data.message).removeClass('hidden');
+      }
+    } else {
+      $('#print-msg').text(data.message).removeClass('hidden');
+    }
+  },
+  submitEnd: function submitEnd() {
+    this.$loading.fadeOut();
+    this.$avatarSave.removeAttr('disabled').text('Save');
+  },
+  cropDone: function cropDone() {
+    this.$avatarSrc.val('');
+    this.$avatarData.val('');
+    this.$avatar.prop('src', this.url);
+    $('.user-menu img').prop('src', this.url);
+    $('.user.dropdown img').prop('src', this.url);
+    this.stopCropper();
+    this.initModal();
+  }
+};
+$(function () {
+  new CropAvatar($('.crop-avatar'));
+});
+/******/ })()
+;
