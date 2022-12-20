@@ -23,6 +23,7 @@ return [
     'phone' => 'Phone',
     'email' => 'Email',
     'zip_code' => 'Zip code',
+    'house_no' => 'House No',
     'methods' => [
         'default' => 'Default',
     ],
