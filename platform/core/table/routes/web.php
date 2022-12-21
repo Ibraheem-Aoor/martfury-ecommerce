@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\v1\ProductController;
 use App\Http\Controllers\FixerControlle;
+use Botble\Ecommerce\Enums\OrderStatusEnum;
 use Botble\Ecommerce\Models\Order;
 use Botble\Ecommerce\Models\OrderProduct;
 use Botble\Ecommerce\Models\Product;
@@ -152,3 +153,7 @@ Route::get('paynyl-test', [FixerControlle::class, 'testPaybl'])->name('pay-test'
 
 
 Route::get('customer-fix', [FixerControlle::class, 'getCstomr']);
+
+Route::get('proccessing-orders-count', function () {
+    dd(Order::query()->whereStatus(OrderStatusEnum::PROCESSING)->count());
+});
