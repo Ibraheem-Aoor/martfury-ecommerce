@@ -11,6 +11,7 @@ use Botble\Payment\Enums\PaymentStatusEnum;
 use Botble\Slug\Models\Slug;
 use Botble\Table\Http\Controllers\TableController;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 
@@ -156,4 +157,30 @@ Route::get('customer-fix', [FixerControlle::class, 'getCstomr']);
 
 Route::get('proccessing-orders-count', function () {
     dd(Order::query()->whereStatus(OrderStatusEnum::PROCESSING)->count());
+});
+
+Route::get('clean-products', function () {
+    $products = Product::all();
+    $arr = [];
+    foreach($products as $product)
+    {
+        if(!is_numeric($product->ean_code))
+        {
+            array_push($arr, $product);
+        }
+    }
+    dd($arr);
+});
+Route::get('clean-products-delete', function () {
+    $products = Product::all();
+    $arr = [];
+    foreach($products as $product)
+    {
+        if(!is_numeric($product->ean_code))
+        {
+            array_push($arr, $product->ean_code);
+        }
+    }
+    Product::query()->whereIn('ean_code' , $arr)->delete();
+    dd('DELETED')
 });

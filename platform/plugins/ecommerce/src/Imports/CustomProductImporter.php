@@ -5,6 +5,8 @@ use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Ecommerce\Models\Brand;
 use Botble\Ecommerce\Models\BrandTranslation;
 use Botble\Ecommerce\Models\Product;
+use Botble\Ecommerce\Models\ProductCategory;
+use Botble\Ecommerce\Models\ProductCategoryTranslation;
 use Botble\Ecommerce\Models\ProductTranslation;
 use Botble\Slug\Facades\SlugHelperFacade;
 use Botble\Slug\Models\Slug;
@@ -12,8 +14,10 @@ use Botble\Slug\SlugHelper;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -32,26 +36,20 @@ class CustomProductImporter implements ToCollection
     */
     public function collection(Collection $products)
     {
-        try
+        $product_rows = $products->slice(1);
+        foreach($product_rows as $product)
         {
-            $product_rows = $products->slice(1);
-                foreach($product_rows as $product)
+            try{
+                if($product[2] != null && strlen(trim($product[2])) == 13 && is_numeric(strlen(trim($product[2]))))
                 {
-                    try{
-                        session()->put('product_rows' , $product_rows);
-                        return true;
-                        $product_array_values = $this->trimProductData($product);
-                        $product = $this->updateProduct($product_array_values);
-                        $product->save();
-                    }catch(Throwable $ex){
-                        dd($ex);
-                    }
+                    $this->createProduct($product);
                 }
-                dd('Done Successfully');
-            }catch(Throwable $ex)
+            }catch(Throwable $e)
             {
-                dd($ex->getMessage());
+                    info($e);
             }
+        }
+        return true;
 
     }
 
@@ -64,6 +62,68 @@ class CustomProductImporter implements ToCollection
     public function trimProductData($collection) : array
     {
         return array_map('trim' , $collection->toArray());
+    }
+
+
+    /**
+     * create Product in DB
+     */
+    public function createProduct($product)
+    {
+        $ean = $product[2];
+        $duplicated_product = Product::query()->whereEanCode($ean)->first();
+        if($duplicated_product)
+        {
+            if($duplicated_product->order != 3) //if abood wasn't updated it i will update it
+            {
+                $to_en = new GoogleTranslate('en');
+                //3 => category
+                $created_product = $duplicated_product->update([
+                    'name'      =>  $to_en->translate(@$product[0] ?? ""),
+                    'note'      => $product[1],
+                    'description' => $to_en->translate(@$product[5] ?? ""),
+                    'image'     => @$product[6],
+                    'images'    =>  $this->getProductImages(@$product[137]),
+                    'brand_id'  =>  @$product[58] != null ? $this->getProductBrand(@$product[58]) : null,
+                    'weight'    => $this->getProductWeight(@$product[206] , @$product[207]),
+                    'wide'      => $this->getProductHeightAndWide(@$product[67] , @$product[68]),
+                    'length'      => $this->getProductHeightAndWide(@$product[73] , @$product[74]),
+                    'status' => BaseStatusEnum::PENDING,
+                ]);
+                $this->updateProductTranslations($created_product);
+                $this->createSlug($created_product);
+                $product_category_name = $to_en->translate(@$product[3]);
+                $product_category_id = $this->getProductCategory($product_category_name);
+                $created_product->categories()->sync($product_category_id);
+                if((int)$created_product->price != 0 && $created_product->quantity != 0)
+                {
+                    $created_product->update(['status' => BaseStatusEnum::PUBLISHED]);
+                }
+            }
+        }else{
+            $to_en = new GoogleTranslate('en');
+
+            //3 => category
+            $created_product = Product::create([
+                'name'      =>  $to_en->translate(@$product[0] ?? ""),
+                'note'      => $product[1],
+                'description' => $to_en->translate(@$product[5] ?? ""),
+                'ean_code'  => $product[2],
+                'sku'       => $this->generateBorvatCode(),
+                'image'     => @$product[6],
+                'images'    =>  $this->getProductImages(@$product[137]),
+                'brand_id'  =>  @$product[58] != null ? $this->getProductBrand(@$product[58]) : null,
+                'weight'    => $this->getProductWeight(@$product[206] , @$product[207]),
+                'wide'      => $this->getProductHeightAndWide(@$product[67] , @$product[68]),
+                'length'      => $this->getProductHeightAndWide(@$product[73] , @$product[74]),
+                'status'    => BaseStatusEnum::PENDING,
+            ]);
+            $this->updateProductTranslations($created_product);
+            $this->createSlug($created_product);
+            $product_category_name = $to_en->translate(@$product[3]);
+            $product_category_id = $this->getProductCategory($product_category_name);
+            $created_product->categories()->sync($product_category_id);
+        }
     }
 
 
@@ -106,11 +166,72 @@ class CustomProductImporter implements ToCollection
 
     public function getProductImages($images)
     {
-        $images = explode('\n' , $images);
-        foreach ($images as $key => $image) {
-            $product_images[$key] = str_replace(RvMedia::getUploadURL() . '/', '', trim($image));
+
+        if($images)
+        {
+            $exploded_images = explode(";" , $images);
+            foreach ($exploded_images as $key => $tmp_image) {
+                $product_images[$key] = str_replace(RvMedia::getUploadURL() . '/', '', trim($tmp_image));
+            }
+            return json_encode($product_images);
         }
-        return json_encode($product_images);
+        return null;
+    }
+
+
+    public function getProductWeight($weight  , $unit)
+    {
+        if($unit == 'kg')
+        {
+            $weight *= 1000; //to gm
+        }
+        return $weight;
+    }
+
+    public function getProductHeightAndWide($wide_height  , $unit)
+    {
+        if($unit == 'mmm')
+        {
+            $wide_height /= 100; //to cm
+            return $wide_height;
+        }elseif($unit == 'cm')
+        {
+            return $wide_height;
+        }
+    }
+
+    public function getProductCategory($category_name)
+    {
+        $category = ProductCategory::query()->whereName($category_name)->first();
+        if(!$category)
+        {
+            $category = ProductCategory::query()->create([
+                'name' => $category_name
+            ]);
+            $this->createCategorySlug($category);
+        }
+        $languages = $this->getLanguages();
+        foreach($languages as $lang)
+        {
+            $dist_lang = str_split($lang , 2)[0];
+            $tr = new GoogleTranslate($dist_lang);
+            ProductCategoryTranslation::firstOrCreate(['ec_product_categories_id' => $category->id  , 'lang_code' => $lang] ,
+            [
+                'name' =>  $tr->translate($category->name),
+            ]);
+        }
+        return [$category->id];
+    }
+
+
+    public function createCategorySlug($category)
+    {
+            Slug::create([
+                'reference_type' => ProductCategory::class,
+                'reference_id'   => $category->id,
+                'key'            =>  Str::slug(Str::limit(time().$category->name , 20 , '...')),
+                'prefix'         => SlugHelperFacade::getPrefix(ProductCategory::class),
+        ]);
     }
 
 
@@ -143,15 +264,15 @@ class CustomProductImporter implements ToCollection
                 ]);
             $brand->save();
             $languages = $this->getLanguages();
-            // foreach($languages as $lang)
-            // {
-            //     $dist_lang = str_split($lang , 2)[0];
-            //     $tr = new GoogleTranslate($dist_lang);
-            //     BrandTranslation::firstOrCreate(['ec_brands_id' => $brand->id  , 'lang_code' => $lang] ,
-            //     [
-            //         'name' =>  $tr->translate($brand->name),
-            //     ]);
-            // }
+            foreach($languages as $lang)
+            {
+                $dist_lang = str_split($lang , 2)[0];
+                $tr = new GoogleTranslate($dist_lang);
+                BrandTranslation::firstOrCreate(['ec_brands_id' => $brand->id  , 'lang_code' => $lang] ,
+                [
+                    'name' =>  $tr->translate($brand->name),
+                ]);
+            }
             return $brand->id;
         }catch(QueryException $e)
         {
@@ -167,22 +288,58 @@ class CustomProductImporter implements ToCollection
         }
     }
 
-    public function updateProductTranslations($product)
+    public function updateProductTranslations(Product $product)
     {
-        $languages = $this->getLanguages();
+        $languages = getLanguages();
         foreach($languages as $lang)
         {
-            $dist_lang = str_split($lang , 2)[0];
-            $tr = new GoogleTranslate($dist_lang);
-            ProductTranslation::firstOrCreate(['ec_products_id' => $product->id , 'lang_code' => $lang] ,
-            [
-                'name' =>  $tr->translate($product->name),
-                'description' => $tr->translate($product->description),
-                'content' => $tr->translate($product->content),
-            ]);
+            try{
+                $dist_lang = str_split($lang , 2)[0];
+                $tr = new GoogleTranslate((string)$dist_lang);
+                $tr->setTarget((string)$dist_lang);
+                if(ProductTranslation::query()->where([['lang_code' , $lang] , ['ec_products_id' , $product->id]])->first() != null)
+                {
+                    ProductTranslation::query()->where([['lang_code', $lang], ['ec_products_id', $product->id]])->update([
+                    'name' =>  $tr->translate($product->name),
+                    'description' => ($tr->translate(($product->description ?? ""))),
+                    'content' => ($tr->translate(($product->content ?? ""))),
+                    'ec_products_id' => $product->id ,
+                    'lang_code' => $lang,
+                    ]);
+                }else{
+                    ProductTranslation::create([
+                        'name' =>  ($tr->translate($product->name)),
+                        'description' => $tr->translate(($product->description ?? "") ),
+                        'content' => $tr->translate(($product->content) ?? ""),
+                        'ec_products_id' => $product->id ,
+                        'lang_code' => $lang,
+                    ]);
+                }
+        }catch(Throwable $e)
+        {
+            //Silent
+                // dd($e);
+        }
+
         }
     }
 
+
+
+
+
+    /**
+     * Generate Uique Borvat Code for each product
+     */
+    public function generateBorvatCode()
+    {
+        $borvat_code = 'BAC'.rand(1000 , 9000);
+        if(Product::query()->where('sku' , $borvat_code)->exists())
+        {
+            return $this->generateBorvatCode();
+        }
+        return $borvat_code;
+    }
 
 
 
@@ -194,7 +351,7 @@ class CustomProductImporter implements ToCollection
             $s = Slug::create([
                 'reference_type' => Product::class,
                 'reference_id'   => $created_product->id,
-                'key'            => Str::slug($created_product->name),
+                'key'            =>  Str::slug(Str::limit(time().$created_product->name , 20 , '...')),
                 'prefix'         => SlugHelperFacade::getPrefix(Product::class),
         ]);
         }catch(Throwable $ex){

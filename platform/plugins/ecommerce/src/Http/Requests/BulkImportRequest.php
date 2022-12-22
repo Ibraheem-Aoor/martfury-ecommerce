@@ -17,7 +17,7 @@ class BulkImportRequest extends Request
         $mimeType = implode(',', config('plugins.ecommerce.general.bulk-import.mime_types'));
 
         return [
-            'file' => 'required|file|mimetypes:' . $mimeType,
+            // 'file' => 'required|file|mimetypes:' . $mimeType,
             'type' => 'required|in:all,products,variations'
         ];
     }
