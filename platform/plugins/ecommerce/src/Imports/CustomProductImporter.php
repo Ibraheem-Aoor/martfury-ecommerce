@@ -36,18 +36,18 @@ class CustomProductImporter implements ToCollection
     */
     public function collection(Collection $products)
     {
+
         $product_rows = $products->slice(1);
         foreach($product_rows as $product)
         {
-            try{
-                if($product[2] != null && strlen(trim($product[2])) == 13 && is_numeric(strlen(trim($product[2]))))
-                {
-                    $this->createProduct($product);
-                }
-            }catch(Throwable $e)
-            {
+            $product = $this->trimProductData($product);
+                try {
+                    if ($product[2] != null && strlen(trim($product[2])) == 13) {
+                        $this->createProduct($product);
+                    }
+                } catch (Throwable $e) {
                     info($e);
-            }
+                }
         }
         return true;
 

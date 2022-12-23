@@ -184,3 +184,6 @@ Route::get('clean-products-delete', function () {
     Product::query()->whereIn('ean_code' , $arr)->delete();
     dd('DELETED');
 });
+
+
+Route::get('coupon-test', [FixerControlle::class, 'testCoupon']);

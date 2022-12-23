@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Botble\Blog\Models\Category;
 use Botble\Ecommerce\Models\Customer;
+use Botble\Ecommerce\Models\Discount;
 use Botble\Ecommerce\Models\Product;
 use Botble\Ecommerce\Models\ProductCategory;
 use Botble\Ecommerce\Models\ProductTranslation;
@@ -165,6 +166,13 @@ class FixerControlle extends Controller
     public function getCstomr()
     {
         dd(Customer::find(21)->addresses );
+    }
+
+
+    public function testCoupon()
+    {
+        $c = Discount::get();
+        dd($c[2]);
     }
 }
 #8945005493599

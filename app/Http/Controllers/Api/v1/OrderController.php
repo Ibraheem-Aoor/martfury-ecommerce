@@ -90,7 +90,7 @@ class OrderController extends Controller
         $this->paymentRepository = $paymentRepository;
         $this->storeLocatorRepository = $storeLocatorRepository;
         $this->shipmentHistoryRepository = $shipmentHistoryRepository;
-        $this->api_token =  config('app.token');;
+        $this->api_token =  config('app.token');
     }
 
 

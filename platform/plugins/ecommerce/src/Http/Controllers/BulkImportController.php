@@ -74,8 +74,7 @@ class BulkImportController extends BaseController
 
         $file = $request->file('file');
         $importer = new CustomProductImporter();
-        if(FacadesExcel::import($importer , $file)){
-            $product_rows = session()->get('product_rows');
+        if(FacadesExcel::import($importer , $file)->Sheet(1)){
             dd('DONE');
             $i = 0;
             foreach($product_rows as $product)
