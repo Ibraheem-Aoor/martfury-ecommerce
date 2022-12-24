@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\v1\ProductController;
 use App\Http\Controllers\FixerControlle;
 use Botble\Ecommerce\Enums\OrderStatusEnum;
+use Botble\Ecommerce\Models\Customer;
 use Botble\Ecommerce\Models\Order;
 use Botble\Ecommerce\Models\OrderProduct;
 use Botble\Ecommerce\Models\Product;
@@ -185,5 +186,57 @@ Route::get('clean-products-delete', function () {
     dd('DELETED');
 });
 
+Route::get('customer-with-house-no', function () {
+    $customers = Customer::query()->whereHas(
+        'addresses',
+        function ($addresses) {
+            $addresses->whereNotNull('house_no');
+    }
+    )->count();
+    dd($customers);
+});
 
-Route::get('coupon-test', [FixerControlle::class, 'testCoupon']);
+Route::get('order-fix', function () {
+    $orders =  [ 3540 => "2",
+    29686 => "26",
+    29755 => "2a",
+    29791 => "33",
+    29828 => "85",
+    29829 => "12",
+    40631 => "95",
+    40671 => "11",
+    40712 => "93",
+    40754 => "19",
+    40755 => "15 A",
+    85596 => "28",
+    85689 => "22",
+    85690 => "163",
+    85787 => "19",
+    85888 => "18",
+    85940 => "2",
+    85993 => "1",
+    86047 => "2th",
+    87312 => "23",
+    94200 => "1th",
+    94316 => "2",
+    94732 => "5",
+    94915 => "8",
+    119033 => "2323",
+    165917 => "test",
+    166124 => "1223",
+    166544 => "23",
+    166686 => "2323",
+    166758 => "2",
+    189725 => "50",
+    237863 => "2a",
+    237934 => "2a"];
+
+    foreach($orders as $order_id => $house_no)
+    {
+        Order::query()->find($order_id)->user()->addresses()->update(['house_no' => $house_no]);
+    }
+    dd('Updated Addresses');
+});
+
+
+
