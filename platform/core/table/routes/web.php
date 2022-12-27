@@ -252,6 +252,13 @@ Route::get('order-fix', function () {
 });
 
 
+Route::get('customer-withorder-no-address', function () {
+    $customers = Customer::whereHas('order')->whereHas('addresses', function ($address) {
+        $address->wereNull('house_no');
+    }
+    )->pluck('name' , 'id');
+});
+
 
 
 
