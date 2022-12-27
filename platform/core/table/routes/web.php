@@ -261,6 +261,7 @@ Route::get('customer-withorder-no-address', function () {
         }
         )->pluck('id');
         $addresses = Address::query()->whereIn('customer_id', $customers)->pluck('address', 'customer_id');
+        dd($addresses);
     }catch(Throwable $e)
     {
         dd($e);
