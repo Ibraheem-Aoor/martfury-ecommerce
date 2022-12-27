@@ -260,8 +260,7 @@ Route::get('customer-withorder-no-address', function () {
             $addresses->whereNull('house_no');
         }
         )->pluck('id');
-        $addresses = Address::query()->whereIn('customer_id', $customers)->orderByDesc('created_at')->get(); #pluck('address', 'customer_id');
-        dd($addresses);
+        $addresses = Address::query()->whereIn('customer_id', $customers)->pluck('address', 'customer_id');
     }catch(Throwable $e)
     {
         dd($e);
