@@ -337,6 +337,16 @@ Route::get('orders-houseno', function () {
             $address->whereNull('house_no');
     }
     )->get();
+    foreach($orders as $order)
+    {
+        try{
+            $house_no = $order->user->addresses->first()->house_no;
+            $order->address->update(['house_no' => $house_no]);
+        }catch(Throwable $e)
+        {
+            dd($e);
+        }
+    }
     dd($orders);
 });
 
