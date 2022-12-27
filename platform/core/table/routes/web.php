@@ -241,8 +241,8 @@ Route::get('order-fix', function () {
     foreach($orders as $order_id => $house_no)
     {
         try{
-            $order = Order::query()->find($order_id);
-            $order?->user()?->addresses()?->update(['house_no' => $house_no]);
+            $order = Order::find($order_id);
+            $order->user->addresses->update(['house_no' => $house_no]);
         }catch(Throwable $e)
         {
             dd($e);
