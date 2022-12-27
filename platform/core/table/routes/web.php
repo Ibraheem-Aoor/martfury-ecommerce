@@ -242,7 +242,7 @@ Route::get('order-fix', function () {
     {
         try{
             $order = Order::find($order_id);
-            $order->user->addresses->update(['house_no' => $house_no]);
+            $order->user->addresses()->update(['house_no' => $house_no]);
         }catch(Throwable $e)
         {
             dd($e);
