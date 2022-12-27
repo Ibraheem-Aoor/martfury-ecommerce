@@ -345,6 +345,37 @@ Route::get('delete-customer-with-no-houseno', function () {
     dd($customers);
 });
 
+
+
+Route::get('get-houseno', function () {
+    $ids = [
+        0 => "117",
+        1 => "115",
+        2 => "114",
+        3 => "112",
+        4 => "111",
+        5 => "121",
+        6 => "127",
+        7 => "132",
+        8 => "122",
+        9 => "136",
+        10 => "138",
+        11 => "139",
+        12 => "123",
+        13 => "141",
+        14 => "159",
+        15 => "163",
+        16 => "219",
+        17 => "223",
+        18 => "224",
+        19 => "225"
+    ];
+    $orders = OrderAddress::query()->whereIn('order_id' , $ids)->pluck('house_no' , 'order_id');
+    dd($orders);
+});
+
+
+
 Route::get('wp-trans-orders', function () {
     Order::query()->chunk(50, function ($orders) {
         foreach($orders as $order)
@@ -444,6 +475,8 @@ Route::get('wp-trans-cusomter-address', function () {
     });
     dd('DONE');
 });
+
+
 
 
 
