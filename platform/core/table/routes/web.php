@@ -270,6 +270,7 @@ Route::get('customer-withorder-no-address', function () {
 
 
 
+
 Route::get('fill-customers-addresses', function () {
     $custmers_addresses = [ //customer_id => house_no
         23 => "67",
@@ -326,6 +327,17 @@ Route::get('fill-customers-addresses', function () {
         }
     });
     dd('Done :)');
+});
+
+
+Route::get('orders-houseno', function () {
+    $orders = Order::query()->whereHas(
+        'address',
+        function ($address) {
+            $address->whereNull('house_no');
+    }
+    )->get();
+    dd($orders);
 });
 
 
