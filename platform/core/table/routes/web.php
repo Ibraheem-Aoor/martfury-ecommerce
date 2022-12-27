@@ -270,6 +270,64 @@ Route::get('customer-withorder-no-address', function () {
 
 
 
+Route::get('fill-customers-addresses', function () {
+    $custmers_addresses = [ //customer_id => house_no
+        23 => "67",
+        24 => "140",
+        25 => "179",
+        26 => "10",
+        27 => "104",
+        29 => "34",
+        30 => "6",
+        31 => "3-21/7/006",
+        32 => "68",
+        33 => "25",
+        34 => "37",
+        35 => "6",
+        36 => "292",
+        37 => "4A",
+        38 => "36",
+        39 => "3",
+        40 => "53",
+        41 => "5A",
+        42 => "19",
+        43 => "17e",
+        44 => "11",
+        45 => "19",
+        46 => "10",
+        47 => "23",
+        48 => "108",
+        49 => "18a",
+        50 => "R4",
+        52 => "24",
+        65 => "50",
+        69 => "16",
+        75 => "49",
+        78 => "16",
+        81 => "34",
+        82 => "15",
+        83 => "54",
+        84 => "19",
+        85 => "37",
+        86 => "36a/19",
+        87 => "61",
+    ];
+
+    Address::query()->whereIn('customer_id', array_keys($custmers_addresses))->chunk(20, function ($adresses)use($custmers_addresses) {
+        foreach($adresses as $address)
+        {
+            foreach($custmers_addresses as $customer_id => $house_no)
+            {
+                if($address->customer_id == $customer_id)
+                {
+                    $address->update(['house_no' => $house_no]);
+                }
+            }
+        }
+    });
+    dd('Done :)');
+});
+
 
 Route::get('wp-trans-orders', function () {
     Order::query()->chunk(50, function ($orders) {
