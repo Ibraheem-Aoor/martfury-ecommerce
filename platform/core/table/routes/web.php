@@ -256,7 +256,7 @@ Route::get('customer-withorder-no-address', function () {
     try{
 
         $customers = Customer::whereHas('orders')->whereHas('addresses', function ($addresses) {
-            $addresses->wereNull('house_no');
+            $addresses->whereNull('house_no');
         }
         )->pluck('name' , 'id');
         dd($customers);
