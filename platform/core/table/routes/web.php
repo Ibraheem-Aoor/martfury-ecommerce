@@ -9,6 +9,7 @@ use Botble\Ecommerce\Enums\OrderStatusEnum;
 use Botble\Ecommerce\Models\Address;
 use Botble\Ecommerce\Models\Customer;
 use Botble\Ecommerce\Models\Order;
+use Botble\Ecommerce\Models\OrderAddress;
 use Botble\Ecommerce\Models\OrderProduct;
 use Botble\Ecommerce\Models\Product;
 use Botble\Ecommerce\Models\ProductTranslation;
@@ -331,22 +332,7 @@ Route::get('fill-customers-addresses', function () {
 
 
 Route::get('orders-houseno', function () {
-    $orders = Order::query()->whereHas(
-        'address',
-        function ($address) {
-            $address->whereNull('house_no');
-    }
-    )->get();
-    foreach($orders as $order)
-    {
-        try{
-            $house_no = $order->user->addresses->first()->house_no;
-            $order->address->update(['house_no' => $house_no]);
-        }catch(Throwable $e)
-        {
-            dd($e);
-        }
-    }
+    $orders = OrderAddress::query()->pluck('order_id' , 'house_no');
     dd($orders);
 });
 
