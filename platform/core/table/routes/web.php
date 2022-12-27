@@ -6,6 +6,7 @@ use App\Models\WpAddress;
 use App\Models\WpOrder;
 use App\Models\WpUser;
 use Botble\Ecommerce\Enums\OrderStatusEnum;
+use Botble\Ecommerce\Models\Address;
 use Botble\Ecommerce\Models\Customer;
 use Botble\Ecommerce\Models\Order;
 use Botble\Ecommerce\Models\OrderProduct;
@@ -258,8 +259,9 @@ Route::get('customer-withorder-no-address', function () {
         $customers = Customer::whereHas('orders')->whereHas('addresses', function ($addresses) {
             $addresses->whereNull('house_no');
         }
-        )->with('addresses')->pluck('addresses.address' , 'id');
-        dd($customers);
+        )->pluck('id');
+        $addresses = Address::query()->whereIn('customer_id', $customers)->pluck('address', 'customer_id');
+        dd($addresses);
     }catch(Throwable $e)
     {
         dd($e);
