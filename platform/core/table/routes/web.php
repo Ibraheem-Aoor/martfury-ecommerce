@@ -329,6 +329,14 @@ Route::get('fill-customers-addresses', function () {
 });
 
 
+Route::get('delete-customer-with-no-houseno', function () {
+    $customers = Customer::whereHas('addresses', function ($addresses) {
+        $addresses->whereNull('house_no');
+    }
+    )->get();
+    dd($customers);
+});
+
 Route::get('wp-trans-orders', function () {
     Order::query()->chunk(50, function ($orders) {
         foreach($orders as $order)
