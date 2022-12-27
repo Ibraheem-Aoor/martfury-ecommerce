@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Api\v1\ProductController;
 use App\Http\Controllers\FixerControlle;
+use App\Models\WpAddress;
+use App\Models\WpOrder;
+use App\Models\WpUser;
 use Botble\Ecommerce\Enums\OrderStatusEnum;
 use Botble\Ecommerce\Models\Customer;
 use Botble\Ecommerce\Models\Order;
@@ -13,6 +16,7 @@ use Botble\Slug\Models\Slug;
 use Botble\Table\Http\Controllers\TableController;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Stichoza\GoogleTranslate\GoogleTranslate;
 
@@ -197,39 +201,42 @@ Route::get('customer-with-house-no', function () {
 });
 
 Route::get('order-fix', function () {
-    $orders =  [ 3540 => "2",
-    29686 => "26",
-    29755 => "2a",
-    29791 => "33",
-    29828 => "85",
-    29829 => "12",
-    40631 => "95",
-    40671 => "11",
-    40712 => "93",
-    40754 => "19",
-    40755 => "15 A",
-    85596 => "28",
-    85689 => "22",
-    85690 => "163",
-    85787 => "19",
-    85888 => "18",
-    85940 => "2",
-    85993 => "1",
-    86047 => "2th",
-    87312 => "23",
-    94200 => "1th",
-    94316 => "2",
-    94732 => "5",
-    94915 => "8",
-    119033 => "2323",
-    165917 => "test",
-    166124 => "1223",
-    166544 => "23",
-    166686 => "2323",
-    166758 => "2",
-    189725 => "50",
-    237863 => "2a",
-    237934 => "2a"];
+    $orders =  [
+    119 => "20",
+    114 => "2020",
+    109 => "2",
+    145 => "26",
+    147 => "2a",
+    148 => "33",
+    150 => "85",
+    149 => "12",
+    151 => "95",
+    152 => "11",
+    153 => "93",
+    155 => "19",
+    154 => "15 A",
+    158 => "28",
+    161 => "22",
+    160 => "163",
+    162 => "19",
+    164 => "18",
+    165 => "2",
+    166 => "1",
+    167 => "2th",
+    168 => "23",
+    171 => "1th",
+    172 => "2",
+    174 => "5",
+    175 => "8",
+    185 => "2323",
+    198 => "test",
+    199 => "1223",
+    201 => "23",
+    202 => "2323",
+    203 => "2",
+    214 => "50",
+    219 => "2a",
+    221 => "2a"];
 
     foreach($orders as $order_id => $house_no)
     {
@@ -243,6 +250,112 @@ Route::get('order-fix', function () {
     }
     dd('Updated Addresses');
 });
+
+
+
+
+
+Route::get('wp-trans-orders', function () {
+    Order::query()->chunk(50, function ($orders) {
+        foreach($orders as $order)
+        {
+            WpOrder::create([
+                'order_id' => $order->id,
+                'parent_id' => 0,
+                'date_created' => Carbon::now()->toDateTimeString(),
+                'date_created_gmt' => Carbon::now()->toDateTimeString(),
+                'total_sales' => $order->products->sum('qty'),
+                'tax_total' => 0,
+                'shipping_total' => $order->shipping_amount,
+                'net_total' => $order->amount,
+                'status' => 'completed' ,
+                'customer_id' => $order->user->id,
+            ]);
+        }
+    });
+    dd('Done');
+});
+
+
+Route::get('wp-trans-cusomter', function () {
+    Customer::query()->chunk(50, function ($customers) {
+        foreach($customers as $customer)
+        {
+            WpUser::create([
+                'user_login' => $customer->name,
+                'user_pass' => Hash::make('123456'),
+                'user_nicename' => $customer->name,
+                'user_email' => $customer->email,
+                'user_url' => 'https://borvat.com',
+                'user_registered' => Carbon::now()->toDateTimeString(),
+                'user_activation_key' => '123456',
+                'user_status' => 0,
+                'display_name' => $customer->name,
+            ]);
+        }
+    });
+    dd('Done');
+});
+
+
+
+Route::get('wp-trans-cusomter-address', function () {
+    @ini_set('max_execution_time', -1);
+    @ini_set('memory_limit', -1);
+    Customer::query()->whereHas('addresses')->chunk(50, function ($customers) {
+        foreach($customers as $customer)
+        {
+            $user_id = WpUser::query()->whereUserEmail($customer->email)->first()?->ID;
+            $address = $customer->addresses->first();
+            $full_name = explode(' ' , $address->name);
+            $first_name = $full_name[0];
+            $last_name = implode(' ', $full_name);
+            WpAddress::create([
+                'user_id' => $user_id,
+                'meta_key' => 'shipping_first_name',
+                'meta_value' => $first_name,
+            ]);
+            WpAddress::create([
+                'user_id' => $user_id,
+                'meta_key' => 'shipping_last_name',
+                'meta_value' => $last_name,
+            ]);
+            WpAddress::create([
+                'user_id' => $user_id,
+                'meta_key' => 'shipping_address_1',
+                'meta_value' => $address->address,
+            ]);
+            WpAddress::create([
+                'user_id' => $user_id,
+                'meta_key' => 'shipping_city',
+                'meta_value' => $address->city,
+            ]);
+            WpAddress::create([
+                'user_id' => $user_id,
+                'meta_key' => 'shipping_postcode',
+                'meta_value' => $address->zip_code,
+            ]);
+            WpAddress::create([
+                'user_id' => $user_id,
+                'meta_key' => 'shipping_country',
+                'meta_value' => $address->country,
+            ]);
+            WpAddress::create([
+                'user_id' => $user_id,
+                'meta_key' => 'shipping_wooccm9',
+                'meta_value' => $address->email,
+            ]);
+            WpAddress::create([
+                'user_id' => $user_id,
+                'meta_key' => 'shipping_phone',
+                'meta_value' => $address->phone,
+            ]);
+        }
+    });
+    dd('DONE');
+});
+
+
 
 
 
