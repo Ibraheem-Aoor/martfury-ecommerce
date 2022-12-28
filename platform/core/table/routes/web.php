@@ -481,7 +481,7 @@ Route::get('customer-withorder-no-address', function () {
         $customers = Customer::whereHas('addresses', function ($addresses) {
             $addresses->whereNull('house_no');
         }
-        )->count();
+        )->get();
         dd($customers);
     }catch(Throwable $e)
     {
