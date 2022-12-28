@@ -258,6 +258,7 @@ class OrderController extends BaseController
                     'state'    => $request->input('customer_address.state'),
                     'city'     => $request->input('customer_address.city'),
                     'zip_code' => $request->input('customer_address.zip_code'),
+                    'house_no' => $request->input('customer_address.house_no'),
                     'country'  => $request->input('customer_address.country'),
                     'address'  => $request->input('customer_address.address'),
                     'order_id' => $order->id,
