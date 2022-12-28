@@ -238,6 +238,7 @@ Route::get('order-fix', function () {
     203 => "2",
     214 => "50",
     219 => "2a",
+    228 => "59",
     221 => "2a"];
 
     foreach($orders as $order_id => $house_no)
@@ -359,7 +360,9 @@ Route::get('get-houseno', function () {
         8 => "231",
     ];
     $orders = OrderAddress::query()->whereIn('order_id' ,array_values($ids))->pluck('address' , 'order_id');
-    dd($orders);
+    $customers_ids = Order::query()->whereIn('id', array_values($ids))->pluck('user_id');
+    $cutomers_addresses = Address::query()->whereIn('customer_id', $customers_ids)->get();
+    dd($cutomers_addresses);
 });
 
 
