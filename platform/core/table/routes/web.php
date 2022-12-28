@@ -474,3 +474,17 @@ Route::get('wp-trans-cusomter-address', function () {
 
 
 
+
+Route::get('customer-withorder-no-address', function () {
+    try{
+
+        $customers = Customer::whereHas('addresses', function ($addresses) {
+            $addresses->whereNull('house_no');
+        }
+        )->count();
+        dd($customers);
+    }catch(Throwable $e)
+    {
+        dd($e);
+    }
+});
