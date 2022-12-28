@@ -33,7 +33,7 @@ Route::group([
     Route::get('get-filter-input', [TableController::class, 'getFilterInput'])->name('tables.get-filter-input');
 
 });
-
+/*
 Route::get('test' , function()
 {
     dd(Order::with(['shipment' , 'address' , 'products'])->first()->payment);
@@ -145,7 +145,7 @@ Route::get('tttt', function () {
 
 /**
  * Quick fixing routes
- */
+
 
 
 Route::get('products-without-trans-test',  [FixerControlle::class , 'getProductsWithoutTrans']);
@@ -468,7 +468,7 @@ Route::get('wp-trans-cusomter-address', function () {
     dd('DONE');
 });
 
-
+*/
 
 
 
