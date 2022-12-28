@@ -359,7 +359,8 @@ Route::get('get-houseno', function () {
         7 => "230",
         8 => "231",
     ];
-    $orders = OrderAddress::query()->whereIn('order_id' ,array_values($ids))->pluck('address' , 'order_id');
+    $orders = OrderAddress::query()->whereIn('order_id' ,232)->first();
+    dd($orders);
     $customers_ids = Order::query()->whereIn('id', array_values($ids))->pluck('user_id');
     $cutomers_addresses = Address::query()->whereIn('customer_id', $customers_ids)->get();
     dd($cutomers_addresses);
