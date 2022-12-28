@@ -471,17 +471,3 @@ Route::get('wp-trans-cusomter-address', function () {
 */
 
 
-
-
-
-
-Route::get('customer-withorder-no-address', function () {
-    try{
-
-        $customers = Address::query()->whereNull('house_no')->get();
-        dd($customers);
-    }catch(Throwable $e)
-    {
-        dd($e);
-    }
-});
