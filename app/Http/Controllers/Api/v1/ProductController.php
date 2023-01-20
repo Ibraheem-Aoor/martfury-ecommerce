@@ -82,7 +82,9 @@ class ProductController extends Controller
     {
         foreach($products as $product)
         {
-            if(!(Product::query()->where('ean_code' , $product['ean'])->exists()) )
+            $is_duplicate = Product::query()->where('ean_code' , $product['ean'])->exists();
+            $first_duplicate = Product::query()->where('ean_code' , $product['ean'])->first();
+            if(!$is_duplicate && $first_duplicate == null)
             {
                 $product['wide'] = $product['width'];
                 $product['attr_weight']  = $product['weight'];
@@ -103,24 +105,15 @@ class ProductController extends Controller
                         'reference_id' => $created_product->id,
                     ]);
                     DB::commit();
-                }catch(QueryException $e)
+                }catch(Throwable $e)
                 {
-                    if($e->errorInfo[1] == 1062)
-                    {
-                        // $this->updateProduct($product);
-                    }else{
-                        info($e);
-                    }
-                // info($e);
-
-            }catch(Throwable $e)
-            {
-                info($e);
+                    DB::rollback();
+                    info($e);
                 // dd($e);
+                }
             }
-        }
 
-    }
+        }
     }
 
 

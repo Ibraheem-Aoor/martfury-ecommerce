@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        // $schedule->command('bol-control-products:fetch')->everyMinute()->runInBackground();
+        $schedule->command('bol-control-products:fetch')->everyMinute()->runInBackground();
         // $schedule->command('bol-products:fetch')->everyMinute()->runInBackground();
         $schedule->command('backup:run')->twiceDaily(0 , 12)->runInBackground();
         $schedule->command('order:delevired')->daily();
