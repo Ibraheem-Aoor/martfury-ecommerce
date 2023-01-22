@@ -20,6 +20,7 @@
             <div class="list-customer-address" @if (!$isAvailableAddress) style="display: none;" @endif>
                 <div class="select--arrow">
                     <select name="address[address_id]" class="form-control address-control-item" id="address_id">
+                        <select name="" id="">{{__('Select available addresses')}}</select>
                         <option value="new" @if (old('address.address_id', $sessionAddressId) == 'new') selected @endif>
                             {{ __('Add new address...') }}</option>
                         @if ($isAvailableAddress)
