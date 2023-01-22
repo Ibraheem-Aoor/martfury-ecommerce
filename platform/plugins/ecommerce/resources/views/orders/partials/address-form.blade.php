@@ -23,7 +23,7 @@
                         <option name="" id="">{{__('Select available addresses')}}</option>
                         <option value="new" @if (old('address.address_id', $sessionAddressId) == 'new') selected @endif>
                             {{ __('Add new address...') }}</option>
-                        @if ($isAvailableAddress)
+                        {{-- @if ($isAvailableAddress)
                             @foreach ($addresses as $address)
                                 <option value="{{ $address->id }}"
                                     @if (
@@ -37,7 +37,7 @@
                                         @endif
                                 </option>
                             @endforeach
-                        @endif
+                        @endif --}}
                     </select>
                     <i class="fas fa-angle-down"></i>
                 </div>
