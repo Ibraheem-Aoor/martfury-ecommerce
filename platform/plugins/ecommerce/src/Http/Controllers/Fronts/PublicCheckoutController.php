@@ -1020,20 +1020,34 @@ class PublicCheckoutController
         if (!EcommerceHelper::isCartEnabled()) {
             abort(404);
         }
+        if(!$request->type == 'paypal')
+        {
 
-        $status_response = $paynlPaymentService->getPaymentStatus($request);
+            $status_response = $paynlPaymentService->getPaymentStatus($request);
 
-        if (!$status_response['status']) {
-            return $response
+            if (!$status_response['status']) {
+                return $response
                 ->setError()
                 ->setNextUrl(PaymentHelper::getCancelURL(OrderHelper::getOrderSessionToken()))
                 ->withInput()
                 ->setMessage(__('Payment failed!'));
-        }
-        
-        $paynlPaymentService->finsihPayment($request);
+            }
 
-        // $payPalPaymentService->afterMakePayment($request);
+            $paynlPaymentService->finsihPayment($request);
+        }else{
+            $status = $payPalPaymentService->getPaymentStatus($request);
+
+            if (!$status) {
+                return $response
+                    ->setError()
+                    ->setNextUrl(PaymentHelper::getCancelURL(OrderHelper::getOrderSessionToken()))
+                    ->withInput()
+                    ->setMessage(__('Payment failed!'));
+            }
+
+            $payPalPaymentService->afterMakePayment($request);
+        }
+
 
         return $response
             ->setNextUrl(PaymentHelper::getRedirectURL())
