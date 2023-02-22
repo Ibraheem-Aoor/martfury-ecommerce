@@ -102,15 +102,15 @@ class OrderController extends Controller
             try{
                 $orders = Order::query()
                 ->whereHas('payment' , function($payment)
-                {
-                    $payment->where('status' , PaymentStatusEnum::COMPLETED);
-                })
-                ->where('status' , '!=' ,  OrderStatusEnum::CANCELED)
-                ->with([
-                    'shipment' ,
-                    'products' ,
-                    'address' ,
-                    ])
+                    {
+                        $payment->where('payment_channel' , 'cod');
+                    })
+                    ->where('status' , '!=' ,  OrderStatusEnum::CANCELED)
+                    ->with([
+                        'shipment' ,
+                        'products' ,
+                        'address' ,
+                        ])
                     ->orderByDesc('created_at')
                     ->paginate(50);
                     $data = [
