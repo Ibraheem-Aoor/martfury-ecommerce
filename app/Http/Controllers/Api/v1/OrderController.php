@@ -103,7 +103,8 @@ class OrderController extends Controller
                 $orders = Order::query()
                 ->whereHas('payment' , function($payment)
                     {
-                        $payment->Where('status' , PaymentStatusEnum::COMPLETED);
+                        $payment->where('payment_channel' , 'cod')
+                        ->orWhere('status' , PaymentStatusEnum::COMPLETED);
                     })
                     ->where('status' , '!=' ,  OrderStatusEnum::CANCELED)
                     ->with([
